@@ -1,0 +1,18 @@
+{% extends "website/layout.html" %}
+{% block website_body %}
+
+<!-- Content -->
+{% if message %}
+<div>{{ message }}</div>
+{% endif %}
+
+<section class="container-fluid WEBSITE-section-main">
+    <!-- Dandalion image -->
+    <div class="container-fluid WEBSITE-section-main-img"></div>
+    <div class="container-fluid WEBSITE-section-main-text">
+        <h1 class="WEBSITE-h1">Poll<span class="WEBSITE-h1-span">N</span></h1>
+        <p class="WEBSITE-sub-title"><span>interact with your audience</span></p>
+    </div>
+</section>
+
+{% endblock %}

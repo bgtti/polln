@@ -1,0 +1,7 @@
+/* importing root variables from common.css */
+@import url('/static/common.css');
+
+/* Dashboard specific styles */
+.DASHBOARD-page-container {
+    padding: 30px 10px;
+}

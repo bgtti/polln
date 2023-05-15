@@ -1,0 +1,108 @@
+/* :root {
+    --main-gray: #b1bcc5;
+    --main-blue: #344955;
+    --main-yellow: #f9aa33;
+    --font-oswald:'Oswald', sans-serif;
+    --font-quicksand:'Quicksand', sans-serif;
+}
+
+*{
+    font-family: var(--font-quicksand);
+} */
+
+/* common styles also found in other apps: with another prefix (the app name) */
+/* .website-btn {
+    border: none;
+}
+
+@media (hover: hover) {
+    .website-btn:hover {
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+    }
+}
+
+.website-btn-type1 {
+    background-color: var(--main-yellow) !important;
+    width: 90px;
+}
+
+.website-btn-type2 {
+    background-color: var(--main-blue) !important;
+    width: 90px;
+} */
+
+/* WEBSITE SPECIFIC STYLES */
+
+@import url('/static/common.css');
+
+/* LAYOUT */
+/* box-shadows: https: //getcssscan.com/css-box-shadow-examples */
+/* .website-nav {
+    background-color: white !important;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+} */
+/* check if logo still exists */
+/* .website-nav-logo{
+    height: 50px;
+} */
+
+/* INDEX */
+/* https: //css-tricks.com/apply-a-filter-to-a-background-image/ */
+.WEBSITE-section-main{
+    position: relative;
+    height: 50vh;
+}
+.WEBSITE-section-main-img {
+    position: relative;
+    height: 50vh;
+}
+/* filter: https: //codepen.io/sosuke/pen/Pjoqqp */
+.WEBSITE-section-main-img::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("dandelion_blown.png");
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: top left;
+    filter: opacity(10%);
+    /* border:2px solid black; */
+}
+.WEBSITE-section-main-text{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:flex-end;
+
+}
+.WEBSITE-h1{
+    font-size: 4em;
+}
+.WEBSITE-h1-span{
+    color: var(--main-blue);
+}
+.WEBSITE-sub-title{
+    font-size: 1.5em;
+}
+@media screen and (min-width: 600px) {
+    .WEBSITE-h1 {
+        font-size: 7em;
+    }
+
+        .WEBSITE-sub-title {
+        font-size: 2.5em;
+    }
+}
+
+/* SIGNUP and LOGIN*/
+.WEBSITE-form-container{
+    padding: 30px 10px;
+}

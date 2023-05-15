@@ -1,0 +1,33 @@
+{% extends "website/layout.html" %}
+{% block website_body %}
+
+<!-- Content -->
+
+{% if message %}
+<div>{{ message }}</div>
+{% endif %}
+
+<div class="WEBSITE-form-container">
+    <h2>Sign up for an account</h2>
+    <br>
+    <form action="{% url 'website:signup' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <input class="form-control" autofocus type="text" name="username" placeholder="Username">
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="email" name="email" placeholder="Email Address">
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="password" name="password" placeholder="Password">
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
+        </div>
+        <input class="btn btn-primary BASE-btn BASE-btn-type2" type="submit" value="Signup">
+    </form>
+    <br>
+    <p>Already have an account? <a href="{% url 'website:login' %}">Log In here.</a></p>
+</div>
+
+{% endblock %}

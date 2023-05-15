@@ -1,0 +1,38 @@
+:root {
+    --main-gray: #b1bcc5;
+    --main-blue: #344955;
+    --main-yellow: #f9aa33;
+    --font-oswald: 'Oswald', sans-serif;
+    --font-quicksand: 'Quicksand', sans-serif;
+}
+
+* {
+    font-family: var(--font-quicksand);
+}
+
+/* Buttons */
+.BASE-btn {
+    border: none;
+}
+
+@media (hover: hover) {
+    .BASE-btn:hover {
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+    }
+}
+
+.BASE-btn-type1 {
+    background-color: var(--main-yellow) !important;
+    width: 90px;
+}
+
+.BASE-btn-type2 {
+    background-color: var(--main-blue) !important;
+    width: 90px;
+}
+
+/* Navbar */
+.BASE-nav {
+    background-color: white !important;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
