@@ -1,0 +1,40 @@
+<div class="BASE-modal-container">
+    <div class="BASE-modal">
+        <div class="BASE-modal-header">
+            <div class="BASE-modal-icon-close">
+                <h2>Add Project</h2>
+                <!-- <i class="fa-solid fa-xmark fa-xl" style="color: #344955;"></i> -->
+                <i class="fa-solid fa-xmark fa-xl"></i>
+            </div>
+        </div>
+        <hr>
+        <div>
+            <form action="{% url 'dashboard:add_project' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="projectname" class="BASE-modal-label">How would you like to name your project?</label>
+                    <input autofocus class="form-control" type="text" name="projectname" placeholder="Project Name">
+                </div>
+                <br>
+                <div class="form-group">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="pwenabled">
+                        <label class="form-check-label" for="flexSwitchCheckDefault" class="BASE-modal-label">Set password</label>
+                    </div>
+                    <small id="pwhelp" class="form-text text-muted">If you set a password, only persons with the password will be able to answer your questions.</small>
+                </div>
+                <br>
+                <div class="form-group">
+                    <label for="projectname" class="BASE-modal-label">What is the password?</label>
+                    <br>
+                    <input autofocus class="form-control" type="text" name="projectpw" placeholder="Project Password">
+                </div>
+                <br>
+                <div class="BASE-modal-btn-group">
+                    <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2">Cancel</a>
+                    <input class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1" type="submit">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

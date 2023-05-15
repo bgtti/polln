@@ -3,10 +3,16 @@
 <!-- Content -->
 <div class="DASHBOARD-page-container">
     <section>
-        <p>buttons</p>
+        <a href="{% url 'dashboard:add_project' %}" role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1 DASHBOARD-add-prj-btn">
+            + Add Project</a>
     </section>
+    <hr>
     <section>
         <p>projects</p>
     </section>
 </div>
+
+<!-- Modal -->
+{% include "dashboard/modal_add_project.html" %}
+
 {% endblock %}

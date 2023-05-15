@@ -9,6 +9,9 @@
 * {
     font-family: var(--font-quicksand);
 }
+/* Useful links */
+/* filter: https: //codepen.io/sosuke/pen/Pjoqqp */
+/* box-shadow: https: //getcssscan.com/css-box-shadow-examples */
 
 /* Buttons */
 .BASE-btn {
@@ -35,4 +38,62 @@
 .BASE-nav {
     background-color: white !important;
     box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+/* Modal */
+.BASE-modal-container{
+    position: fixed;
+    top: 0;
+    left:0;
+    height: 100vh;
+    width: 100vw;
+    background-color: #50575bce;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.BASE-modal{
+    padding: 25px;
+    border-radius: 5px;
+    background-color: white;
+}
+.BASE-modal-icon-close{
+    cursor: pointer;
+    height: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.5em;
+    color: var(--main-blue);
+}
+.BASE-modal-icon-close > *{
+    font-size: 1.2em;
+    color: var(--main-blue);
+}
+.BASE-modal-label{
+    padding-bottom: 5px;
+}
+.BASE-modal-btn-group{
+    display: flex;
+    gap: 15px;
+}
+
+/* Adapting Bootstrap input focus */
+.form-control:focus {
+    border: none;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+
+/* Adapting Bootstrap switch focus and checked */
+.form-switch .form-check-input:focus {
+    border-color: rgba(0, 0, 0, 0.25);
+    outline: 0;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+
+.form-switch .form-check-input:checked {
+    background-color: var(--main-yellow);
+    border-color: var(--main-yellow);
+    border: none;
 }

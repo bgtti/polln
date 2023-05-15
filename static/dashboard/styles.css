@@ -3,5 +3,10 @@
 
 /* Dashboard specific styles */
 .DASHBOARD-page-container {
-    padding: 30px 10px;
+    padding: 30px 25px;
+}
+
+.DASHBOARD-add-prj-btn {
+    width:180px;
+    font-weight: bold;
 }
