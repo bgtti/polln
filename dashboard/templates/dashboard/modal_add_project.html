@@ -1,7 +1,7 @@
-<div class="BASE-modal-container">
+<div class="BASE-modal-container BASE-hide" id="modal_add_project">
     <div class="BASE-modal">
         <div class="BASE-modal-header">
-            <div class="BASE-modal-icon-close">
+            <div class="BASE-modal-icon-close" onclick="modalHideUnhide('modal_add_project')">
                 <h2>Add Project</h2>
                 <!-- <i class="fa-solid fa-xmark fa-xl" style="color: #344955;"></i> -->
                 <i class="fa-solid fa-xmark fa-xl"></i>
@@ -31,7 +31,7 @@
                 </div>
                 <br>
                 <div class="BASE-modal-btn-group">
-                    <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2">Cancel</a>
+                    <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2" onclick="modalHideUnhide('modal_add_project')">Cancel</a>
                     <input class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1" type="submit">
                 </div>
             </form>

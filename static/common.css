@@ -9,7 +9,7 @@
 * {
     font-family: var(--font-quicksand);
 }
-/* Useful links */
+/* Useful linkss */
 /* filter: https: //codepen.io/sosuke/pen/Pjoqqp */
 /* box-shadow: https: //getcssscan.com/css-box-shadow-examples */
 
@@ -38,6 +38,8 @@
 .BASE-nav {
     background-color: white !important;
     box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 /* Modal */
@@ -77,6 +79,11 @@
 .BASE-modal-btn-group{
     display: flex;
     gap: 15px;
+}
+
+/* HIDE Modals */
+.BASE-hide{
+    display: none;
 }
 
 /* Adapting Bootstrap input focus */

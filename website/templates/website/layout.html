@@ -29,7 +29,7 @@
         </ul>
         <div>
             {% if user.is_authenticated %}
-            <a href="" role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1">Menu</a>
+            <a href="{% url 'dashboard:index' %}" role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1">Dashboard</a>
             <a href="{% url 'website:logout' %}" role="button"
                 class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2">Log out</a>
             {% else %}
