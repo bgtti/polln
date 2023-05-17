@@ -26,12 +26,12 @@
 
 .BASE-btn-type1 {
     background-color: var(--main-yellow) !important;
-    width: 90px;
+    width: 100px !important;
 }
 
 .BASE-btn-type2 {
     background-color: var(--main-blue) !important;
-    width: 90px;
+    width: 100px !important;
 }
 
 /* Navbar */

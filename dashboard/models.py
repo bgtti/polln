@@ -7,3 +7,6 @@ class Project(models.Model):
     name = models.CharField(max_length=100)
     pw_requirement = models.BooleanField(blank=True, null=True, default=False)
     pw = models.CharField(max_length=30, blank=True, null=True)
+
+    def __str__(self):
+        return f"Project: {self.name} User: {self.user} Pw required: {self.pw_requirement}"
