@@ -1,0 +1,26 @@
+<div class="BASE-modal-container BASE-hide" id="modal_delete_project">
+    <div class="BASE-modal">
+        <div class="BASE-modal-header">
+            <div class="BASE-modal-icon-close" onclick="modalHideUnhide('modal_delete_project')">
+                <h2>{{project.name}}</h2>
+                <!-- <i class="fa-solid fa-xmark fa-xl" style="color: #344955;"></i> -->
+                <i class="fa-solid fa-xmark fa-xl"></i>
+            </div>
+        </div>
+        <hr>
+        <div>
+            <form action="{% url 'dashboard:delete_project' id=project.pk %}" method="post">
+                {% csrf_token %}
+                <p>You are about to delete this project and all associated questions.</p>
+                <p>This action cannot be undone.</p>
+                <p>Are you sure you would like to proceed?</p>
+                <br>
+                <div class="BASE-modal-btn-group">
+                    <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2"
+                        onclick="modalHideUnhide('modal_delete_project')">Cancel</a>
+                    <input class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type3" type="submit" value="Delete">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

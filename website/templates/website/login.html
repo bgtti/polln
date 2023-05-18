@@ -3,7 +3,10 @@
 
 <!-- Content -->
 {% if message %}
-<div>{{ message }}</div>
+    <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 {% endif %}
 
 <div class="WEBSITE-form-container">

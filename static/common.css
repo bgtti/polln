@@ -2,6 +2,7 @@
     --main-gray: #b1bcc5;
     --main-blue: #344955;
     --main-yellow: #f9aa33;
+    --main-red: #8B0000;
     --font-oswald: 'Oswald', sans-serif;
     --font-quicksand: 'Quicksand', sans-serif;
 }
@@ -31,6 +32,11 @@
 
 .BASE-btn-type2 {
     background-color: var(--main-blue) !important;
+    width: 100px !important;
+}
+
+.BASE-btn-type3 {
+    background-color: var(--main-red) !important;
     width: 100px !important;
 }
 

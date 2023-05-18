@@ -16,7 +16,8 @@ from django.db.models import Count
 # migration issues: python -m manage makemigrations
 # https://stackoverflow.com/questions/44651760/django-db-migrations-exceptions-inconsistentmigrationhistory
 
-def index (request):
+
+def index(request):
     return render(request, "website/index.html")
 
 
@@ -58,7 +59,6 @@ def signup(request):
             return render(request, "website/signup.html", {
                 "message": "Passwords must match."
             })
-
         # Attempt to create new user
         try:
             user = User.objects.create_user(username, email, password)

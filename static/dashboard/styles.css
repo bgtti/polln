@@ -3,10 +3,15 @@
 
 /* Dashboard specific styles */
 .DASHBOARD-page-container {
-    padding: 30px 25px;
+    padding: 15px 25px;
 }
 
 .DASHBOARD-add-prj-btn {
     width:180px !important;
     font-weight: bold;
+}
+
+.DASHBOARD-projects-section{
+    display: flex;
+    gap: 10px;
 }

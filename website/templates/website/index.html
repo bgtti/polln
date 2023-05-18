@@ -1,11 +1,15 @@
 {% extends "website/layout.html" %}
 {% block website_body %}
 
-<!-- Content -->
+<!-- Message -->
 {% if message %}
-<div>{{ message }}</div>
+    <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 {% endif %}
 
+<!-- Content -->
 <section class="container-fluid WEBSITE-section-main">
     <!-- Dandalion image -->
     <div class="container-fluid WEBSITE-section-main-img"></div>

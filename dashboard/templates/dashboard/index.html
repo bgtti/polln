@@ -1,5 +1,13 @@
 {% extends "dashboard/layout.html" %}
 {% block dashboard_body %}
+<!-- Message -->
+<br>
+{% if message %}
+    <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
 <!-- Content -->
 <div class="DASHBOARD-page-container">
     <section>
@@ -8,7 +16,7 @@
             + Add Project</a>
     </section>
     <hr>
-    <section>
+    <section class="DASHBOARD-projects-section">
         {% if projects != None %}
             {% for project in projects %}
                 <div class="card" style="width: 18rem;">
@@ -24,8 +32,8 @@
                         <li class="list-group-item">Vestibulum at eros</li>
                     </ul>
                     <div class="card-body">
-                        <a href="#" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a>
+                        <a href="{% url 'dashboard:project' id=project.pk %}" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2">
+                            Edit</a>
                     </div>
                 </div>
             {% endfor %}

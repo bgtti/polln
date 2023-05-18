@@ -1,0 +1,30 @@
+{% extends "dashboard/layout.html" %}
+{% block dashboard_body %}
+<!-- Content -->
+<div class="DASHBOARD-page-container">
+    <h2>{{ project.name }}</h2>
+    <p><small>Not live</small></p>
+    <p>Password:<small>not set</small></p>
+    <hr>
+    <section>
+        <a href="#" role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1 DASHBOARD-add-prj-btn"
+            onclick="modalHideUnhide('')">
+            + Add Question</a>
+        <a href="#" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2 DASHBOARD-add-prj-btn"
+            onclick="modalHideUnhide('modal_add_project')">
+            Edit Project</a>
+        <a href="#" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type3 DASHBOARD-add-prj-btn"
+            onclick="modalHideUnhide('modal_delete_project')">
+            Delete Project</a>
+    </section>
+    <hr>
+    <section>
+        <p>questions</p>
+    </section>
+</div>
+
+<!-- Modal -->
+{% include "dashboard/modal_add_project.html" %}
+{% include "dashboard/modal_delete_project.html" %}
+
+{% endblock %}
