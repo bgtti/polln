@@ -39,14 +39,27 @@ def add_project(request):
                 }))
 
 def project(request, id):
-    try:
-        the_project = Project.objects.get(pk=id)
-        return render(request, "dashboard/project.html", {
-            "project": the_project,
-        })
-    except:
-        return HttpResponseRedirect(reverse("dashboard:index", kwargs={'message': "There was an error opening your project, please try again."
-                }))
+    print(id)
+    the_project = Project.objects.get(pk=id)
+    print(the_project)
+    print(the_project.id)
+    print(the_project.name)
+    return render(request, "dashboard/project.html", {
+        "project": the_project,
+    })
+    # try:
+    #     print(id)
+    #     the_project = Project.objects.get(pk=id)
+    #     print(the_project)
+    #     print(the_project.id)
+    #     print(the_project.name)
+    #     return render(request, "dashboard/project.html", {
+    #         "project": the_project,
+    #     })
+    # except:
+    #     print("problem")
+    #     return HttpResponseRedirect(reverse("dashboard:index", kwargs={'message': "There was an error opening your project, please try again."
+    #             }))          
     
 
 def delete_project(request, id):
@@ -56,3 +69,6 @@ def delete_project(request, id):
         return HttpResponseRedirect(reverse("dashboard:index", kwargs={'message': "Project deleted successfully!"}))
     except:
         return HttpResponseRedirect(reverse("dashboard:index", kwargs={'message': "There was an error deleting your project, please try again."}))
+
+def add_question(request):
+    return

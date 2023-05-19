@@ -8,7 +8,7 @@
     <hr>
     <section>
         <a href="#" role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1 DASHBOARD-add-prj-btn"
-            onclick="modalHideUnhide('')">
+            onclick="modalHideUnhide('modal_add_question')">
             + Add Question</a>
         <a href="#" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2 DASHBOARD-add-prj-btn"
             onclick="modalHideUnhide('modal_add_project')">
@@ -19,12 +19,22 @@
     </section>
     <hr>
     <section>
-        <p>questions</p>
+        <a href="#" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type3 DASHBOARD-add-prj-btn"
+            onclick="">
+            Save question order</a>
+        <p>ADD DATASET TO EACH QUESTION</p>
+        <div id="DASHBOARD-project-question-container" class="DASHBOARD-project-question-container" ondragover="positionInContainer(event)">
+            <div class="DASHBOARD-project-question-item" draggable="true">1</div>
+            <div class="DASHBOARD-project-question-item" draggable="true">2</div>
+            <div class="DASHBOARD-project-question-item" draggable="true">3</div>
+        </div>
+        
     </section>
 </div>
 
 <!-- Modal -->
 {% include "dashboard/modal_add_project.html" %}
 {% include "dashboard/modal_delete_project.html" %}
+{% include "dashboard/modal_add_question.html" %}
 
 {% endblock %}

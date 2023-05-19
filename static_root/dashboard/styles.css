@@ -1,26 +1,27 @@
 /* importing root variables from common.css */
 @import url('/static/common.css');
 
-/* Common styles also found in other apps */
-/* .dashboard-btn {
-    border: none;
-}
-@media (hover: hover) {
-    .website-btn:hover {
-        box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
-    }
-}
-.dashboard-btn-type1 {
-    background-color: var(--main-yellow) !important;
-    width: 90px;
-}
-
-.dashboard-btn-type2 {
-    background-color: var(--main-blue) !important;
-    width: 90px;
-} */
-
 /* Dashboard specific styles */
 .DASHBOARD-page-container {
-    padding: 30px 10px;
+    padding: 15px 25px;
+}
+
+.DASHBOARD-add-prj-btn {
+    width:180px !important;
+    font-weight: bold;
+}
+
+.DASHBOARD-projects-section{
+    display: flex;
+    gap: 10px;
+}
+
+.DASHBOARD-question-type-icon-container{
+    width: 100px;
+    height: 100px;
+    background-color: aqua;
+}
+.DASHBOARD-question-type-icon-container>*{
+    font-size: 50px;
+    color: black;
 }

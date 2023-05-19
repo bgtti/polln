@@ -9,4 +9,4 @@ class Project(models.Model):
     pw = models.CharField(max_length=30, blank=True, null=True)
 
     def __str__(self):
-        return f"Project: {self.name} User: {self.user} Pw required: {self.pw_requirement}"
+        return f"Project {self.pk}: {self.name} User: {self.user} Pw required: {self.pw_requirement}"
