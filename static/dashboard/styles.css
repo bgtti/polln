@@ -68,16 +68,70 @@
 }
 /* Project: question container with draggable items */
 .DASHBOARD-project-question-container{
-    background-color: aqua;
-    padding: 20px;
+    padding: 5px 0 10px 0;
 }
 .DASHBOARD-project-question-item{
-    width: 300px;
-    border: 2px solid black;
-    background-color: blue;
+    display: grid;
+    grid-template-columns: 30px auto 100px;
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     cursor: move;
-    margin: 10px 0;
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+    margin: 20px 0;
+}
+@media screen and (min-width: 600px){
+    .DASHBOARD-project-question-item {
+            grid-template-columns: 50px auto 180px;
+        }
 }
 .DASHBOARD-project-question-item-dragging{
     opacity: .5;
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+}
+.DASHBOARD-question-multi-label{
+    margin-top: 5px;
+}
+.DASHBOARD-q-edit, .DASHBOARD-q-name, .DASHBOARD-q-type{
+    margin: 0;
+    padding: 5px 5px;
+    /* line-height: 100%;
+    display: table-cell;
+    vertical-align: middle; */
+    display: flex;
+    align-items: center;
+}
+.DASHBOARD-q-edit{
+    border-right: 1px solid rgb(203, 203, 203);
+    font-size: .8em;
+    justify-content: center;
+    cursor: pointer;
+}
+@media (hover: hover) {
+    .DASHBOARD-q-edit:hover {
+        font-weight: bold;
+    }
+}
+.DASHBOARD-q-name {
+    flex-grow: 2;
+}
+.DASHBOARD-q-edit, .DASHBOARD-q-type{
+    color: gray;
+    font-size: .7em;
+    background-color: rgb(245, 245, 245);
+}
+.DASHBOARD-q-type{
+    border-left: 1px solid rgb(203, 203, 203);
+}
+@media screen and (min-width: 600px) {
+    .DASHBOARD-q-edit{
+        font-size: 1em;
+    }
+    .DASHBOARD-q-type {
+        font-size: .8em;
+    }
 }

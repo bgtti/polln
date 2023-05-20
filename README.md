@@ -21,3 +21,5 @@ Name: poll n nr of people -- spread questions like pollen
 - get audience response
 - get instant feedback
 
+Drag and drop functionality
+To enable drag and drop on mobile devices, I used the DragDropTouch polyfill from Bernardo-Castilho. More information at https://github.com/Bernardo-Castilho/dragdroptouch

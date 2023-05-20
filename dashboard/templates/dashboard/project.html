@@ -1,5 +1,13 @@
 {% extends "dashboard/layout.html" %}
 {% block dashboard_body %}
+<!-- Message -->
+<br>
+{% if message %}
+<div class="alert alert-secondary alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
 <!-- Content -->
 <div class="DASHBOARD-page-container">
     <h2>{{ project.name }}</h2>
@@ -18,16 +26,24 @@
             Delete Project</a>
     </section>
     <hr>
+    <!-- Questions -->
     <section>
-        <a href="#" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type3 DASHBOARD-add-prj-btn"
-            onclick="">
-            Save question order</a>
-        <p>ADD DATASET TO EACH QUESTION</p>
+        <a href="#" role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type4 DASHBOARD-add-prj-btn BASE-hide"
+            onclick="getOrderOfQuestions()" id="BtnSaveQorder">
+            Save order</a>
+        {% if questions %}
         <div id="DASHBOARD-project-question-container" class="DASHBOARD-project-question-container" ondragover="positionInContainer(event)">
-            <div class="DASHBOARD-project-question-item" draggable="true">1</div>
-            <div class="DASHBOARD-project-question-item" draggable="true">2</div>
-            <div class="DASHBOARD-project-question-item" draggable="true">3</div>
+            {% for question in questions %}
+            <div class="DASHBOARD-project-question-item" draggable="true" data-questionpk="{{question.pk}}">
+                <p class="DASHBOARD-q-edit"><a href="#" onclick="editQuestionData('{{question.pk}}')">Edit</a></p>
+                <p class="DASHBOARD-q-name">{{ question.question }}</p>
+                <p class="DASHBOARD-q-type">Type: {{question.question_type}}</p>
+            </div>
+            {% endfor %}
         </div>
+        {% else %}
+        <p> You have no questions yet. Add a question!</p>
+        {% endif %}
         
     </section>
 </div>
@@ -36,5 +52,6 @@
 {% include "dashboard/modal_add_project.html" %}
 {% include "dashboard/modal_delete_project.html" %}
 {% include "dashboard/modal_add_question.html" %}
+{% include "dashboard/modal_edit_question.html" %}
 
 {% endblock %}

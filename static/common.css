@@ -3,6 +3,7 @@
     --main-blue: #344955;
     --main-yellow: #f9aa33;
     --main-red: #8B0000;
+    --main-green: #689a3b;
     --font-oswald: 'Oswald', sans-serif;
     --font-quicksand: 'Quicksand', sans-serif;
 }
@@ -11,8 +12,8 @@
     font-family: var(--font-quicksand);
 }
 /* Useful linkss */
-/* filter: https: //codepen.io/sosuke/pen/Pjoqqp */
-/* box-shadow: https: //getcssscan.com/css-box-shadow-examples */
+/* filter: https://codepen.io/sosuke/pen/Pjoqqp */
+/* box-shadow: https://getcssscan.com/css-box-shadow-examples */ 
 
 /* Buttons */
 .BASE-btn {
@@ -37,6 +38,11 @@
 
 .BASE-btn-type3 {
     background-color: var(--main-red) !important;
+    width: 100px !important;
+}
+
+.BASE-btn-type4 {
+    background-color: var(--main-gray) !important;
     width: 100px !important;
 }
 

@@ -9,6 +9,10 @@ urlpatterns = [
     path("msg/<message>", views.index, name="index"),
     path("add_project", views.add_project, name="add_project"),
     path("project/<int:id>", views.project, name="project"),
+    path("project/<int:id>/<message>", views.project, name="project"),
     path("delete_project/<int:id>", views.delete_project, name="delete_project"),
+    path("add_question", views.add_question, name="add_question"),
+    path("question_order", views.question_order, name="question_order"),
+    path("edit_question/<int:id>", views.edit_question, name="edit_question"),
 ]
 urlpatterns += staticfiles_urlpatterns()
