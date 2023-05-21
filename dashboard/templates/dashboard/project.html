@@ -11,22 +11,37 @@
 <!-- Content -->
 <div class="DASHBOARD-page-container">
     <h2>{{ project.name }}</h2>
-    <p><small>Not live</small></p>
-    <p>Password:<small>not set</small></p>
-    <hr>
-    <section>
-        <a href="#" role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1 DASHBOARD-add-prj-btn"
-            onclick="modalHideUnhide('modal_add_question')">
-            + Add Question</a>
-        <a href="#" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2 DASHBOARD-add-prj-btn"
+    <div class="DASHBOARD-project-pjk-info">
+        <p><small>Presentation code: XYZ</small></p>
+        {% if project.pw_requirement == true %}
+            <p>Password: <small>{{ project.pw }}</small></p>
+        {% else %}
+            <p><small>No password set</small></p>
+        {% endif %}
+    </div>
+    
+    <div class="DASHBOARD-project-btn-group">
+        <small><a href="#" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2 DASHBOARD-add-prj-btn" onclick="">
+            Present</a></small>
+        <small><a href="#" role="button" class="BASE-btn BASE-btn-small-gray" 
+            onclick="">
+                Share Link</a></small>
+        <small><a href="#" role="button" class="BASE-btn BASE-btn-small-gray"
             onclick="editProjectData('{{project.pk}}')">
-            Edit Project</a>
-        <a href="#" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type3 DASHBOARD-add-prj-btn"
+            Edit Project</a></small>
+        <small><a href="#" role="button" class="BASE-btn BASE-btn-small-gray"
             onclick="modalHideUnhide('modal_delete_project')">
-            Delete Project</a>
-    </section>
+            Delete Project</a></small>
+    </div>
     <hr>
     <!-- Questions -->
+    <h2>Questions</h2>
+    <p><small>You can drag the questions to change the order.</small></p>
+    <div>
+        <a href="#" role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1 DASHBOARD-add-prj-btn"
+            onclick="modalHideUnhide('modal_add_question')">
+            + Question</a>
+    </div>
     <section>
         <a href="#" role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type4 DASHBOARD-add-prj-btn BASE-hide"
             onclick="getOrderOfQuestions()" id="BtnSaveQorder">
@@ -42,6 +57,7 @@
             {% endfor %}
         </div>
         {% else %}
+        <br>
         <p> You have no questions yet. Add a question!</p>
         {% endif %}
         

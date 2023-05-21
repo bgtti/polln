@@ -7,8 +7,22 @@
 }
 
 .DASHBOARD-add-prj-btn {
-    width:180px !important;
+    width:122px !important;
+    height: 33px;
     font-weight: bold;
+    padding: 5px;
+}
+.DASHBOARD-project-btn-group{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.DASHBOARD-project-pjk-info > *{
+    margin: 0;
+}
+.DASHBOARD-project-pjk-info{
+    margin-bottom: 10px;
 }
 
 .DASHBOARD-projects-section{

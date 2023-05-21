@@ -159,7 +159,7 @@ function editQuestionData(questionId) {
                         let newSwitch = document.createElement('div')
                         newSwitch.innerHTML = `<input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="choiceAnswerEnabled"
                                 role="switch" onclick="hideUnhideIfChecked('choiceAnswer')" checked>
-                                <label class="form-check-label" for="flexSwitchCheckDefault" class="BASE-modal-label">Set answer</label>`;
+                                <label class="form-check-label" for="flexSwitchCheckDefault" class="BASE-modal-label">Show correct answer</label>`;
                         theSwitchParent.replaceChild(newSwitch, theSwitchParent.lastElementChild)
                         hideUnhideIfChecked('choiceAnswer', newSwitch.firstChild)
                         document.querySelector('#rightChoice').value = questionData[0].fields.correctOption
