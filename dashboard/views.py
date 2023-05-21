@@ -7,6 +7,7 @@ from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.core.serializers import serialize
+from django.contrib import messages
 
 # index is the user's dashboard
 def index(request, message=None):
@@ -14,21 +15,26 @@ def index(request, message=None):
     projects = Project.objects.filter(user=user).order_by("pk").reverse()
     if not projects:
         projects = None
+    # Get message from session storage, and remove it from there
+    message = request.session.get('index_message')
+    request.session['index_message'] = None
     return render(request, "dashboard/index.html", {
         "projects": projects,
         "message": message
     })
 
+# add new project
 def add_project(request):
     if request.method == "POST":
         pjt_name = request.POST['projectname']
         user = User.objects.get(pk=request.user.pk)
+
         if 'pwenabled' in request.POST:
             set_pw = True
             pw = request.POST['projectpw']
             if not pw or pw == "":
-                return HttpResponseRedirect(reverse("dashboard:index", kwargs={'message': "No password set, project could not be saved."
-                }))
+                request.session['index_message'] = "No password set, project could not be saved."
+                return HttpResponseRedirect(reverse("dashboard:index"))
         else:
             set_pw = False
             pw=""
@@ -37,46 +43,88 @@ def add_project(request):
             new_pjt.save()
             return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': new_pjt.pk}))
         except:
-            return HttpResponseRedirect(reverse("dashboard:index", kwargs={'message': "There was an error saving your project, please try again."
-                }))
+            request.session['index_message'] = "There was an error saving your project, please try again."
+            return HttpResponseRedirect(reverse("dashboard:index"))
 
+# view project page
+def project(request, id):
+    try:
+        the_project = Project.objects.get(pk=id)
+        if the_project.num_questions > 0:
+            the_questions = Question.objects.filter(
+                project=the_project).order_by("position")
+        else:
+            the_questions = None
+        # Get message from session storage, and remove it from there
+        message = request.session.get('project_message')
+        request.session['project_message'] = None
 
-def project(request, id, message=None):
-    the_project = Project.objects.get(pk=id)
-    if the_project.num_questions > 0:
-        the_questions = Question.objects.filter(
-            project=the_project).order_by("position")
+        return render(request, "dashboard/project.html", {
+            "project": the_project,
+            "questions": the_questions,
+            "message": message
+        })
+    except:
+        request.session['index_message'] = "There was an error opening your project, please try again."
+        return HttpResponseRedirect(reverse("dashboard:index"))        
+
+# Function that send project data to JS editProjectData function for modal_add_project to edit project, and gets back editted data.
+@csrf_exempt
+def edit_project(request, id):
+    if request.method == "GET":
+        project = Project.objects.get(pk=id)
+        serialized_question = serialize('json', [project])
+        return JsonResponse({'project': serialized_question})
+    # Sample data being sent from edit_project when request.method == "GET":
+        # {
+        #     "model": "dashboard.project",
+        #     "pk": 3,
+        #     "fields": {
+        #         "user": 2,
+        #         "name": "My Pjkt",
+        #         "pw_requirement": false,
+        #         "pw": "",
+        #         "num_questions": 0
+        #     }
+        # }
     else:
-        the_questions = None
-    return render(request, "dashboard/project.html", {
-        "project": the_project,
-        "questions": the_questions,
-        "message": message
-    })
-    # try:
-    #     the_project = Project.objects.get(pk=id)
-    #     if the_project.num_questions > 0:
-    #         the_questions = Question.objects.filter(
-    #             project=the_project).order_by("position")
-    #     else:
-    #         the_questions = None
-    #     return render(request, "dashboard/project.html", {
-    #         "project": the_project,
-    #         "questions": the_questions,
-    #         "message": message
-    #     })
-    # except:
-    #     return HttpResponseRedirect(reverse("dashboard:index", kwargs={'message': "There was an error opening your project, please try again."
-    #             }))          
+        if request.method == "POST":
+            pjt_name = request.POST['projectname']
+            # user = User.objects.get(pk=request.user.pk)
+            if 'pwenabled' in request.POST:
+                set_pw = True
+                pw = request.POST['projectpw']
+                if not pw or pw == "":
+                    the_project = Project.objects.get(pk=id)
+                    request.session['project_message'] = "No password set, project could not be saved."
+                    return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': the_project.pk}))
+            else:
+                set_pw = False
+                pw = ""
+            try:
+                the_project = Project.objects.get(pk=id)
+                the_project.name = pjt_name
+                the_project.pw_requirement = set_pw
+                the_project.pw = pw
+                the_project.save()
+                request.session['project_message'] = "Project changes saved successfully!"
+                return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': the_project.pk}))
+            except:
+                request.session['index_message'] = "There was an error editing your project."
+                return HttpResponseRedirect(reverse("dashboard:index"))
 
+# deleting a project
 def delete_project(request, id):
     try:
         the_project = Project.objects.get(pk=id)
         the_project.delete()
-        return HttpResponseRedirect(reverse("dashboard:index", kwargs={'message': "Project deleted successfully!"}))
+        request.session['index_message'] = "Project deleted successfully!"
+        return HttpResponseRedirect(reverse("dashboard:index"))
     except:
-        return HttpResponseRedirect(reverse("dashboard:index", kwargs={'message': "There was an error deleting your project, please try again."}))
+        request.session['index_message'] = "There was an error deleting your project, please try again."
+        return HttpResponseRedirect(reverse("dashboard:index"))
 
+# adding new question
 def add_question(request):
     if request.method == "POST":
         the_user = User.objects.get(pk=request.user.pk)
@@ -92,8 +140,8 @@ def add_question(request):
             the_question_type = "Multiple Choice"
             the_nr_choices = request.POST['nrchoices']
         else:
-            return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': the_project.pk, 'message': "There was a problem adding your question. Select a question type."
-                }))
+            request.session['project_message'] = "There was a problem adding your question. Select a question type."
+            return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': the_project.pk}))
         if 'theanswer' in request.POST:
             the_answer = request.POST['theanswer']
         else:
@@ -122,12 +170,11 @@ def add_question(request):
             new_q.save()
             the_project.num_questions = the_position
             the_project.save()
+            request.session['project_message'] = "Question added successfully!"
             return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': the_project.pk}))
         except:
-            return HttpResponseRedirect(reverse("dashboard:project", kwargs={
-                'id': the_project.pk, 
-                'message': "There was a problem adding your question. Please try again"
-                }))
+            request.session['project_message'] = "There was a problem adding your question. Please try again"
+            return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': the_project.pk}))
 
 # question_order gets data from JS getOrderOfQuestions() function and saves the new question position
 # Sample json data: {'body': [[1, 0], [2, 1], [3, 2], [4, 3]]}
@@ -159,7 +206,7 @@ def question_order(request):
     response_data = {'message': 'Oops, there was an error with the question ordering.'}
     return JsonResponse(response_data)
 
-# Function that sends Quention object information to JS the function editQuestionData. 
+# Function that sends Quention object information to JS the function editQuestionData, and received editted project info. 
 @csrf_exempt
 def edit_question(request, id):
     if request.method == "GET":
@@ -203,8 +250,8 @@ def edit_question(request, id):
         else:
             the_project = Project.objects.get(
                 pk=int(request.POST['project_pk']))
-            return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': the_project.pk, 'message': "There was a problem editing your question. Select a question type."
-                }))
+            request.session['project_message'] = "There was a problem editing your question. Select a question type."
+            return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': the_project.pk}))
         if 'theanswer' in request.POST:
             the_answer = request.POST['theanswer']
         else:
@@ -235,32 +282,16 @@ def edit_question(request, id):
             edit_q.correctOptionEnabled = correct_option_enabled
             edit_q.correctOption = the_correct_choice
             edit_q.save()
+            request.session['project_message'] = "Message edited successfully!"
             return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': edit_q.project.pk}))
         except:
             the_project = Project.objects.get(
                 pk=int(request.POST['project_pk']))
-            return HttpResponseRedirect(reverse("dashboard:project", kwargs={
-                'id': the_project.pk,
-                'message': "There was a problem editting your question. Please try again"
-            }))
+            request.session['project_message'] = "There was a problem editing your question. Please try again"
+            return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': the_project.pk}))
 
 @csrf_exempt
 def delete_question(request, id):
-    # delete_q = Question.objects.get(pk=id)
-    # # Update positions of all elements after the element being deleted
-    # all_q_positioned_after = Question.objects.filter(
-    #     project=delete_q.project, position__gt=delete_q.position)
-    # for question in all_q_positioned_after:
-    #     question.position -= 1
-    #     question.save()
-    # # Update the number of questions the project has
-    # the_project = Project.objects.get(
-    #     pk=delete_q.project.pk)
-    # the_project.num_questions -= 1
-    # the_project.save()
-    # delete_q.delete()
-    # return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': the_project.pk,
-    #     'message': "Message deleted successfully!"}))
     try:
         delete_q = Question.objects.get(pk=id)
         # Update positions of all elements after the element being deleted
@@ -275,20 +306,11 @@ def delete_question(request, id):
         the_project.num_questions -= 1
         the_project.save()
         delete_q.delete()
-        return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': the_project.pk,
-        'message': "Message deleted successfully!"}))
+        request.session['project_message'] = "Message deleted successfully!"
+        return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': the_project.pk}))
     except:
-        return HttpResponseRedirect(reverse("dashboard:project", kwargs={
-            'id': the_project.pk,
-            'message': "There was a problem deleting your question. Please try again"
-        }))
+        request.session['project_message'] = "There was a problem deleting your question. Please try again"
+        return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': the_project.pk}))
 
 
-@csrf_exempt
-def edit_project(request, id):
-    if request.method == "GET":
-        project = Project.objects.get(pk=id)
-        serialized_question = serialize('json', [project])
-        return JsonResponse({'project': serialized_question})
-    
 
