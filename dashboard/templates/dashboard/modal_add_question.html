@@ -1,14 +1,14 @@
 <div class="BASE-modal-container BASE-hide" id="modal_add_question">
     <div class="BASE-modal">
         <div class="BASE-modal-header">
-            <div class="BASE-modal-icon-close" onclick="modalHideUnhide('modal_add_question')">
-                <h2>Add Question</h2>
+            <div class="BASE-modal-icon-close" onclick="{()=>{modalHideUnhide('modal_add_question')}; reloadPage()}">
+                <h2 id="DASHBOARD-Q-modal-title">Add Question</h2>
                 <i class="fa-solid fa-xmark fa-xl"></i>
             </div>
         </div>
         <hr>
         <div>
-            <form action="{% url 'dashboard:add_question' %}" method="post">
+            <form action="{% url 'dashboard:add_question' %}" method="post" id="DASHBOARD-Q-edit-form">
                 {% csrf_token %}
                 <input type="hidden" id="project_pk" name="project_pk" value="{{ project.pk }}" >
                 <!-- Question type choice -->
@@ -61,7 +61,7 @@
                 <div id="DASHBOARD-question-type-multiple-choice-container" class="BASE-hide">
                     <div>
                         <label for="nrchoices" class="BASE-modal-label">How many choices?</label>
-                        <select name="nrchoices" id="nrchoices" class="form-select" onchange="displayMultiChoices(event)">
+                        <select name="nrchoices" id="nrchoices" class="form-select" onchange="displayMultiChoices()">
                             <option value="2" selected="true">2</option>
                             <option value="3">3</option>
                             <option value="4">4</option>
@@ -107,9 +107,9 @@
                     <!-- Whether Multiple choice has answer -->
                     <br>
                     <div class="form-group">
-                        <div class="form-check form-switch">
+                        <div class="form-check form-switch" id="DASHBOARD-Q-SwitchParent">
                             <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="choiceAnswerEnabled"
-                                onclick="hideUnhideIfChecked('choiceAnswer')">
+                                role="switch" onclick="hideUnhideIfChecked('choiceAnswer')">
                             <label class="form-check-label" for="flexSwitchCheckDefault" class="BASE-modal-label">Set answer</label>
                         </div>
                     </div>
@@ -129,8 +129,10 @@
                 <!-- Buttons -->
                 <div class="BASE-modal-btn-group">
                     <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2"
-                        onclick="modalHideUnhide('modal_add_question')">Cancel</a>
+                        onclick="{()=>{modalHideUnhide('modal_add_question'); reloadPage()}}">Cancel</a>
                     <input role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1" type="submit" value="Save">
+                    <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type3" id="DASHBOARD-Q-delete"
+                        >Delete</a>
                 </div>
             </form>
         </div>

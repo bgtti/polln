@@ -111,6 +111,10 @@
     justify-content: center;
     cursor: pointer;
 }
+.DASHBOARD-q-edit > a{
+    color: inherit;
+    text-decoration: inherit;
+}
 @media (hover: hover) {
     .DASHBOARD-q-edit:hover {
         font-weight: bold;

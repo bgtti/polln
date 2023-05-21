@@ -1,7 +1,9 @@
 // Hiding/unhiding elements in modals add project and add question
-function hideUnhideIfChecked(el_id) {
+// Accepts two parameters: the first is the id of the element that should be hidden/unhidden
+// the second is an optional parameter: the targeted checkbox. If none is given, the event target will be used
+function hideUnhideIfChecked(el_id, theCheckbox = event.target) {
     let theElement = document.querySelector(`#${el_id}`);
-    let theCheckbox = event.target;
+    // let theCheckbox = event.target;
     if (theCheckbox.checked){
         theElement.classList.remove("BASE-hide");
     } else {
@@ -10,10 +12,12 @@ function hideUnhideIfChecked(el_id) {
 }
 
 // Checking question type in modal add question
-function checkedQuestionType(el_id) {
+// Accepts two parameters: the first is the selected element's id
+// the second is an optional parameter: the targeted checkbox. If none is given, the event target will be used
+function checkedQuestionType(el_id, theCheckbox = event.target) {
     //theElement is the parent container
     let theElement = document.querySelector(`#${el_id}`);
-    let theCheckbox = event.target;
+    // let theCheckbox = event.target;
     //Remove styling from other 'checked' containers
     all_containers = document.querySelectorAll('.DASHBOARD-question-choice-container');
     all_containers.forEach(container => {
@@ -46,11 +50,11 @@ function checkedQuestionType(el_id) {
 
 // displaying elements accordingly for multi-choice type in modal add question
 // And define options in select answer
-function displayMultiChoices(event){
-    let nrChoice = event.target.value
-    displayMultiChoicesX(nrChoice)
-}
-function displayMultiChoicesX(nrChoice){
+// function displayMultiChoices(event){
+//     let nrChoice = event.target.value
+//     displayMultiChoicesX(nrChoice)
+// }
+function displayMultiChoices(nrChoice = event.target.value){
     let allChoices = document.querySelectorAll('[data-multiChoice]');
     let selectChoiceContainer = document.querySelector("#rightChoice");
     let options = [...selectChoiceContainer.children]
@@ -160,50 +164,75 @@ function getOrderOfQuestions(){
     .then(location.reload())
 }
 
+//function to reload the page, used upon closing add_question to reset changes done while edditing question
+function reloadPage(){
+    location.reload()
+}
+
 //getting data from the edit_question function for modal edit question
 function editQuestionData(questionId){
     event.preventDefault()
+    // change modal title and form action
+    document.querySelector('#DASHBOARD-Q-modal-title').textContent = "Edit Question"
+    document.querySelector('#DASHBOARD-Q-edit-form').action = `/dashboard/edit_question/${questionId}`
+    document.querySelector('#DASHBOARD-Q-delete').href = `/dashboard/delete_question/${questionId}`
+    // get the data information
     fetch(`/dashboard/edit_question/${questionId}`)
         .then(response => response.json())
         .then(data => {
             let questionData = JSON.parse(data.question);
-            console.log(questionData)
             // use the data information to populate the modal:
-            let displayQuestion = document.querySelector('#thequestion');
-            displayQuestion.value = questionData[0].fields.question;
+            document.querySelector('[name="thequestion"]').value = questionData[0].fields.question;
             let questionType = questionData[0].fields.question_type;
-            if (questionType === "Open-ended Question"){
-                checkedType = document.querySelector('#DASHBOARD-choice-1');
-                checkTypeInput = document.querySelector('#question');
-            } else if (questionType === "Question and Answer"){
-                checkedType = document.querySelector('#DASHBOARD-choice-2');
-                checkTypeInput = document.querySelector('#qanda');
-                theAnswer = document.querySelector('#theanswer');
-                theAnswer.value = questionData[0].fields.answer;
-            } else {
-                checkedType = document.querySelector('#DASHBOARD-choice-3');
-                checkTypeInput = document.querySelector('#multiplechoice');
-                theNrChoices = document.querySelector('#nrchoices');
-                theNrChoices.value = questionData[0].fields.nr_choices
-                displayMultiChoicesX(questionData[0].fields.nr_choices)
+            if (questionType != "Open-ended Question"){
+                if (questionType === "Question and Answer"){
+                    checkedQuestionType('DASHBOARD-choice-2', document.querySelector('#qanda'));
+                    document.querySelector('[name="theanswer"]').value = questionData[0].fields.answer;
+                } else {
+                    checkedQuestionType('DASHBOARD-choice-3', document.querySelector('#multiplechoice'))
+                    document.querySelector('#nrchoices').value = questionData[0].fields.nr_choices;
+                    displayMultiChoices(questionData[0].fields.nr_choices)
 
-                for (let i = 1; i <6; i++){
-                    document.querySelector(`#choice${i}`).value = questionData[0].fields[`option${i}`]
+                    for (let i = 1; i <6; i++){
+                        document.querySelector(`[name = 'choice${i}']`).value = questionData[0].fields[`option${i}`]
+                    }
+                    if (questionData[0].fields.correctOptionEnabled === true){
+                        // here I changed the switch altogether because .checked = true would not
+                        // visually turn the switch on, and changing the attibute did not work either
+                        let theSwitchParent = document.querySelector('#DASHBOARD-Q-SwitchParent')
+                        theSwitchParent.removeChild(theSwitchParent.lastElementChild)
+                        let newSwitch = document.createElement('div')
+                        newSwitch.innerHTML = `<input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="choiceAnswerEnabled"
+                                role="switch" onclick="hideUnhideIfChecked('choiceAnswer')" checked>
+                                <label class="form-check-label" for="flexSwitchCheckDefault" class="BASE-modal-label">Set answer</label>`;
+                        theSwitchParent.replaceChild(newSwitch, theSwitchParent.lastElementChild)
+                        hideUnhideIfChecked('choiceAnswer', newSwitch.firstChild)
+                        document.querySelector('#rightChoice').value = questionData[0].fields.correctOption
+                    }
                 }
-                if (questionData[0].fields.correctOptionEnabled === true){
-                    document.querySelector('#flexSwitchCheckDefault').checked = true;
-                    document.querySelector('#rightChoice').value = questionData[0].fields.correctOption
-                }
-            }
-            console.log(checkedType)
-            checkedType.classList.add('DASHBOARD-question-choice-container-checked')
-            checkTypeInput.checked = true;
-
+            } 
             //open the modal
-            document.querySelector('#modal_edit_question').classList.remove('BASE-hide')
-
-            // console.log(questionType)
+            document.querySelector('#modal_add_question').classList.remove('BASE-hide')
         })
-        // .catch(error => console.error(error));
+        .catch(error => console.error(error));
 }
 
+function editProjectData(projectId){
+    event.preventDefault()
+    // change modal title and form action
+    document.querySelector('#DASHBOARD-P-modal-title').textContent = "Edit Project"
+    document.querySelector('#DASHBOARD-P-edit-form').action = `/dashboard/edit_project/${projectId}`
+    // get the data information
+    fetch(`/dashboard/edit_project/${projectId}`)
+        .then(response => response.json())
+        .then(data => {
+            let projectData = JSON.parse(data.project);
+            console.log(projectData)
+            // use the data information to populate the modal:
+            // document.querySelector('[name="thequestion"]').value = questionData[0].fields.question;
+            
+            //open the modal
+            document.querySelector('#modal_add_project').classList.remove('BASE-hide')
+        })
+        .catch(error => console.error(error));
+}

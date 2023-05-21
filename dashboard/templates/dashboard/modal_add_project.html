@@ -2,14 +2,14 @@
     <div class="BASE-modal">
         <div class="BASE-modal-header">
             <div class="BASE-modal-icon-close" onclick="modalHideUnhide('modal_add_project')">
-                <h2>Add Project</h2>
+                <h2 id="DASHBOARD-P-modal-title">Add Project</h2>
                 <!-- <i class="fa-solid fa-xmark fa-xl" style="color: #344955;"></i> -->
                 <i class="fa-solid fa-xmark fa-xl"></i>
             </div>
         </div>
         <hr>
         <div>
-            <form action="{% url 'dashboard:add_project' %}" method="post">
+            <form action="{% url 'dashboard:add_project' %}" method="post" id="DASHBOARD-P-edit-form">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="projectname" class="BASE-modal-label">How would you like to name your project?</label>
