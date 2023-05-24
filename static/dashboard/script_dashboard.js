@@ -29,9 +29,19 @@ function editProjectData(projectId) {
         .then(response => response.json())
         .then(data => {
             let projectData = JSON.parse(data.project);
-            console.log(projectData)
+            // console.log(projectData)
             // use the data information to populate the modal:
             document.querySelector('[name="projectname"]').value = projectData[0].fields.name;
+            if (projectData[0].fields.username_requirement === true) {
+                // here I changed the switch altogether because .checked = true would not
+                // visually turn the switch on, and changing the attibute did not work either
+                let theSwitchParentU = document.querySelector('#DASHBOARD-P-SwitchParentUsername')
+                theSwitchParentU.removeChild(theSwitchParentU.lastElementChild)
+                let newSwitchU = document.createElement('div')
+                newSwitchU.innerHTML = `<input class="form-check-input" type="checkbox" id="flexSwitchUsername" name="usernamenabled" checked>
+                        <label class="form-check-label" for="flexSwitchUsername" class="BASE-modal-label">Set username</label>`;
+                theSwitchParentU.replaceChild(newSwitchU, theSwitchParentU.lastElementChild)
+            }
             if (projectData[0].fields.pw_requirement === true) {
                 // here I changed the switch altogether because .checked = true would not
                 // visually turn the switch on, and changing the attibute did not work either

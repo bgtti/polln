@@ -9,7 +9,7 @@
 }
 .WEBSITE-section-main-img {
     position: relative;
-    height: 70vh;
+    height: 80vh;
 }
 /* filter: https: //codepen.io/sosuke/pen/Pjoqqp */
 .WEBSITE-section-main-img::before{
@@ -60,4 +60,14 @@
 /* SIGNUP and LOGIN*/
 .WEBSITE-form-container{
     padding: 30px 10px;
+}
+
+/* Enter presentation form */
+.WEBSITE-join-parent{
+    display: flex;
+    gap: 5px
+}
+.WEBSITE-join-parent > *{
+    height: 33px !important;
+    width: 140px;
 }

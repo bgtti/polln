@@ -1,0 +1,33 @@
+{% extends "poll/layout.html" %}
+{% block poll_body %}
+<!-- Page 1 -->
+<div>
+    <h1>Project name</h1>
+    <form action="">
+        <div class="form-group">
+            <label for="username" >User name:</label>
+            <br>
+            <input autofocus class="form-control" type="text" name="username" placeholder="Username">
+        </div>
+        <div class="form-group">
+            <label for="projectpassword" >Password:</label>
+            <br>
+            <input type="password" class="form-control" id="projectpassword" placeholder="Password">
+        </div>
+        <div>
+            <p>Let's Start!</p>
+            <input class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1" type="submit" value="Start">
+        </div>
+    </form>
+    <div>
+        <p>Let's Start!</p>
+        <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2"
+            >Start</a>
+    </div>
+</div>
+<!-- Page 2 -->
+<div>
+    <h2>Question name</h2>
+    <p>lalala</p>
+</div>
+{% endblock %}

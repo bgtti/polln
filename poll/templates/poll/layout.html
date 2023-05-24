@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Poll{% endblock %}
+
+{% block extra_head %}
+<!-- Additional CSS or other head content for the app goes here -->
+{% load static %}
+<link href="{% static 'poll/styles.css' %}" type="text/css" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+<!-- Common page elements go here, such as a header or navigation bar -->
+<div>
+    {% block poll_body %}
+    {% endblock %}
+</div>
+
+<!-- Common page elements go here, such as a footer -->
+
+{% endblock %}
+
+{% block extra_body %}
+<!-- Additional JS or other body content for the app goes here -->
+<!-- <script src="{% static 'dashboard/script_dashboard.js' %}"></script> -->
+{% endblock %}

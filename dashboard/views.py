@@ -8,6 +8,7 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from django.core.serializers import serialize
 from django.contrib import messages
+from dashboard.utils import create_prj_code
 
 # index is the user's dashboard
 def index(request, message=None):
@@ -29,6 +30,11 @@ def add_project(request):
         pjt_name = request.POST['projectname']
         user = User.objects.get(pk=request.user.pk)
 
+        if 'usernamenabled' in request.POST:
+            set_username = True
+        else:
+            set_username = False
+
         if 'pwenabled' in request.POST:
             set_pw = True
             pw = request.POST['projectpw']
@@ -38,9 +44,15 @@ def add_project(request):
         else:
             set_pw = False
             pw=""
-        try: 
-            new_pjt = Project(user=user, name=pjt_name,  pw_requirement=set_pw, pw=pw)
+        try:
+            # Save project 
+            new_pjt = Project(user=user, name=pjt_name, username_requirement=set_username, pw_requirement=set_pw, pw=pw)
             new_pjt.save()
+            # Give project a prj_code
+            prj_code = create_prj_code(request.user.pk, new_pjt.pk)
+            new_pjt.prj_code = prj_code
+            new_pjt.save()
+
             return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': new_pjt.pk}))
         except:
             request.session['index_message'] = "There was an error saving your project, please try again."
@@ -91,6 +103,10 @@ def edit_project(request, id):
         if request.method == "POST":
             pjt_name = request.POST['projectname']
             # user = User.objects.get(pk=request.user.pk)
+            if 'usernamenabled' in request.POST:
+                set_username = True
+            else:
+                set_username = False
             if 'pwenabled' in request.POST:
                 set_pw = True
                 pw = request.POST['projectpw']
@@ -104,6 +120,7 @@ def edit_project(request, id):
             try:
                 the_project = Project.objects.get(pk=id)
                 the_project.name = pjt_name
+                the_project.username_requirement = set_username
                 the_project.pw_requirement = set_pw
                 the_project.pw = pw
                 the_project.save()

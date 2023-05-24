@@ -6,8 +6,14 @@ class Project(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="user")
     name = models.CharField(max_length=100)
+    username_requirement = models.BooleanField(blank=True, null=True, default=False)
     pw_requirement = models.BooleanField(blank=True, null=True, default=False)
     pw = models.CharField(max_length=30, blank=True, null=True)
+    #prj_code = user.pk + project.pk + random
+    prj_code = models.CharField(max_length=6, blank=True, null=True)
+    is_live = models.BooleanField(default=False)
+    #when project is live, JS function should feed responses
+    num_respondents = models.IntegerField(default=0)
     num_questions = models.IntegerField(default=0)
 
     def __str__(self):
@@ -33,4 +39,4 @@ class Question(models.Model):
     position = models.IntegerField(default=1)
 
     def __str__(self):
-        return f"Question {self.pk}: {self.question_type} User: {self.user} Project: {self.project}"
+        return f"Question {self.pk}: {self.question}, {self.question_type} User: {self.user} Project: {self.project}"

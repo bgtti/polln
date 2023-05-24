@@ -12,7 +12,7 @@
 <div class="DASHBOARD-page-container">
     <h2>{{ project.name }}</h2>
     <div class="DASHBOARD-project-pjk-info">
-        <p><small>Presentation code: XYZ</small></p>
+        <p><small>Presentation code: {{ project.prj_code }}</small></p>
         {% if project.pw_requirement == true %}
             <p>Password: <small>{{ project.pw }}</small></p>
         {% else %}
