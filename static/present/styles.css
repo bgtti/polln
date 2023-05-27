@@ -1,0 +1,15 @@
+.PRESENT-flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#PRESENT-presentation{
+    background-color: white;
+}
+#PRESENT-page-1-btn{
+    margin: 15px !important;
+}
+.PRESENT-page-1-content{
+    flex-grow: 5;
+    flex-direction: column;
+}

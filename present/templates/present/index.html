@@ -1,12 +1,24 @@
 {% extends "present/layout.html" %}
 {% block present_body %}
-<!-- Page 1 -->
-<div>
-    <h1>Project name</h1>
+<div id="PRESENT-presentation" class="PRESENT-flex">
+    <!-- Page 1 -->
+    <div id="PRESENT-page-1" class="PRESENT-page" data-pagenr="1">
+        <div id="PRESENT-page-1-btn">
+            <small><a href="#" role="button" class="BASE-btn BASE-btn-small-gray" onclick="openFullscreen()">
+                Full screen</a></small>
+        </div>
+        
+        <div class="PRESENT-page-1-content PRESENT-flex">
+            <h1>{{ project.name }}</h1>
+            <p>Code: {{ project.prj_code }}</p>
+        </div>
+        
+    </div>
+    <!-- Page 2 -->
+    <div id="PRESENT-page-2" class="PRESENT-page BASE-hide" data-pagenr="2">
+        <h2>Question 1</h2>
+        <p>Nr of votes</p>
+    </div>
 </div>
-<!-- Page 2 -->
-<div>
-    <h2>Question 1</h2>
-    <p>Nr of votes</p>
-</div>
+
 {% endblock %}
