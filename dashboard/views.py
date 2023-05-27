@@ -207,7 +207,7 @@ def question_order(request):
                 question_pk, position = question_data
                 try:
                     question = Question.objects.get(pk=question_pk)
-                    question.position = position
+                    question.position = position + 1
                     question.save()
                 except Question.DoesNotExist:
                     response_data = {
@@ -223,7 +223,7 @@ def question_order(request):
     response_data = {'message': 'Oops, there was an error with the question ordering.'}
     return JsonResponse(response_data)
 
-# Function that sends Quention object information to JS the function editQuestionData, and received editted project info. 
+# Function that sends Question object information to JS the function editQuestionData, and received editted project info. 
 @csrf_exempt
 def edit_question(request, id):
     if request.method == "GET":

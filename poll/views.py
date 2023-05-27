@@ -6,15 +6,26 @@ from dashboard.models import Project, Question
 def index(request, prj):
     # Query projects for project code (prj)
     the_project = Project.objects.get(prj_code=prj)
+
+    # Get questions that belong to the project
+    the_questions = Question.objects.filter(project=the_project).order_by("position")
+    return render(request, "poll/index.html", {
+        "project": the_project,
+        "questions": the_questions,
+        "num_questions": len(the_questions)
+    })
     # Check if project is being presented
     # if project is being presented:
-    if the_project.is_live:
-        # Get questions that belong to the project
-        the_questions = Question.objects.filter(
-            project=the_project).order_by("position")
-        print("project is live!")
-        # Send project and questions to index
-        return render(request, "poll/index.html")
+    # if the_project.is_live:
+    #     # Get questions that belong to the project
+    #     the_questions = Question.objects.filter(
+    #         project=the_project).order_by("position")
+    #     print("project is live!")
+    #     # Send project and questions to index
+    #     return render(request, "poll/index.html", {
+    #         "project": the_project,
+    #         "questions": the_questions
+    #     })
     # else if project not being presented return error page
         #place error page in the website app
 

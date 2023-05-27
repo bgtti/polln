@@ -1,33 +1,58 @@
 {% extends "poll/layout.html" %}
 {% block poll_body %}
-<!-- Page 1 -->
-<div>
-    <h1>Project name</h1>
-    <form action="">
-        <div class="form-group">
-            <label for="username" >User name:</label>
-            <br>
-            <input autofocus class="form-control" type="text" name="username" placeholder="Username">
-        </div>
-        <div class="form-group">
-            <label for="projectpassword" >Password:</label>
-            <br>
-            <input type="password" class="form-control" id="projectpassword" placeholder="Password">
-        </div>
+
+<div id="POLL-polling" class="POLL-flex">
+    <!-- Page 1 -->
+    <div class="POLL-page" data-pagenr="1">
+        <h1>{{ project.name }}</h1>
+        {% if project.username_requirement or project.pw_requirement %}
+        <form action="">
+            {% csrf_token %}
+            {% if project.username_requirement %}
+            <div class="form-group">
+                <label for="username">User name:</label>
+                <br>
+                <input autofocus class="form-control" type="text" name="username" placeholder="Username">
+            </div>
+            {% endif %}
+            {% if project.pw_requirement %}
+            <div class="form-group">
+                <label for="projectpassword">Password:</label>
+                <br>
+                <input type="password" class="form-control" id="projectpassword" placeholder="Password">
+            </div>
+            {% endif %}
+            <div>
+                <p>Let's Start!</p>
+                <input class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1" type="submit" value="Start">
+            </div>
+        </form>
+        {% else %}
         <div>
             <p>Let's Start!</p>
-            <input class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1" type="submit" value="Start">
+            <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2" onclick="changePage('next')">Start</a>
         </div>
-    </form>
-    <div>
-        <p>Let's Start!</p>
-        <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2"
-            >Start</a>
+        {% endif %}
     </div>
+    <!-- Page 2 and more-->
+    {% for question in questions %}
+        <div class="BASE-hide POLL-page" data-pagenr="{{ 1|add:question.position }}">
+            <h2>{{ question.question }}</h2>
+            <p>lalala</p>
+            {% if question.position == num_questions %}
+                <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2"
+                    onclick="changePage('next')">Submit</a>
+            {% else %}
+                <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2" onclick="changePage('next')">Next</a>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <!-- Last page -->
+    <div class="BASE-hide POLL-page" data-pagenr="{{ num_questions|add:2 }}">
+        <h2>Thank you for participating!</h2>
+        <p>lalala</p>
+    </div>
+
 </div>
-<!-- Page 2 -->
-<div>
-    <h2>Question name</h2>
-    <p>lalala</p>
-</div>
+
 {% endblock %}

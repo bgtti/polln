@@ -1,6 +1,7 @@
 //load the page on full screen mode ( function from https://www.w3schools.com/howto/howto_js_fullscreen.asp#:%7E:text=Try%20it%20Yourself%20%C2%BB-,Fullscreen%20Document,-To%20open%20the)
 
 function openFullscreen() {
+    event.preventDefault(event);
     let elem = document.querySelector('#PRESENT-presentation')
     if (elem.requestFullscreen) {
         elem.requestFullscreen();
@@ -21,7 +22,7 @@ function checkFullscreenClose(){
     }
 }
 window.addEventListener("fullscreenchange", (event) => {
-    checkFullscreenClose()
+    checkFullscreenClose();
 })
 
 // show next page if user presses 'enter'
