@@ -1,0 +1,38 @@
+.POLL-flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    height: 100vh;
+}
+.POLL-page{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+}
+.POLL-page-part>*{
+    display: block;
+    margin: auto;
+    text-align: center;
+    margin-bottom: 10px;
+}
+/* .POLL-page-part-flex>* {
+    display: inline-block;
+} */
+.POLL-page-part-flex {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+.POLL-radio-container{
+    display: grid;
+    grid-template-columns: 10px auto;
+}
+.POLL-radio-container label{
+    text-align: left;
+}
+
+.BASE-hide{
+    display: none;
+}

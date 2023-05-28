@@ -22,15 +22,18 @@
                 <input type="password" class="form-control" id="projectpassword" placeholder="Password">
             </div>
             {% endif %}
-            <div>
+            <div class="POLL-page-part">
                 <p>Let's Start!</p>
                 <input class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1" type="submit" value="Start">
             </div>
         </form>
         {% else %}
-        <div>
-            <p>Let's Start!</p>
-            <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2" onclick="changePage('next')">Start</a>
+        <br>
+        <div class="POLL-page-part">
+            <p>Let's begin!</p>
+            <br>
+            <a href="" role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1"
+                onclick="changePage('next')">Start</a>
         </div>
         {% endif %}
     </div>
@@ -38,19 +41,80 @@
     {% for question in questions %}
         <div class="BASE-hide POLL-page" data-pagenr="{{ 1|add:question.position }}">
             <h2>{{ question.question }}</h2>
-            <p>lalala</p>
-            {% if question.position == num_questions %}
-                <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2"
-                    onclick="changePage('next')">Submit</a>
-            {% else %}
-                <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2" onclick="changePage('next')">Next</a>
-            {% endif %}
+            <div class="POLL-page-part">
+                {% if question.question_type == "Open-ended Question" %}
+                    <div class="form-group">
+                        <label for="OE_{{question.pk}}"></label>
+                        <br>
+                        <input autofocus class="form-control" type="text" name="OE_{{question.pk}}" placeholder="Your answer">
+                    </div>
+                {% elif question.question_type == "Question and Answer" %}
+                    <div class="form-group">
+                        <label for="QA_{{question.pk}}"></label>
+                        <br>
+                        <input autofocus class="form-control" type="text" name="QA_{{question.pk}}" placeholder="Your answer">
+                    </div>
+                {% elif question.question_type == "Multiple Choice" %}
+                    <div>
+                        <div class="form-check POLL-radio-container">
+                            <input class="form-check-input" type="radio" name="radio_{{question.pk}}" value="option1" id="MC_{{question.pk}}_1">
+                            <label class="form-check-label" for="MC_{{question.pk}}_1">
+                                {{question.option1}} 
+                            </label>
+                        </div>
+                        <div class="form-check POLL-radio-container">
+                            <input class="form-check-input" type="radio" name="radio_{{question.pk}}" value="option2" id="MC_{{question.pk}}_2">
+                            <label class="form-check-label" for="MC_{{question.pk}}_2">
+                                {{question.option2}}
+                            </label>
+                        </div>
+                        {% if question.nr_choices >= 3 %}
+                            <div class="form-check POLL-radio-container">
+                                <input class="form-check-input" type="radio" name="radio_{{question.pk}}" value="option3" id="MC_{{question.pk}}_3">
+                                <label class="form-check-label" for="MC_{{question.pk}}_3">
+                                    {{question.option3}}
+                                </label>
+                            </div>
+                        {% endif %}
+                        {% if question.nr_choices >= 4 %}
+                            <div class="form-check POLL-radio-container">
+                                <input class="form-check-input" type="radio" name="radio_{{question.pk}}" value="option4" id="MC_{{question.pk}}_4">
+                                <label class="form-check-label" for="MC_{{question.pk}}_4">
+                                    {{question.option4}}
+                                </label>
+                            </div>
+                        {% endif %}
+                        {% if question.nr_choices == 5 %}
+                            <div class="form-check POLL-radio-container">
+                                <input class="form-check-input" type="radio" name="radio_{{question.pk}}" value="option5" id="MC_{{question.pk}}_5">
+                                <label class="form-check-label" for="MC_{{question.pk}}_5">
+                                    {{question.option5}}
+                                </label>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <p>Opps, there was a problem.</p>
+                {% endif %}
+            </div>
+            <br>
+            <div class="POLL-page-part-flex">
+                <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type4"
+                    onclick="changePage('previous')">Previous</a>
+                {% if question.position == num_questions %}
+                    <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2"
+                        onclick="changePage('next')">Submit</a>
+                {% else %}
+                    <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2" onclick="changePage('next')">Next</a>
+                {% endif %}
+            </div>
+            
         </div>
     {% endfor %}
     <!-- Last page -->
     <div class="BASE-hide POLL-page" data-pagenr="{{ num_questions|add:2 }}">
         <h2>Thank you for participating!</h2>
-        <p>lalala</p>
+        <p>Your answers have been submitted!</p>
     </div>
 
 </div>
