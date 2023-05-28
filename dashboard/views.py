@@ -2,13 +2,13 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from website.models import User
-from dashboard.models import Project, Question
+from dashboard.models import Project, Question, Answer
 from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.core.serializers import serialize
 from django.contrib import messages
-from dashboard.utils import create_prj_code, qr_code_generator, delete_qr_code
+from dashboard.utils import create_prj_code, qr_code_generator, delete_qr_code, compareTwoStrings
 import qrcode
 
 # index is the user's dashboard
@@ -385,5 +385,56 @@ def delete_question(request, id):
         request.session['project_message'] = "There was a problem deleting your question. Please try again"
         return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': the_project.pk}))
 
+# Answers are sent by JS function submitPollAnswers in script_poll.js
+@csrf_exempt
+def get_answers(request):
+    if request.method == 'POST':
+        data = request.json
+        project_id = data.get('project')
+        answers = data.get('answers')
 
+        if project_id and answers:
+            the_project = Project.objects.get(pk=project_id)
+            # Iterate over the received answers and create new Answer objects
+            for answer_data in answers:
+                question_id = answer_data.get('question')
+                answer_text = answer_data.get('answer')
+                question_type = answer_data.get('type')
+
+                if question_id and answer_text and question_type:
+                    # Get Question
+                    the_question = Project.objects.get(pk=question_id)
+                    choice = 0
+                    if question_type == "OE":
+                        correctness = 0
+                    elif question_type == "QA":
+                        if compareTwoStrings(the_question.answer, answer_text):
+                            correctness = 1
+                        else:
+                            correctness = 2
+                    elif question_type == "MC":
+                        if the_question.correctOptionEnabled:
+                            choice = int(answer_text[-1])
+                            if choice == the_question.correctOption:
+                                correctness = 1
+                            else:
+                                correctness = 2
+                    else:
+                        return JsonResponse({'status': 'error', 'message': 'Invalid type'})
+                    # Create a new Answer object
+                    answer = Answer(
+                        project=the_project,
+                        question=the_question,
+                        users_answer=answer_text,
+                        users_choice=choice,
+                        is_correct=correctness
+                    )
+                    answer.save()
+                    # Update number of respondents on project
+                    the_project.num_respondents = the_project.num_respondents + 1
+                    the_project.save()
+
+            return JsonResponse({'status': 'success'})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Invalid data'})
 

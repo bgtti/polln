@@ -46,31 +46,31 @@
                     <div class="form-group">
                         <label for="OE_{{question.pk}}"></label>
                         <br>
-                        <input autofocus class="form-control" type="text" name="OE_{{question.pk}}" placeholder="Your answer">
+                        <input autofocus class="form-control" type="text" name="OE_{{question.pk}}" placeholder="Your answer" data-answer="OE" data-question="{{question.pk}}">
                     </div>
                 {% elif question.question_type == "Question and Answer" %}
                     <div class="form-group">
                         <label for="QA_{{question.pk}}"></label>
                         <br>
-                        <input autofocus class="form-control" type="text" name="QA_{{question.pk}}" placeholder="Your answer">
+                        <input autofocus class="form-control" type="text" name="QA_{{question.pk}}" placeholder="Your answer" data-answer="QA" data-question="{{question.pk}}">
                     </div>
                 {% elif question.question_type == "Multiple Choice" %}
                     <div>
                         <div class="form-check POLL-radio-container">
-                            <input class="form-check-input" type="radio" name="radio_{{question.pk}}" value="option1" id="MC_{{question.pk}}_1">
-                            <label class="form-check-label" for="MC_{{question.pk}}_1">
+                            <input class="form-check-input" type="radio" name="radio_{{question.pk}}" value="option1" id="MC_{{question.pk}}_1" data-answer="MC" data-question="{{question.pk}}">
+                            <label class="form-check-label" for="MC_{{question.pk}}_1"> 
                                 {{question.option1}} 
                             </label>
                         </div>
                         <div class="form-check POLL-radio-container">
-                            <input class="form-check-input" type="radio" name="radio_{{question.pk}}" value="option2" id="MC_{{question.pk}}_2">
+                            <input class="form-check-input" type="radio" name="radio_{{question.pk}}" value="option2" id="MC_{{question.pk}}_2" data-answer="MC" data-question="{{question.pk}}">
                             <label class="form-check-label" for="MC_{{question.pk}}_2">
                                 {{question.option2}}
                             </label>
                         </div>
                         {% if question.nr_choices >= 3 %}
                             <div class="form-check POLL-radio-container">
-                                <input class="form-check-input" type="radio" name="radio_{{question.pk}}" value="option3" id="MC_{{question.pk}}_3">
+                                <input class="form-check-input" type="radio" name="radio_{{question.pk}}" value="option3" id="MC_{{question.pk}}_3" data-answer="MC" data-question="{{question.pk}}">
                                 <label class="form-check-label" for="MC_{{question.pk}}_3">
                                     {{question.option3}}
                                 </label>
@@ -78,7 +78,7 @@
                         {% endif %}
                         {% if question.nr_choices >= 4 %}
                             <div class="form-check POLL-radio-container">
-                                <input class="form-check-input" type="radio" name="radio_{{question.pk}}" value="option4" id="MC_{{question.pk}}_4">
+                                <input class="form-check-input" type="radio" name="radio_{{question.pk}}" value="option4" id="MC_{{question.pk}}_4" data-answer="MC" data-question="{{question.pk}}">
                                 <label class="form-check-label" for="MC_{{question.pk}}_4">
                                     {{question.option4}}
                                 </label>
@@ -86,7 +86,7 @@
                         {% endif %}
                         {% if question.nr_choices == 5 %}
                             <div class="form-check POLL-radio-container">
-                                <input class="form-check-input" type="radio" name="radio_{{question.pk}}" value="option5" id="MC_{{question.pk}}_5">
+                                <input class="form-check-input" type="radio" name="radio_{{question.pk}}" value="option5" id="MC_{{question.pk}}_5" data-answer="MC" data-question="{{question.pk}}">
                                 <label class="form-check-label" for="MC_{{question.pk}}_5">
                                     {{question.option5}}
                                 </label>
@@ -103,7 +103,7 @@
                     onclick="changePage('previous')">Previous</a>
                 {% if question.position == num_questions %}
                     <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2"
-                        onclick="changePage('next')">Submit</a>
+                        onclick="submitPollAnswers('{project.pk}')">Submit</a>
                 {% else %}
                     <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2" onclick="changePage('next')">Next</a>
                 {% endif %}

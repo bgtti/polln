@@ -76,3 +76,18 @@ def delete_qr_code(project_code):
     except OSError as error:
         print(f"Failed to delete QR code image: {error}")
         return False
+
+def compareTwoStrings(string1, string2):
+    """
+    Compares the equality of two strings. Returns true if strings are equal and false if they are not.
+    """
+    string_1 = string1.lower()
+    string_1 = string_1.replace(" ", "")
+    string_2 = string2.lower()
+    string_2 = string_2.replace(" ", "")
+
+    if string_1 == string_2:
+        return True
+    else:
+        return False
+
