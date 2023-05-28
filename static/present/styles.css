@@ -6,10 +6,20 @@
 #PRESENT-presentation{
     background-color: white;
 }
+.PRESENT-page{
+    height: 100vh;
+}
 #PRESENT-page-1-btn{
     margin: 15px !important;
+    display: flex;
+    justify-content: center;
 }
 .PRESENT-page-1-content{
     flex-grow: 5;
+    min-height: 85vh;
     flex-direction: column;
+}
+
+.BASE-hide{
+    display: none !important;
 }

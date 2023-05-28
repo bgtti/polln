@@ -8,7 +8,8 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from django.core.serializers import serialize
 from django.contrib import messages
-from dashboard.utils import create_prj_code
+from dashboard.utils import create_prj_code, qr_code_generator, delete_qr_code
+import qrcode
 
 # index is the user's dashboard
 def index(request, message=None):
@@ -23,6 +24,20 @@ def index(request, message=None):
         "projects": projects,
         "message": message
     })
+
+# generate qr code that leads to project poll
+# function based on qrcode library: https://pypi.org/project/qrcode/
+def generate_qr_code(request, url):
+    # qr = qrcode.QRCode(
+    #     version=1,
+    #     error_correction=qrcode.constants.ERROR_CORRECT_H,
+    #     box_size=10,
+    #     border=4,
+    # )
+    # qr.add_data(url)
+    # qr.make(fit=True)
+    # img = qr.make_image(back_color=(255, 255, 255), fill_color=(0,0,0))
+    return
 
 # add new project
 def add_project(request):
@@ -44,19 +59,32 @@ def add_project(request):
         else:
             set_pw = False
             pw=""
-        try:
-            # Save project 
+
+        # Save project 
             new_pjt = Project(user=user, name=pjt_name, username_requirement=set_username, pw_requirement=set_pw, pw=pw)
             new_pjt.save()
             # Give project a prj_code
             prj_code = create_prj_code(request.user.pk, new_pjt.pk)
             new_pjt.prj_code = prj_code
             new_pjt.save()
-
+            # Generate qr code for poll url
+            qr_code_generator(prj_code)
             return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': new_pjt.pk}))
-        except:
-            request.session['index_message'] = "There was an error saving your project, please try again."
-            return HttpResponseRedirect(reverse("dashboard:index"))
+        # try:
+        #     # Save project 
+        #     new_pjt = Project(user=user, name=pjt_name, username_requirement=set_username, pw_requirement=set_pw, pw=pw)
+        #     new_pjt.save()
+        #     # Give project a prj_code
+        #     prj_code = create_prj_code(request.user.pk, new_pjt.pk)
+        #     new_pjt.prj_code = prj_code
+        #     new_pjt.save()
+        #     # Generate qr code for poll url
+        #     qr_code_generator(prj_code)
+
+        #     return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': new_pjt.pk}))
+        # except:
+        #     request.session['index_message'] = "There was an error saving your project, please try again."
+        #     return HttpResponseRedirect(reverse("dashboard:index"))
 
 # view project page
 def project(request, id):
@@ -79,6 +107,33 @@ def project(request, id):
     except:
         request.session['index_message'] = "There was an error opening your project, please try again."
         return HttpResponseRedirect(reverse("dashboard:index"))        
+
+# Open poll on project
+@csrf_exempt
+def open_poll(request,id):
+    try:
+        project = Project.objects.get(pk=id)
+        project.is_live = True
+        project.save()
+        response_data = {'status': 'success', 'message': 'Project is live.'}
+        return JsonResponse(response_data)
+    except:
+        response_data = {'status': 'failure', 'message': 'Could not update project status (open_poll).'}
+        return JsonResponse(response_data, status=400)
+    
+# Close poll on project
+@csrf_exempt
+def close_poll(request, id):
+    try:
+        project = Project.objects.get(pk=id)
+        project.is_live = False
+        project.save()
+        response_data = {'status': 'success', 'message': 'Project is closed.'}
+        return JsonResponse(response_data)
+    except:
+        response_data = {'status': 'failure',
+                        'message': 'Could not update project status (close_poll).'}
+        return JsonResponse(response_data, status=400)
 
 # Function that send project data to JS editProjectData function for modal_add_project to edit project, and gets back editted data.
 @csrf_exempt
@@ -134,6 +189,7 @@ def edit_project(request, id):
 def delete_project(request, id):
     try:
         the_project = Project.objects.get(pk=id)
+        delete_qr_code(the_project.prj_code)
         the_project.delete()
         request.session['index_message'] = "Project deleted successfully!"
         return HttpResponseRedirect(reverse("dashboard:index"))

@@ -9,7 +9,7 @@ class Project(models.Model):
     username_requirement = models.BooleanField(blank=True, null=True, default=False)
     pw_requirement = models.BooleanField(blank=True, null=True, default=False)
     pw = models.CharField(max_length=30, blank=True, null=True)
-    #prj_code = user.pk + project.pk + random
+    #prj_code = user.pk + project.pk + random (used to generate poll url for project)
     prj_code = models.CharField(max_length=6, blank=True, null=True)
     is_live = models.BooleanField(default=False)
     #when project is live, JS function should feed responses

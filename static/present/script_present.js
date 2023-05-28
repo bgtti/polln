@@ -11,6 +11,7 @@ function openFullscreen() {
         elem.msRequestFullscreen();
     }
     let theBtn = document.querySelector('#PRESENT-page-1-btn')
+    console.log(theBtn)
     theBtn.classList.add("BASE-hide")
 }
 

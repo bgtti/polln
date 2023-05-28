@@ -11,11 +11,24 @@ function hideUnhideIfChecked(el_id, theCheckbox = event.target) {
         theElement.classList.add("BASE-hide");
     }
 }
-
 //function to reload the page, used upon closing add_question to reset changes done while edditing question
 function reloadPage() {
     location.reload()
 }
+
+//function that opens and closes poll
+// function accepts two parameters: the project id and either the string 'open' or 'close'
+function openOrClosePoll(projectId, openOrClose){
+    // event.preventDefault()
+    fetch(`/dashboard/${openOrClose}_poll/${projectId}`)
+        .then(response => response.json())
+        .then(data => {
+            // console.log(data);
+            reloadPage()
+        })
+        .catch (error => console.error(error));
+}
+
 
 // *****************MODAL ADD PROJECT***************************
 // editing projects
@@ -138,9 +151,11 @@ function displayMultiChoices(nrChoice = event.target.value){
 function editQuestionData(questionId) {
     event.preventDefault()
     // change modal title and form action
-    document.querySelector('#DASHBOARD-Q-modal-title').textContent = "Edit Question"
-    document.querySelector('#DASHBOARD-Q-edit-form').action = `/dashboard/edit_question/${questionId}`
-    document.querySelector('#DASHBOARD-Q-delete').href = `/dashboard/delete_question/${questionId}`
+    document.querySelector('#DASHBOARD-Q-modal-title').textContent = "Edit Question";
+    document.querySelector('#DASHBOARD-Q-edit-form').action = `/dashboard/edit_question/${questionId}`;
+    let theDeleteBtn = document.querySelector('#DASHBOARD-Q-delete');
+    theDeleteBtn.href = `/dashboard/delete_question/${questionId}`;
+    theDeleteBtn.classList.remove('BASE-hide');
     // get the data information
     fetch(`/dashboard/edit_question/${questionId}`)
         .then(response => response.json())

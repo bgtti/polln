@@ -153,3 +153,24 @@
         font-size: .8em;
     }
 }
+/* Share Link */
+.DASHBOARD-link-share-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.DASHBOARD-link-share-container > *{
+    margin: 0;
+    padding: 0;
+}
+.DASHBOARD-link-share-container > a{
+    display: block;
+    width: 200px !important;
+    height: 35px !important;
+    padding: 5px;
+}
+.DASHBOARD-link-share-container>p {
+    color: gray;
+}

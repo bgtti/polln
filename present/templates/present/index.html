@@ -2,15 +2,17 @@
 {% block present_body %}
 <div id="PRESENT-presentation" class="PRESENT-flex">
     <!-- Page 1 -->
-    <div id="PRESENT-page-1" class="PRESENT-page" data-pagenr="1">
+    <div id="PRESENT-page-1" class="PRESENT-page " data-pagenr="1" >
         <div id="PRESENT-page-1-btn">
             <small><a href="" role="button" class="BASE-btn BASE-btn-small-gray" onclick="openFullscreen(event)">
                 Full screen</a></small>
         </div>
-        
+        <br>
         <div class="PRESENT-page-1-content PRESENT-flex">
             <h1>{{ project.name }}</h1>
             <p>Code: {{ project.prj_code }}</p>
+            {% load static %}
+            <img src="{% static 'dashboard/media/qr_'|add:project.prj_code|add:'.png' %}" alt="QR Code">
         </div>
         
     </div>

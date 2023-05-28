@@ -23,3 +23,8 @@ Name: poll n nr of people -- spread questions like pollen
 
 Drag and drop functionality
 To enable drag and drop on mobile devices, I used the DragDropTouch polyfill from Bernardo-Castilho. More information at https://github.com/Bernardo-Castilho/dragdroptouch
+
+QR code
+a QR code is generated that can be scaned by poll repondants and links to the poll pagae.
+The library qrcode was used for the code generation:  https://pypi.org/project/qrcode/
+the helper function in dashboard/utils generating the link must have the base url changed if deployed

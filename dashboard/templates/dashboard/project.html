@@ -12,19 +12,36 @@
 <div class="DASHBOARD-page-container">
     <h2>{{ project.name }}</h2>
     <div class="DASHBOARD-project-pjk-info">
+        <div class="form-group">
+            <div class="form-check form-switch" id="DASHBOARD-P-SwitchParentUsername">
+                {% if project.is_live == True %}
+                <input class="form-check-input" type="checkbox" id="DASHBOARD-project-live" name="projectlive" checked onclick="openOrClosePoll('{{project.pk}}', 'close')">
+                <label class="form-check-label BASE-modal-label DASHBOARD-label-projectlive" for="DASHBOARD-project-live">Poll open</label>
+                {% elif project.is_live == False %}
+                <input class="form-check-input" type="checkbox" id="DASHBOARD-project-live" name="projectlive" onclick="openOrClosePoll('{{project.pk}}', 'open')">
+                <label class="form-check-label BASE-modal-label DASHBOARD-label-projectlive" for="DASHBOARD-project-live">Poll closed</label>
+                {% else %}
+                <p>hmm</p>
+                {% endif %}
+                
+                <sup><a tabindex="0" data-toggle="popover" data-trigger="hover"
+                    title="Open poll before sharing the link. Results are available after the poll closes.When you are presenting, your poll will open automatically and close when you are displaying the results." >
+                    <i class="fa-solid fa-circle-info" style="color: #b9bcc1;"></i>
+                </a></sup>
+            </div>
+        </div>
         <p><small>Presentation code: {{ project.prj_code }}</small></p>
-        {% if project.pw_requirement == true %}
+        {% if project.pw_requirement == True %}
             <p>Password: <small>{{ project.pw }}</small></p>
         {% else %}
             <p><small>No password set</small></p>
         {% endif %}
     </div>
-    
     <div class="DASHBOARD-project-btn-group">
         <small><a href="{% url 'present:index' prj=project.prj_code %}" target="_blank" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2 DASHBOARD-add-prj-btn" onclick="">
             Present</a></small>
         <small><a href="#" role="button" class="BASE-btn BASE-btn-small-gray" 
-            onclick="">
+            onclick="modalHideUnhide('modal_share_link')">
                 Share Link</a></small>
         <small><a href="#" role="button" class="BASE-btn BASE-btn-small-gray"
             onclick="editProjectData('{{project.pk}}')">
@@ -68,6 +85,7 @@
 {% include "dashboard/modal_add_project.html" %}
 {% include "dashboard/modal_delete_project.html" %}
 {% include "dashboard/modal_add_question.html" %}
+{% include "dashboard/modal_share_link.html" %}
 
 
 {% endblock %}
