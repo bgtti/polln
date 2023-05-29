@@ -1,6 +1,8 @@
 // show next poll page
 function changePage(nextOrPrevious) {
-    event.preventDefault()
+    if (event){
+        event.preventDefault()
+    }
     let allPages = document.querySelectorAll('.POLL-page');
     let currentPage;
     allPages.forEach(page => {
@@ -23,6 +25,7 @@ function changePage(nextOrPrevious) {
 
 // submit answers from poll
 function submitPollAnswers(projectId){
+    event.preventDefault()
     // Create an array to store the answers
     let answers = [];
 
@@ -30,18 +33,15 @@ function submitPollAnswers(projectId){
     let questions = document.querySelectorAll('[data-question]');
     questions.forEach(function (question) {
         let answer = {};
-
-        if (question.querySelector('input[type="text"]')) {
-            let input = question.querySelector('input[type="text"]');
-            answer.question = input.dataset.question;
-            answer.answer = input.value;
-            answer.type = input.dataset.answer;
+        if (question.type === "text") {
+            answer.question = question.dataset.question;
+            answer.answer = question.value;
+            answer.type = question.dataset.answer;
             answers.push(answer);
-        } else if (question.querySelector('input[type="radio"]:checked')) {
-            let input = question.querySelector('input[type="radio"]:checked');
-            answer.question = input.dataset.question;
-            answer.answer = input.value;
-            answer.type = input.dataset.answer;
+        } else if (question.type === "radio" && question.checked) {
+            answer.question = question.dataset.question;
+            answer.answer = question.value;
+            answer.type = question.dataset.answer;
             answers.push(answer);
         }
     });
@@ -62,7 +62,7 @@ function submitPollAnswers(projectId){
         .then(response => {
             console.log(response);
             // Redirect or show a success message
-            // changePage('next')
+            changePage('next')
         })
         .catch(error => {
             console.log(error);

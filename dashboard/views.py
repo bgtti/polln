@@ -59,9 +59,14 @@ def add_project(request):
         else:
             set_pw = False
             pw=""
+        
+        if 'answernabled' in request.POST:
+            show_answers = True
+        else:
+            show_answers = False
 
         # Save project 
-            new_pjt = Project(user=user, name=pjt_name, username_requirement=set_username, pw_requirement=set_pw, pw=pw)
+            new_pjt = Project(user=user, name=pjt_name, username_requirement=set_username, pw_requirement=set_pw, pw=pw, show_answers=show_answers)
             new_pjt.save()
             # Give project a prj_code
             prj_code = create_prj_code(request.user.pk, new_pjt.pk)
@@ -172,12 +177,17 @@ def edit_project(request, id):
             else:
                 set_pw = False
                 pw = ""
+            if 'answernabled' in request.POST:
+                show_answers = True
+            else:
+                show_answers = False
             try:
                 the_project = Project.objects.get(pk=id)
                 the_project.name = pjt_name
                 the_project.username_requirement = set_username
                 the_project.pw_requirement = set_pw
                 the_project.pw = pw
+                the_project.show_answers = show_answers
                 the_project.save()
                 request.session['project_message'] = "Project changes saved successfully!"
                 return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': the_project.pk}))
@@ -385,25 +395,51 @@ def delete_question(request, id):
         request.session['project_message'] = "There was a problem deleting your question. Please try again"
         return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': the_project.pk}))
 
+
 # Answers are sent by JS function submitPollAnswers in script_poll.js
+# Sample data being received:
+# {
+#     "project": "14",
+#     "answers": [
+#         {
+#             "question": "15",
+#             "answer": "good",
+#             "type": "OE"
+#         },
+#         {
+#             "question": "16",
+#             "answer": "hello",
+#             "type": "QA"
+#         },
+#         {
+#             "question": "17",
+#             "answer": "option3",
+#             "type": "MC"
+#         }
+#     ]
+# }
 @csrf_exempt
 def get_answers(request):
     if request.method == 'POST':
-        data = request.json
-        project_id = data.get('project')
+        print("in function")
+        data = json.loads(request.body)
+        project_id = int(data.get('project'))
         answers = data.get('answers')
-
+        print(data)
+        print(project_id == 14)
+        print(answers)
         if project_id and answers:
-            the_project = Project.objects.get(pk=project_id)
+            the_project = Project.objects.get(pk=14)
             # Iterate over the received answers and create new Answer objects
+            print("first iteration")
             for answer_data in answers:
-                question_id = answer_data.get('question')
+                question_id = int(answer_data.get('question'))
                 answer_text = answer_data.get('answer')
                 question_type = answer_data.get('type')
 
                 if question_id and answer_text and question_type:
                     # Get Question
-                    the_question = Project.objects.get(pk=question_id)
+                    the_question = Question.objects.get(pk=question_id)
                     choice = 0
                     if question_type == "OE":
                         correctness = 0
@@ -430,9 +466,10 @@ def get_answers(request):
                         is_correct=correctness
                     )
                     answer.save()
-                    # Update number of respondents on project
-                    the_project.num_respondents = the_project.num_respondents + 1
-                    the_project.save()
+                    print(answer)
+            # Update number of respondents on project
+            the_project.num_respondents = the_project.num_respondents + 1
+            the_project.save()
 
             return JsonResponse({'status': 'success'})
         else:

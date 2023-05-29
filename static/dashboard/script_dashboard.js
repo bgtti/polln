@@ -67,6 +67,14 @@ function editProjectData(projectId) {
                 hideUnhideIfChecked('setProjectPasswordContainer', newSwitch.firstChild)
                 document.querySelector('[name="projectpw"]').value = projectData[0].fields.pw
             }
+            if (projectData[0].fields.show_answers === true){
+                let theSwitchParentU = document.querySelector('#DASHBOARD-P-SwitchParentAnswer')
+                theSwitchParentU.removeChild(theSwitchParentU.lastElementChild)
+                let newSwitchU = document.createElement('div')
+                newSwitchU.innerHTML = `<input class="form-check-input" type="checkbox" id="flexSwitchAnswer" name="answernabled" checked>
+                        <label class="form-check-label" for="flexSwitchAnswer" class="BASE-modal-label">Show answer</label>`;
+                theSwitchParentU.replaceChild(newSwitchU, theSwitchParentU.lastElementChild)
+            }
             //open the modal
             document.querySelector('#modal_add_project').classList.remove('BASE-hide')
         })
