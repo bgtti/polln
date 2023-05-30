@@ -62,64 +62,55 @@ def index(request, prj):
 #     ]
 # }
 
+@csrf_exempt
+def get_answers(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        print(data)
+        project_id = int(data.get('project'))
+        answers = data.get('answers')
+        if project_id and answers:
+            print("HEEEEEEEEERRRRRRRRRRRRRRRRRRRRE")
+            the_project = Project.objects.get(pk=project_id)
+            # Iterate over the received answers and create new Answer objects
+            for answer_data in answers:
+                question_id = int(answer_data.get('question'))
+                answer_text = answer_data.get('answer')
+                question_type = answer_data.get('type')
 
+                if question_id and answer_text and question_type:
+                    # Get Question
+                    the_question = Question.objects.get(pk=question_id)
+                    choice = 0
+                    if question_type == "OE":
+                        correctness = 0
+                    elif question_type == "QA":
+                        if compareTwoStrings(the_question.answer, answer_text):
+                            correctness = 1
+                        else:
+                            correctness = 2
+                    elif question_type == "MC":
+                        if the_question.correctOptionEnabled:
+                            choice = int(answer_text[-1])
+                            if choice == the_question.correctOption:
+                                correctness = 1
+                            else:
+                                correctness = 2
+                    else:
+                        return JsonResponse({'status': 'error', 'message': 'Invalid type'})
+                    # Create a new Answer object
+                    answer = Answer(
+                        project=the_project,
+                        question=the_question,
+                        users_answer=answer_text,
+                        users_choice=choice,
+                        is_correct=correctness
+                    )
+                    answer.save()
+            # Update number of respondents on project
+            the_project.num_respondents = the_project.num_respondents + 1
+            the_project.save()
 
-
-# @csrf_exempt
-# def get_answers(request):
-#     if request.method == 'POST':
-#         data = json.loads(request.body)
-#         project_id = int(data.get('project'))
-#         print(project_id)
-#         answers = data.get('answers')
-#         if project_id and answers:
-#             the_project = Project.objects.get(pk=project_id)
-#             # Iterate over the received answers and create new Answer objects
-#             for answer_data in answers:
-#                 question_id = int(answer_data.get('question'))
-#                 answer_text = answer_data.get('answer')
-#                 question_type = answer_data.get('type')
-
-#                 if question_id and answer_text and question_type:
-#                     # Get Question
-#                     the_question = Question.objects.get(pk=question_id)
-#                     choice = 0
-#                     if question_type == "OE":
-#                         correctness = 0
-#                     elif question_type == "QA":
-#                         if compareTwoStrings(the_question.answer, answer_text):
-#                             correctness = 1
-#                         else:
-#                             correctness = 2
-#                     elif question_type == "MC":
-#                         if the_question.correctOptionEnabled:
-#                             choice = int(answer_text[-1])
-#                             if choice == the_question.correctOption:
-#                                 correctness = 1
-#                             else:
-#                                 correctness = 2
-#                     else:
-#                         return JsonResponse({'status': 'error', 'message': 'Invalid type'})
-#                     # Create a new Answer object
-#                     answer = Answer(
-#                         project=the_project,
-#                         question=the_question,
-#                         users_answer=answer_text,
-#                         users_choice=choice,
-#                         is_correct=correctness
-#                     )
-#                     answer.save()
-#             # Update number of respondents on project
-#             the_project.num_respondents = the_project.num_respondents + 1
-#             the_project.save()
-
-#             return JsonResponse({'status': 'success'})
-#         else:
-#             return JsonResponse({'status': 'error', 'message': 'Invalid data'})
-#     else:
-#         return JsonResponse({'status': 'error', 'message': 'Invalid request'})
-
-
-
-
-
+            return JsonResponse({'status': 'success'})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Invalid data'})

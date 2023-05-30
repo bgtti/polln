@@ -52,7 +52,7 @@ function submitPollAnswers(projectId){
     };
 
     // Send the data to dashboard get_answers
-    fetch("/dashboard/get_answers", {
+    fetch("/poll/get_answerss", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
