@@ -52,7 +52,7 @@ function submitPollAnswers(projectId){
     };
 
     // Send the data to dashboard get_answers
-    fetch("/poll/get_answerss", {
+    fetch("/poll/get_answers/answer", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -60,7 +60,7 @@ function submitPollAnswers(projectId){
         body: JSON.stringify(data)
     })
         .then(response => {
-            console.log(response);
+            //console.log(response);
             // Redirect or show a success message
             changePage('next')
         })

@@ -3,7 +3,10 @@ from dashboard.models import Project, Question, Answer
 from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_protect
 from dashboard.utils import compareTwoStrings
+from django.views.decorators.csrf import csrf_exempt
 
 
 # Create your views here.
@@ -35,10 +38,6 @@ def index(request, prj):
     # else if project not being presented return error page
     # place error page in the website app
 
-
-# Create function that saves the answers and sends json to update number of votes
-# If presentor is showing the results, show error page if person is still trying to cast a vote.
-
 # get the answer sent by JS function submitPollAnswers and save to db
 # Sample data being received:
 # {
@@ -62,15 +61,14 @@ def index(request, prj):
 #     ]
 # }
 
+
 @csrf_exempt
 def get_answers(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        print(data)
         project_id = int(data.get('project'))
         answers = data.get('answers')
         if project_id and answers:
-            print("HEEEEEEEEERRRRRRRRRRRRRRRRRRRRE")
             the_project = Project.objects.get(pk=project_id)
             # Iterate over the received answers and create new Answer objects
             for answer_data in answers:
@@ -114,3 +112,7 @@ def get_answers(request):
             return JsonResponse({'status': 'success'})
         else:
             return JsonResponse({'status': 'error', 'message': 'Invalid data'})
+        
+# If presentor is showing the results, show error page if respondent is still trying to cast a vote.
+
+

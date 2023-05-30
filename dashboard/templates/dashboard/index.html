@@ -20,18 +20,28 @@
         {% if projects != None %}
             {% for project in projects %}
                 <div class="card" style="width: 18rem;">
-                    <div class="card-body">
+                    <div class="card-body" style="margin:0 !important">
                         <h5 class="card-title">{{ project.name }}</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Not live</h6>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                            content.</p>
+                        <h6 class="card-subtitle mb-2 text-muted">Code: {{ project.prj_code }}</h6>
+                        <p class="card-text" style="margin:0 !important"> 
+                            {% if project.num_questions == 0 %}
+                                No questions yet in this project.
+                            {% elif project.num_questions == 1 %}
+                                {{ project.num_questions }} question in this project.
+                            {% else %}
+                                {{ project.num_questions }} questions in this project.
+                            {% endif %}
+                            </p>
+                        <p class="card-text" style="margin:0 !important;">
+                            {% if project.is_live == True %}
+                            Poll open.
+                            {% else %}
+                            Poll closed.
+                            {% endif %}
+                        </p>
                     </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
-                    </ul>
-                    <div class="card-body">
+                    <div class="card-body" style="margin:0 !important; padding-top:0;">
+                        <hr style="margin-top:0;">
                         <a href="{% url 'dashboard:project' id=project.pk %}" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2">
                             Edit</a>
                     </div>

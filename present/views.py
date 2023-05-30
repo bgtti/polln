@@ -12,6 +12,7 @@ def index(request, prj):
     return render(request, "present/index.html", {
         "project": the_project,
         "questions": the_questions,
+        "num_questions": len(the_questions)
     })
 
 # Send number of respondents who have casted their votes

@@ -22,10 +22,40 @@
         
     </div>
     <!-- Page 2 -->
-    <div id="PRESENT-page-2" class="PRESENT-page BASE-hide" data-pagenr="2" >
-        <h2>Question 1</h2>
-        <p>Nr of votes</p>
+    <div id="PRESENT-page-2" class="PRESENT-page PRESENT-flex BASE-hide" data-pagenr="2" >
+        <h2>Poll closed</h2>
+        <p>Let's check the results</p>
     </div>
+    <!-- Page 3 and so forth -->
+
+    {% for question in questions %}
+        <div id="PRESENT-page-{{ 2|add:question.position }}" class="PRESENT-page PRESENT-flex BASE-hide" data-pagenr="{{ 2|add:question.position }}">
+            <h2>{{ question.question }}</h2>
+            {% if question.question_type == "Open-ended Question" %}
+                <div>
+                    <p>Each Answer comes in a box</p>
+                    <p>If more than X answers, show the X first answers</p>
+                </div>
+            {% elif question.question_type == "Question and Answer" %}
+                <div>
+                    <p>Correct answer: {{ question.answer }}</p>
+                    <p>X% of the respondents got it right!</p>
+                </div>
+            {% elif question.question_type == "Multiple Choice" %}
+                <p>multiple choice graph comes here</p>
+            {% else %}
+                <p>Oops, we had an issue fetching the results</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    <!-- Last page -->
+    <div id="PRESENT-page-{{ num_questions|add:3 }}" class="PRESENT-page PRESENT-flex BASE-hide" data-pagenr="{{ num_questions|add:3 }}">
+        <h2>Thank you!</h2>
+    </div>
+
+
+
 </div>
 
 {% endblock %}

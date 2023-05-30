@@ -27,6 +27,14 @@
     color: rgb(183, 183, 183);
     font-size: 1.5em;
 }
+#PRESENT-page-2{
+    flex-direction: column;
+}
+
+
+
+
+
 .BASE-hide{
     display: none !important;
 }

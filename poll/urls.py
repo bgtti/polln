@@ -6,6 +6,6 @@ app_name = "poll"
 
 urlpatterns = [
     path("<str:prj>", views.index, name="index"),
-    path("get_answers", views.get_answers, name="get_answers"),
+    path("get_answers/answer", views.get_answers, name="get_answers"),
 ]
 urlpatterns += staticfiles_urlpatterns()

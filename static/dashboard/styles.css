@@ -27,7 +27,8 @@
 
 .DASHBOARD-projects-section{
     display: flex;
-    gap: 10px;
+    gap: 15px;
+    flex-wrap: wrap;
 }
 
 /* add question */
