@@ -1,8 +1,8 @@
 {% extends "present/layout.html" %}
 {% block present_body %}
-<div id="PRESENT-presentation" class="PRESENT-flex">
+<div id="PRESENT-presentation" class="PRESENT-flex" data-presentprojectid="{{ project.pk }}">
     <!-- Page 1 -->
-    <div id="PRESENT-page-1" class="PRESENT-page " data-pagenr="1" >
+    <div id="PRESENT-page-1" class="PRESENT-page " data-pagenr="1">
         <div id="PRESENT-page-1-btn">
             <small><a href="" role="button" class="BASE-btn BASE-btn-small-gray" onclick="openFullscreen(event)">
                 Full screen</a></small>
@@ -13,11 +13,16 @@
             <p>Code: {{ project.prj_code }}</p>
             {% load static %}
             <img src="{% static 'dashboard/media/qr_'|add:project.prj_code|add:'.png' %}" alt="QR Code">
+            <br>
+            <div class="PRESENT-votes-container PRESENT-flex">
+                <i class="fa-solid fa-user"></i>
+                <p><b id="PRESENT-display-live-vote">0</b></p>
+            </div>
         </div>
         
     </div>
     <!-- Page 2 -->
-    <div id="PRESENT-page-2" class="PRESENT-page BASE-hide" data-pagenr="2">
+    <div id="PRESENT-page-2" class="PRESENT-page BASE-hide" data-pagenr="2" >
         <h2>Question 1</h2>
         <p>Nr of votes</p>
     </div>

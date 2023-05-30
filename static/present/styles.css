@@ -19,7 +19,14 @@
     min-height: 85vh;
     flex-direction: column;
 }
-
+.PRESENT-votes-container{
+    align-items: baseline;
+    gap: 10px;
+}
+.PRESENT-votes-container > *{
+    color: rgb(183, 183, 183);
+    font-size: 1.5em;
+}
 .BASE-hide{
     display: none !important;
 }

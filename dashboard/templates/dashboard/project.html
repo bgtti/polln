@@ -44,7 +44,8 @@
     </div>
     <div class="DASHBOARD-project-btn-group">
         {% if questions %}
-        <small><a href="{% url 'present:index' prj=project.prj_code %}" target="_blank" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2 DASHBOARD-add-prj-btn" onclick="">
+        <small><a href="{% url 'present:index' prj=project.prj_code %}" target="_blank" role="button" 
+            class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2 DASHBOARD-add-prj-btn" onclick="openOrClosePoll('{{project.pk}}', 'open')">
             Present</a></small>
         <small><a href="#" role="button" class="BASE-btn BASE-btn-small-gray" 
             onclick="modalHideUnhide('modal_share_link')">
@@ -72,7 +73,7 @@
     </div>
     <section>
         <a href="#" role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type4 DASHBOARD-add-prj-btn BASE-hide"
-            onclick="getOrderOfQuestions()" id="BtnSaveQorder">
+            onclick="getOrderOfQuestions('{{project.pk}}')" id="BtnSaveQorder">
             Save order</a>
         {% if questions %}
         <div id="DASHBOARD-project-question-container" class="DASHBOARD-project-question-container" ondragover="positionInContainer(event)">

@@ -75,6 +75,8 @@ function editProjectData(projectId) {
                         <label class="form-check-label" for="flexSwitchAnswer" class="BASE-modal-label">Show answer</label>`;
                 theSwitchParentU.replaceChild(newSwitchU, theSwitchParentU.lastElementChild)
             }
+            // when a project is editted, close the poll
+            document.querySelector('#DASHBOARD-save-edit-prj-btn').addEventListener("click", () => { openOrClosePoll(projectId, 'close') })
             //open the modal
             document.querySelector('#modal_add_project').classList.remove('BASE-hide')
         })
@@ -260,7 +262,7 @@ questionElements.forEach(el => {
 // After a dragend event the user can save the new question order.
 // This function returns an array of arrays for each question, where the first number represents the 
 // pk of the question, and the second number represents the new position of the question. 
-function getOrderOfQuestions(){
+function getOrderOfQuestions(projectId){
     event.preventDefault()
     let questionsAndPositions = [];
     let allQuestions = [...questionContainer.children];
@@ -279,6 +281,9 @@ function getOrderOfQuestions(){
         return response.json();
     })
     .then(result => console.log(result))
+    //make sure poll is closed when changes are made
     //when debugging, comment out the next line
-    .then(location.reload())
+    .then(
+        openOrClosePoll(projectId, 'close')
+    )
 }

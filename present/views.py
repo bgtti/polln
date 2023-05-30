@@ -1,25 +1,28 @@
 from django.shortcuts import render
 from dashboard.models import Project, Question
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
-# Create your views here.
+# Present project
 
 def index(request, prj):
-    # Query projects for project code (prj)
-    # print(type(prj))
-    # d = Project.objects.get(pk=4)
-    # print(type(d.prj_code))
-    # print(type(d.prj_code) == type(prj))
-
-    # g = Project.objects.filter(prj_code=prj)[0]
-    # print(g)
     the_project = Project.objects.get(prj_code=prj)
-    print(the_project)
-    # Set project's presentation status to true if it already isnt
-    # Generate QR code
-    # Send this project to index
+    the_questions = Question.objects.filter(project=the_project)
+
     return render(request, "present/index.html", {
         "project": the_project,
+        "questions": the_questions,
     })
 
-# Create function that gets all answers and displays them
-# When displaying answers, set presentation status to false to stop further vote count
+# Send number of respondents who have casted their votes
+# This information is requested in time intervals and will be shown on the user's presentation
+@csrf_exempt
+def live_vote_count(request, id):
+    if request.method == 'GET':
+        the_project = Project.objects.get(pk=id)
+        num_votes = the_project.num_respondents
+        data = {
+            'vote_count': num_votes
+        }
+
+        return JsonResponse(data)

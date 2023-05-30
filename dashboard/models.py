@@ -16,6 +16,7 @@ class Project(models.Model):
     #counts number of polls, representing the number of times a poll was open and received answers
     poll_nr = models.IntegerField(default=1)
     # when project is live, JS function should feed responses
+    # after results are displayed, num_respondents should be zeroed again
     num_respondents = models.IntegerField(default=0)
     num_questions = models.IntegerField(default=0)
 

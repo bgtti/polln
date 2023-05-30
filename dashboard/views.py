@@ -421,17 +421,12 @@ def delete_question(request, id):
 @csrf_exempt
 def get_answers(request):
     if request.method == 'POST':
-        print("in function")
         data = json.loads(request.body)
         project_id = int(data.get('project'))
         answers = data.get('answers')
-        print(data)
-        print(project_id == 14)
-        print(answers)
         if project_id and answers:
-            the_project = Project.objects.get(pk=14)
+            the_project = Project.objects.get(pk=project_id)
             # Iterate over the received answers and create new Answer objects
-            print("first iteration")
             for answer_data in answers:
                 question_id = int(answer_data.get('question'))
                 answer_text = answer_data.get('answer')
@@ -466,7 +461,6 @@ def get_answers(request):
                         is_correct=correctness
                     )
                     answer.save()
-                    print(answer)
             # Update number of respondents on project
             the_project.num_respondents = the_project.num_respondents + 1
             the_project.save()
@@ -474,4 +468,6 @@ def get_answers(request):
             return JsonResponse({'status': 'success'})
         else:
             return JsonResponse({'status': 'error', 'message': 'Invalid data'})
+
+
 
