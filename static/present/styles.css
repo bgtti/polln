@@ -30,9 +30,42 @@
 #PRESENT-page-2{
     flex-direction: column;
 }
+.PRESENT-q-answer{
+    flex-direction: column;
+    gap: 10px;
+}
+.PRESENT-open-ended{
+    flex-direction: column;
+    gap: 5px;
+    color: var(--main-blue);
+}
+.PRESENT-open-ended > *, .PRESENT-correct-QA{
+    border: 1px solid var(--main-yellow);
+    padding: 3px 5px !important;
+    border-radius: 5px;
+}
+.PRESENT-displayMoreThan10{
+    border: none;
+    color: grey;
+    font-weight: bold;
+}
+.PRESENT-canvas {
+    margin: 15px 0;
+}
 
+@media only screen and (min-width: 600px) {
+    .PRESENT-canvas {
+            min-width: 500px;
+    }
+}
 
-
+.PRESENT-MC-correct-ans, .PRESENT-QA-correct-ans{
+    font-weight: bold;
+    color: gray;
+}
+.PRESENT-MC-sub, .PRESENT-QA-sub, .PRESENT-sub{
+    color: gray;
+}
 
 
 .BASE-hide{
