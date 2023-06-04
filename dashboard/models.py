@@ -63,3 +63,24 @@ class Answer(models.Model):
     def save(self, *args, **kwargs):
         self.poll_batch = self.project.poll_nr
         super().save(*args, **kwargs)
+
+
+class Result(models.Model):
+    project = models.ForeignKey(
+        Project, on_delete=models.CASCADE, related_name="linked_results")
+    # if user polled more than once, answers will be saved by 'batch' number, which updates according to project.poll_nr
+    poll_batch = models.IntegerField()
+    submission_date = models.DateTimeField(auto_now_add=True)
+    num_respondents = models.IntegerField(default=0)
+    # question list holds objects with the following info per question: 
+    # question.pk, question, question_type, question_num_choices, question_options (an array from options1 to 5), 
+    # question_options_chosen_total (a dict with option nr and the total votes on it),
+    # total_answers,question_has_answer,total_correct_ans,percentage_ans_that_are_correct
+    question_list_object = models.TextField(default="")
+
+
+
+    # populates poll_batch every time it is saved
+    def save(self, *args, **kwargs):
+        self.poll_batch = self.project.poll_nr
+        super().save(*args, **kwargs)

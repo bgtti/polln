@@ -88,8 +88,8 @@ def get_answers(request):
                         else:
                             correctness = 2
                     elif question_type == "MC":
+                        choice = int(answer_text[-1])
                         if the_question.correctOptionEnabled:
-                            choice = int(answer_text[-1])
                             if choice == the_question.correctOption:
                                 correctness = 1
                             else:

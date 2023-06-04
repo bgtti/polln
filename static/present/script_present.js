@@ -74,7 +74,7 @@ function getPollResults(projectId) {
     fetch(`/present/deliver_answers/${projectId}`)
         .then(response => response.json())
         .then(data => {
-            // console.log(data);
+            console.log(data);
             // get the data objects
             const questionsData = JSON.parse(data.questions);
             const answersData = JSON.parse(data.answers);
@@ -86,6 +86,7 @@ function getPollResults(projectId) {
             theQuestions.forEach(question =>{
                 // get answers
                 const answersToThisQuestion = answersData.filter(answer => answer.fields.question === question[0]);
+                console.log(answersToThisQuestion)
                 // get div where the answers will be presented
                 if (question[1] === "Open-ended Question"){
                     let answerPresentation = document.getElementById(`PRESENT-OE-${question[0]}`)
@@ -161,6 +162,8 @@ function getPollResults(projectId) {
                             votesResultArray.push(votesResult["5"] ??= 0)
                         }
                     }
+                    console.log(optionsQ)
+                    console.log(votesResultArray)
                     // GRAPH: using charts js, check https://www.chartjs.org/docs/latest/getting-started/
                     // Plug-in for datalabels: https://chartjs-plugin-datalabels.netlify.app/guide/getting-started.html#integration
                     const ctx = document.getElementById(`PRESENT-chart-${question[0]}`);
@@ -275,10 +278,7 @@ function changePage(nextOrPrevious){
         let projectId = document.querySelector('#PRESENT-presentation').dataset.presentprojectid
         closePoll(projectId) // close the poll to stop new votes comming in
         stopVoteCount() // stop vote count update when showing the results
-    }
-    if (currentPage === 2){
-        let projectId = document.querySelector('#PRESENT-presentation').dataset.presentprojectid
-        getPollResults(projectId)
+        getPollResults(projectId) //get the results
     }
     nextPageNr = nextPageNr.toString()
     let nextPage = document.querySelector(`[data-pagenr='${nextPageNr}']`)

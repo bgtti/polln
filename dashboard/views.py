@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from website.models import User
-from dashboard.models import Project, Question, Answer
+from dashboard.models import Project, Question, Answer, Result
 from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
@@ -10,6 +10,7 @@ from django.core.serializers import serialize
 from django.contrib import messages
 from dashboard.utils import create_prj_code, qr_code_generator, delete_qr_code, compareTwoStrings
 import qrcode
+from collections import Counter
 
 # index is the user's dashboard
 def index(request, message=None):
@@ -25,19 +26,6 @@ def index(request, message=None):
         "message": message
     })
 
-# generate qr code that leads to project poll
-# function based on qrcode library: https://pypi.org/project/qrcode/
-def generate_qr_code(request, url):
-    # qr = qrcode.QRCode(
-    #     version=1,
-    #     error_correction=qrcode.constants.ERROR_CORRECT_H,
-    #     box_size=10,
-    #     border=4,
-    # )
-    # qr.add_data(url)
-    # qr.make(fit=True)
-    # img = qr.make_image(back_color=(255, 255, 255), fill_color=(0,0,0))
-    return
 
 # add new project
 def add_project(request):
@@ -131,8 +119,63 @@ def open_poll(request,id):
 def close_poll(request, id):
     try:
         project = Project.objects.get(pk=id)
-        project.is_live = False
-        project.save()
+        if project.is_live == True:
+            project.is_live = False
+            # Check if there are results for the current poll_nr (batch):
+            result = Result.objects.filter(project=project, poll_batch=project.poll_nr)
+            if not result.exists():
+                # If no result matches the poll_nr, check if there are answers to be submitted in this batch. If so, save poll results:
+                answers = Answer.objects.filter(project=project, poll_batch=project.poll_nr)
+                if answers.exists():
+                    questions = Question.objects.filter(project=project)
+                    questions_and_correct_answer_total = []
+                    for question in questions:
+                        sum_correct = 0
+                        total_ans = 0
+                        all_user_choices = []
+                        the_answers = answers.filter(question=question)
+                        for answer in the_answers:
+                            total_ans =+ 1
+                            if answer.is_correct == 1:
+                                sum_correct =+ 1
+                            all_user_choices.append(answer.users_choice)
+                        percentage_correct = 0
+                        if question.correctOptionEnabled == False:
+                            sum_correct = "N/A"
+                        else:
+                            percentage_correct = (sum_correct/total_ans)*100
+                            if isinstance(percentage_correct, float):
+                                percentage_correct = round(percentage_correct, 1)
+                            percentage_correct = f"{percentage_correct}%"
+                        # convert the list of users choices into a dictiorary with each element and the sum of that elements occurence
+                        # using counter from the collections library: https://docs.python.org/3/library/collections.html#counter-objects
+                        choice_results = dict(Counter(all_user_choices))
+                        choice_results = {str(key): value for key,
+                                            value in choice_results.items()}
+                        
+                        element = {"question_pk": question.pk,
+                                    "question": question.question,
+                                    "question_type": question.question_type,
+                                    "question_num_choices": question.nr_choices,
+                                    "question_options": [question.option1, question.option2, question.option3, question.option4, question.option5],
+                                    "question_options_chosen_total": choice_results,
+                                    "total_answers": total_ans,
+                                    "question_has_answer": question.correctOptionEnabled,
+                                    "total_correct_ans": sum_correct,
+                                    "percentage_ans_that_are_correct": percentage_correct,
+                                    }
+                        questions_and_correct_answer_total.append(element)
+
+                    json_string = json.dumps(questions_and_correct_answer_total)
+                    # create Result object:
+                    new_result = Result(
+                        project=project, num_respondents=project.num_respondents, question_list_object=json_string)
+                    new_result.save()
+                    # update Project:
+                    project.num_respondents=0
+                    project.poll_nr = project.poll_nr + 1
+
+            project.save()
         response_data = {'status': 'success', 'message': 'Project is closed.'}
         return JsonResponse(response_data)
     except:
@@ -396,78 +439,11 @@ def delete_question(request, id):
         return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': the_project.pk}))
 
 
-# Answers are sent by JS function submitPollAnswers in script_poll.js
-# Sample data being received:
-# {
-#     "project": "14",
-#     "answers": [
-#         {
-#             "question": "15",
-#             "answer": "good",
-#             "type": "OE"
-#         },
-#         {
-#             "question": "16",
-#             "answer": "hello",
-#             "type": "QA"
-#         },
-#         {
-#             "question": "17",
-#             "answer": "option3",
-#             "type": "MC"
-#         }
-#     ]
-# }
-# @csrf_exempt
-# def get_answers(request):
-#     if request.method == 'POST':
-#         data = json.loads(request.body)
-#         project_id = int(data.get('project'))
-#         answers = data.get('answers')
-#         if project_id and answers:
-#             the_project = Project.objects.get(pk=project_id)
-#             # Iterate over the received answers and create new Answer objects
-#             for answer_data in answers:
-#                 question_id = int(answer_data.get('question'))
-#                 answer_text = answer_data.get('answer')
-#                 question_type = answer_data.get('type')
-
-#                 if question_id and answer_text and question_type:
-#                     # Get Question
-#                     the_question = Question.objects.get(pk=question_id)
-#                     choice = 0
-#                     if question_type == "OE":
-#                         correctness = 0
-#                     elif question_type == "QA":
-#                         if compareTwoStrings(the_question.answer, answer_text):
-#                             correctness = 1
-#                         else:
-#                             correctness = 2
-#                     elif question_type == "MC":
-#                         if the_question.correctOptionEnabled:
-#                             choice = int(answer_text[-1])
-#                             if choice == the_question.correctOption:
-#                                 correctness = 1
-#                             else:
-#                                 correctness = 2
-#                     else:
-#                         return JsonResponse({'status': 'error', 'message': 'Invalid type'})
-#                     # Create a new Answer object
-#                     answer = Answer(
-#                         project=the_project,
-#                         question=the_question,
-#                         users_answer=answer_text,
-#                         users_choice=choice,
-#                         is_correct=correctness
-#                     )
-#                     answer.save()
-#             # Update number of respondents on project
-#             the_project.num_respondents = the_project.num_respondents + 1
-#             the_project.save()
-
-#             return JsonResponse({'status': 'success'})
-#         else:
-#             return JsonResponse({'status': 'error', 'message': 'Invalid data'})
-
-
+# Project Answers
+def project_answers(request, id):
+    the_project = Project.objects.get(pk=id)
+    # get questions
+    return render(request, "dashboard/project_answers.html", {
+        "project": the_project,
+    })
 

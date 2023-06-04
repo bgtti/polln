@@ -30,6 +30,13 @@
     gap: 15px;
     flex-wrap: wrap;
 }
+.DASHBOARD-a-tag, .DASHBOARD-a-tag:visited{
+    color: gray;
+    font-weight: bold;
+}
+.DASHBOARD-a-tag:hover{
+    color: var(--main-blue);
+}
 
 /* add question */
 .DASHBOARD-question-choices{
@@ -177,4 +184,13 @@
 }
 .DASHBOARD-link-share-container>p {
     color: gray;
+}
+
+
+/* Project Answers */
+.DASHBOARD-table-headers{
+    background-color: var(--main-blue);
+}
+.DASHBOARD-table-headers > *{
+    color: #d9d9d9;
 }

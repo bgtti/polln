@@ -65,6 +65,11 @@
         <h2>Thank you!</h2>
     </div>
 
+    <!-- Blank page after last -->
+    <div id="PRESENT-page-{{ num_questions|add:4 }}" class="PRESENT-page PRESENT-flex BASE-hide"
+        data-pagenr="{{ num_questions|add:4 }}">
+    </div>
+
 </div>
 
 {% endblock %}

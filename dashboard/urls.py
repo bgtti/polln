@@ -6,7 +6,6 @@ app_name = "dashboard"
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path('generate_qr_code/<str:url>/', views.generate_qr_code, name='generate_qr_code'),
     path("add_project", views.add_project, name="add_project"),
     path("project/<int:id>", views.project, name="project"),
     path("edit_project/<int:id>", views.edit_project, name="edit_project"),
@@ -17,7 +16,6 @@ urlpatterns = [
     path("delete_question/<int:id>", views.delete_question, name="delete_question"),
     path("open_poll/<int:id>", views.open_poll, name="open_poll"),
     path("close_poll/<int:id>", views.close_poll, name="close_poll"),
-    # path("get_answers", views.get_answers, name="get_answers"),
-    # path("live_vote_count/<int:id>", views.live_vote_count, name="live_vote_count"),
+    path("project_answers/<int:id>", views.project_answers, name="project_answers"),
 ]
 urlpatterns += staticfiles_urlpatterns()

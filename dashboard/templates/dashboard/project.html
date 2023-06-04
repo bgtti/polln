@@ -41,6 +41,7 @@
         {% else %}
         <p><small>Show answers: no</small></p>
         {% endif %}
+        <p><small><a href="{% url 'dashboard:project_answers' id=project.pk %}" target="_blank" class="DASHBOARD-a-tag">Click here</a> to see all answers </small></p>
     </div>
     <div class="DASHBOARD-project-btn-group">
         {% if questions %}

@@ -1,0 +1,56 @@
+{% extends "dashboard/layout.html" %}
+{% block dashboard_body %}
+<!-- Message -->
+<br>
+{% if message %}
+<div class="alert alert-secondary alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+<!-- Content -->
+<div class="DASHBOARD-page-container">
+    <h2>{{ project.name }}</h2>
+    <p>Poll Nr {{ project.poll_nr }}</p>
+    <p>Poll Closed on date</p>
+    <p>Check past polls</p>
+
+    <table class="table table-striped table-bordered table-hover">
+        <tr class="DASHBOARD-table-headers">
+            <th>Question</th>
+            <th>Nr Answers</th>
+            <th>% correct answers</th>
+        </tr>
+        <tr>
+            <td>q</td>
+            <td>n</td>
+            <td>x</td>
+        </tr>
+        <tr>
+            <td>q</td>
+            <td>n</td>
+            <td>x</td>
+        </tr>
+    </table>
+    <br>
+
+    <table class="table table-striped table-bordered table-hover">
+        <tr class="DASHBOARD-table-headers">
+            <th>User</th>
+            <th>Q1</th>
+            <th>Q2</th>
+        </tr>
+        <tr>
+            <td>q</td>
+            <td>n</td>
+            <td>x</td>
+        </tr>
+        <tr>
+            <td>q</td>
+            <td>n</td>
+            <td>x</td>
+        </tr>
+    </table>
+
+</div>
+{% endblock %}
