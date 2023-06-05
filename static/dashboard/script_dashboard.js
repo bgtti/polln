@@ -24,11 +24,23 @@ function openOrClosePoll(projectId, openOrClose){
         .then(response => response.json())
         .then(data => {
             // console.log(data);
-            reloadPage()
+            reloadPage();
         })
         .catch (error => console.error(error));
 }
 
+//function that checks whether a browser tab's visibility changed
+//if user goes to another tab, than returns to the project, the page should be reloaded
+//purpose is to detect poll status, since user is re-directed when presenting
+// function from: https://stackoverflow.com/questions/64659511/refresh-page-when-active-tab
+document.addEventListener("visibilitychange", function () {
+    if (document.hidden) {
+        console.log("Browser tab is hidden")
+    } else {
+        console.log("Browser tab is visible")
+        location.reload();
+    }
+});
 
 // *****************MODAL ADD PROJECT***************************
 // editing projects
@@ -286,4 +298,43 @@ function getOrderOfQuestions(projectId){
     .then(
         openOrClosePoll(projectId, 'close')
     )
+}
+
+//*****************DOWNLOAD EXCEL TABLE***************************
+//how to convert html table to excel from https://phppot.com/javascript/convert-html-table-excel-javascript/
+
+//in function used for onclick events in project_answers.html
+function downloadTableExcel(table_id) {
+    event.preventDefault();
+    const table = document.getElementById(table_id);
+    const rows = table.rows;
+    let sourceData = "data:text/csv;charset=utf-8,";
+
+    // Convert the table to a CSV format
+    let csv = [];
+    for (let i = 0; i < rows.length; i++) {
+        let row = [];
+        let cells = rows[i].cells;
+        for (let j = 0; j < cells.length; j++) {
+            let cell = cells[j];
+            let cellText = cell.innerText.trim();
+
+            // Remove <br> tags from the cell content (as they cause cells to be split into separate csv cells)
+            cellText = cellText.replace(/<br>/g, ' ');
+
+            // Check if the cell contains multiple lines of text
+            if (cellText.includes('\n')) {
+                cellText = cellText.replace(/\n/g, ' '); // If they do, replace newlines with spaces
+            }
+            // Remove commas from the cell text
+            cellText = cellText.replace(/,/g, '');
+
+            row.push(cellText);
+        }
+        csv.push(row.join(','));
+    }
+
+    let csvContent = csv.join('\n');
+    sourceData += csvContent;
+    window.location.href = encodeURI(sourceData);
 }

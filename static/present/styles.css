@@ -2,12 +2,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 5px;
 }
 #PRESENT-presentation{
     background-color: white;
 }
 .PRESENT-page{
     height: 100vh;
+}
+@media screen and (min-width: 992px) {
+    .PRESENT-page>* {
+        max-width: 80vw;
+    }
 }
 #PRESENT-page-1-btn{
     margin: 15px !important;
@@ -39,9 +45,15 @@
     gap: 5px;
     color: var(--main-blue);
 }
-.PRESENT-open-ended > *, .PRESENT-correct-QA{
+.PRESENT-open-ended > *{
     border: 1px solid var(--main-yellow);
     padding: 3px 5px !important;
+    border-radius: 5px;
+}
+.PRESENT-correct-QA{
+    border: 2px solid var(--main-yellow);
+    padding: 20px 30px !important;
+    font-size: 2em;
     border-radius: 5px;
 }
 .PRESENT-displayMoreThan10{

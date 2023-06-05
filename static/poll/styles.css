@@ -11,6 +11,30 @@
     justify-content: center;
     gap: 5px;
 }
+.POLL-page>h1, .POLL-last-page>*, .POLL-page>*{
+    text-align: center;
+}
+@media screen and (min-width: 992px) {
+    .POLL-page>*{
+        max-width: 80vw;
+    }
+}
+.POLL-form{
+    margin:0;
+} 
+.POLL-form-part>*{
+    text-align: center;
+}
+.POLL-wrong-pw{
+    color: var(--main-red);
+}
+.POLL-lets-begin{
+    margin-top: 15px;
+    color: gray;
+}
+.POLL-lets-begin>p{
+    padding-bottom: 10px;
+}
 .POLL-page-part>*{
     display: block;
     margin: auto;
@@ -24,12 +48,32 @@
 }
 .POLL-radio-container{
     display: grid;
-    grid-template-columns: 10px auto;
+    grid-template-columns: 10px max-content;
 }
 .POLL-radio-container label{
     text-align: left;
 }
-
+.POLL-radio-container-parent{
+    display: inline-block;
+}
+.POLL-ans-btn{
+    display: inline-block;
+    margin: auto;
+    width: 200px !important;
+}
+.POLL-RESULTS{
+    border: 1px solid var(--main-yellow);
+    border-radius: 5px;
+    padding: 15px;
+    margin: 7px 0;
+}
+.POLL-RESULTS>*{
+    margin: 0;
+    padding: 0;
+}
+.POLL-RESULTS-question, .POLL-RESULTS-option{
+    color: gray;
+}
 .BASE-hide{
     display: none;
 }

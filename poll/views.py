@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from dashboard.models import Project, Question, Answer
+from dashboard.models import Project, Question, Respondent, Answer
 from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
@@ -7,9 +7,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import csrf_protect
 from dashboard.utils import compareTwoStrings
 from django.views.decorators.csrf import csrf_exempt
-
-
-# Create your views here.
 
 def index(request, prj):
     # Query projects for project code (prj)
@@ -23,22 +20,24 @@ def index(request, prj):
         "questions": the_questions,
         "num_questions": len(the_questions)
     })
-    # Check if project is being presented
-    # if project is being presented:
-    # if the_project.is_live:
-    #     # Get questions that belong to the project
-    #     the_questions = Question.objects.filter(
-    #         project=the_project).order_by("position")
-    #     print("project is live!")
-    #     # Send project and questions to index
-    #     return render(request, "poll/index.html", {
-    #         "project": the_project,
-    #         "questions": the_questions
-    #     })
-    # else if project not being presented return error page
-    # place error page in the website app
 
-# get the answer sent by JS function submitPollAnswers and save to db
+# checks if poll is open and sends information to JS function to decide if answers can be submitted
+@csrf_exempt
+def check_if_poll_open(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        project_id = int(data.get('project'))
+        if project_id:
+            the_project = Project.objects.get(pk=project_id)
+            poll_is_open = the_project.is_live
+            if poll_is_open:
+                return JsonResponse({'status': 'success'})
+            else:
+                return JsonResponse({'status': 'error', 'message': 'Poll is closed'})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Invalid Id'})
+
+# get_answers function: get the answer sent by JS function submitPollAnswers and save to db
 # Sample data being received:
 # {
 #     "project": "14",
@@ -60,16 +59,21 @@ def index(request, prj):
 #         }
 #     ]
 # }
-
-
 @csrf_exempt
 def get_answers(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         project_id = int(data.get('project'))
         answers = data.get('answers')
+        username = data.get('username')
         if project_id and answers:
             the_project = Project.objects.get(pk=project_id)
+            # Create a new Respondent object
+            the_username = "anonymous"
+            if username:
+                the_username = username
+            new_respondent = Respondent(username=the_username)
+            new_respondent.save()
             # Iterate over the received answers and create new Answer objects
             for answer_data in answers:
                 question_id = int(answer_data.get('question'))
@@ -97,22 +101,34 @@ def get_answers(request):
                     else:
                         return JsonResponse({'status': 'error', 'message': 'Invalid type'})
                     # Create a new Answer object
-                    answer = Answer(
+                    new_answer = Answer(
+                        user=new_respondent,
                         project=the_project,
                         question=the_question,
                         users_answer=answer_text,
                         users_choice=choice,
                         is_correct=correctness
                     )
-                    answer.save()
+                    new_answer.save()
             # Update number of respondents on project
-            the_project.num_respondents = the_project.num_respondents + 1
+            the_project.num_respondents = the_project.num_respondents + 1 
             the_project.save()
 
             return JsonResponse({'status': 'success'})
         else:
             return JsonResponse({'status': 'error', 'message': 'Invalid data'})
         
-# If presentor is showing the results, show error page if respondent is still trying to cast a vote.
 
-
+def check_poll_password(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        project_id = int(data.get('project'))
+        project_password = data.get('password')
+        if project_id:
+            the_project = Project.objects.get(pk=project_id)
+            if the_project.pw == project_password:
+                return JsonResponse({'status': 'success'})
+            else:
+                return JsonResponse({'status': 'error', 'message': 'Wrong password'})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Invalid Id'})

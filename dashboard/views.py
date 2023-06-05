@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from website.models import User
-from dashboard.models import Project, Question, Answer, Result
+from dashboard.models import Project, Question, Respondent, Answer, Result
 from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
@@ -135,23 +135,25 @@ def close_poll(request, id):
                         all_user_choices = []
                         the_answers = answers.filter(question=question)
                         for answer in the_answers:
-                            total_ans =+ 1
+                            total_ans += 1
                             if answer.is_correct == 1:
-                                sum_correct =+ 1
+                                sum_correct += 1
                             all_user_choices.append(answer.users_choice)
                         percentage_correct = 0
-                        if question.correctOptionEnabled == False:
+                        if question.question_type == "Open-ended Question":
+                            sum_correct = "N/A"
+                        elif question.question_type == "Multiple Choice" and question.correctOption == 0:
                             sum_correct = "N/A"
                         else:
                             percentage_correct = (sum_correct/total_ans)*100
                             if isinstance(percentage_correct, float):
                                 percentage_correct = round(percentage_correct, 1)
                             percentage_correct = f"{percentage_correct}%"
-                        # convert the list of users choices into a dictiorary with each element and the sum of that elements occurence
+                        # convert the list of users choices into a list with the sum of that elements occurence
+                        # like: [sum_votes_on_option1, sum_votes_on_option2,....5], when no votes on one of the options, 0
                         # using counter from the collections library: https://docs.python.org/3/library/collections.html#counter-objects
-                        choice_results = dict(Counter(all_user_choices))
-                        choice_results = {str(key): value for key,
-                                            value in choice_results.items()}
+                        choice_results = Counter(all_user_choices)
+                        choice_results = [choice_results.get(i, 0) for i in range(1, 6)] 
                         
                         element = {"question_pk": question.pk,
                                     "question": question.question,
@@ -408,7 +410,7 @@ def edit_question(request, id):
             edit_q.correctOptionEnabled = correct_option_enabled
             edit_q.correctOption = the_correct_choice
             edit_q.save()
-            request.session['project_message'] = "Message edited successfully!"
+            request.session['project_message'] = "Question edited successfully!"
             return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': edit_q.project.pk}))
         except:
             the_project = Project.objects.get(
@@ -442,8 +444,21 @@ def delete_question(request, id):
 # Project Answers
 def project_answers(request, id):
     the_project = Project.objects.get(pk=id)
+    latest_result = Result.objects.filter(project=the_project).order_by('-poll_batch').first()
+    latest_respondents = Respondent.objects.filter(
+        linked_answer__poll_batch=latest_result.poll_batch, linked_answer__project=the_project).distinct()
+    # latest_answers = Answer.objects.filter(project=the_project, poll_batch=latest_result.poll_batch)
+    # get object from question_list_object in Result
+    json_string = latest_result.question_list_object
+    question_results = json.loads(json_string)
+    for question in question_results:
+        question['question_option_and_total'] = [
+            [question['question_options'][i], question['question_options_chosen_total'][i]] for i in range(len(question['question_options']))
+        ]
     # get questions
     return render(request, "dashboard/project_answers.html", {
         "project": the_project,
+        "results": latest_result,
+        "question_results": question_results,
+        "respondents": latest_respondents,
     })
-

@@ -46,7 +46,17 @@ class Question(models.Model):
         return f"Question {self.pk}: {self.question}, {self.question_type} User: {self.user} Project: {self.project}"
 
 
+class Respondent(models.Model):
+    username= models.CharField(
+        max_length=150, blank=True, null=True, default="anonymous")
+    creation_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Respondent {self.pk}: {self.username}"
+
 class Answer(models.Model):
+    user = models.ForeignKey(
+        Respondent, on_delete=models.CASCADE, related_name="linked_answer")
     project = models.ForeignKey(
         Project, on_delete=models.CASCADE, related_name="linked_answer")
     # if user polled more than once, answers will be saved by 'batch' number, which updates according to project.poll_nr
@@ -63,6 +73,9 @@ class Answer(models.Model):
     def save(self, *args, **kwargs):
         self.poll_batch = self.project.poll_nr
         super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return f"Answer {self.pk}: from {self.user.pk} in pj {self.project.pk} batch {self.poll_batch}"
 
 
 class Result(models.Model):
@@ -78,9 +91,9 @@ class Result(models.Model):
     # total_answers,question_has_answer,total_correct_ans,percentage_ans_that_are_correct
     question_list_object = models.TextField(default="")
 
-
-
     # populates poll_batch every time it is saved
     def save(self, *args, **kwargs):
         self.poll_batch = self.project.poll_nr
         super().save(*args, **kwargs)
+
+

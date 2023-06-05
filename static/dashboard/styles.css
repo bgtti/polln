@@ -188,9 +188,30 @@
 
 
 /* Project Answers */
+.DASHBOARD-results-subtext{
+    margin: 10px 0;
+}
+.DASHBOARD-results-subtext > *{
+    color: gray;
+    margin:0;
+}
+.DASHBOARD-results-download-btn-container{
+    margin: 5px 0;
+}
+.DASHBOARD-results-download-btn-container>*>*{
+    display: block;
+    margin-right: 0 !important;
+    margin-left: auto !important;
+}
 .DASHBOARD-table-headers{
     background-color: var(--main-blue);
 }
 .DASHBOARD-table-headers > *{
     color: #d9d9d9;
+}
+.DASHBOARD-results-NA{
+    color: gray;
+}
+.table>tbody>tr>td, .table>tbody>tr>th {
+    vertical-align: middle;
 }

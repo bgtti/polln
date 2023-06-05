@@ -13,7 +13,7 @@
     <h2>{{ project.name }}</h2>
     <div class="DASHBOARD-project-pjk-info">
         <div class="form-group">
-            <div class="form-check form-switch" id="DASHBOARD-P-SwitchParentUsername">
+            <div class="form-check form-switch" id="DASHBOARD-P-SwitchParentPoll">
                 {% if project.is_live == True %}
                 <input class="form-check-input" type="checkbox" id="DASHBOARD-project-live" name="projectlive" checked onclick="openOrClosePoll('{{project.pk}}', 'close')">
                 <label class="form-check-label BASE-modal-label DASHBOARD-label-projectlive" for="DASHBOARD-project-live">Poll open</label>
@@ -37,11 +37,13 @@
             <p><small>No password set</small></p>
         {% endif %}
         {% if project.show_answers == True %}
-        <p><small>Show answers: yes</small></p>
+            <p><small>Show answers: yes</small></p>
         {% else %}
-        <p><small>Show answers: no</small></p>
+            <p><small>Show answers: no</small></p>
         {% endif %}
-        <p><small><a href="{% url 'dashboard:project_answers' id=project.pk %}" target="_blank" class="DASHBOARD-a-tag">Click here</a> to see all answers </small></p>
+        {% if project.poll_nr > 1 %}
+            <p><small><a href="{% url 'dashboard:project_answers' id=project.pk %}" target="_blank" class="DASHBOARD-a-tag">Click here</a> to see all answers </small></p>
+        {% endif %}
     </div>
     <div class="DASHBOARD-project-btn-group">
         {% if questions %}
