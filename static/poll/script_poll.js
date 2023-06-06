@@ -91,8 +91,9 @@ function submitPollAnswers(projectId){
         },
         body: JSON.stringify(data)
     })
-        .then(response => {
-            //console.log(response);
+        .then(response => response.json())
+        .then(responseData => {
+            //console.log(responseData);
             changePage('next')
         })
         .catch(error => {

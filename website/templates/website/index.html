@@ -27,5 +27,79 @@
         </div>
     </div>
 </section>
+<section class="container-fluid WEBSITE-section-2" >
+    <div class="WEBSITE-section-2-container-how-polln-works">
+        <div class="WEBSITE-section-2-grid-item-1">
+            {% load static %}
+            <img src="{% static 'website/media/img_PollN_presentation_1.png' %}" alt="Presenting with PollN" id="WEBSITE-img-present">
+        </div>
+        <div class="WEBSITE-section-2-grid-item-2">
+            <h2>Let the ideas spread...</h2>
+        </div>
+        <div class="WEBSITE-section-2-grid-item-3">
+        </div>
+        <div class="WEBSITE-section-2-grid-item-4">
+            <img src="{% static 'website/media/img_PollN_poll_1.png' %}" alt="Answering a poll with smartphone" id="WEBSITE-img-poll">
+        </div>
+    </div>
+</section>
+<section class="container-fluid WEBSITE-section-3">
+    <h2>Engage your audience</h2>
+    <h3>With the right features</h3>
+    <div class="WEBSITE-section-3-card-container">
+        <div class="card WEBSITE-card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Require password</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Protect your poll</h6>
+                <p class="card-text">You can set a password to your project, and share the link per WhatsApp. 
+                    You may also ask for the respondent's name.</p>
+            </div>
+        </div>
+        <div class="card WEBSITE-card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Choose to show answers</h5>
+                <h6 class="card-subtitle mb-2 text-muted">What people got right</h6>
+                <p class="card-text">If you want your audience to be able to see the results of a quiz after submitting 
+                    the results, you can!</p>
+            </div>
+        </div>
+        <div class="card WEBSITE-card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Download results in Excel</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Analyse your poll</h6>
+                <p class="card-text">Download, analyse and keep the results. Re-use the project in the next presentation!</p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="container-fluid WEBSITE-section-4">
+    <div>
+        <!-- Video dimensions: 16:9, smartphone video: 2:3 -->
+        <!-- Video smartphone -->
+        <video width="200" height="300" autoplay muted loop class="WEBSITE-section-4-video-smartphone">
+            <source src="{% static 'website/media/video_PollN_smartphone.mp4' %}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <!-- Video small -->
+        <video width="400" height="600" autoplay muted loop class="WEBSITE-section-4-video-small">
+            <source src="{% static 'website/media/video_PollN_smartphone.mp4' %}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <!-- Video bigger screens -->
+        <video width="800" height="450" autoplay muted loop class="WEBSITE-section-4-video-big">
+            <source src="{% static 'website/media/video_PollN.mp4' %}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+</section>
+<section class="container-fluid WEBSITE-section-5">
+    <h2>Sign up now: its free!</h2>
+    <h3>Add as many projects and questions as you want!</h3>
+    <div>
+        <a href="{% url 'website:signup' %}" role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1">Sign
+            up now</a>
+        <a href="{% url 'website:login' %}" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2">Find out more</a>
+    </div>
+</section>
 
 {% endblock %}

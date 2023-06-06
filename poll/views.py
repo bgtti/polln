@@ -84,6 +84,7 @@ def get_answers(request):
                     # Get Question
                     the_question = Question.objects.get(pk=question_id)
                     choice = 0
+                    correctness = 0
                     if question_type == "OE":
                         correctness = 0
                     elif question_type == "QA":
@@ -116,6 +117,7 @@ def get_answers(request):
 
             return JsonResponse({'status': 'success'})
         else:
+            print("invalid data")
             return JsonResponse({'status': 'error', 'message': 'Invalid data'})
         
 
