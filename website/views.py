@@ -20,6 +20,8 @@ from django.db.models import Count
 def index(request):
     return render(request, "website/index.html")
 
+def guide(request):
+    return render(request, "website/guide.html")
 
 def login_view(request):
     if request.method == "POST":
@@ -71,3 +73,5 @@ def signup(request):
         return HttpResponseRedirect(reverse("dashboard:index"))
     else:
         return render(request, "website/signup.html")
+
+#

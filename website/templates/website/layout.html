@@ -3,44 +3,17 @@
 {% block title %}PollN{% endblock %}
 
 {% block extra_head %}
-<!-- Additional CSS or other head content for the dashboard app goes here -->
+<!-- Additional CSS or other head content for the website app goes here -->
 {% load static %}
 <link href="{% static 'website/styles.css' %}" type="text/css" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
 <!-- Common page elements go here, such as a header or navigation bar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light BASE-nav">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
-        <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="{% url 'website:index' %}">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Pricing</a>
-            </li>
-        </ul>
-        <div>
-            {% if user.is_authenticated %}
-            <a href="{% url 'dashboard:index' %}" role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1">Dashboard</a>
-            <a href="{% url 'website:logout' %}" role="button"
-                class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2">Log out</a>
-            {% else %}
-            <a href="{% url 'website:signup' %}" role="button"
-                class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1">Sign up</a>
-            <a href="{% url 'website:login' %}" role="button"
-                class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2" >Log in</a>
-            {% endif %}
-        </div>
-    </div>
-</nav>
+
+{% include "nav.html" %}
+
+<!-- The Website templates go here -->
 <div class="WEBSITE-body">
     {% block website_body %}
     {% endblock %}
@@ -62,7 +35,7 @@
 {% block extra_body %}
 <!-- Additional JS or other body content for the website app goes here -->
 <script src="{% static 'website/script_website.js' %}"></script>
-<!-- Ion Icon (icon footer) -->
+<!-- Ion Icon (github icon footer) -->
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 {% endblock %}

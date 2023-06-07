@@ -1,0 +1,56 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light BASE-nav">
+    <div class="container-fluid">
+        <!-- Toggler -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" 
+        aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'website:index' %}">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'website:guide' %}">Guide</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'dashboard:index' %}">My Projects</a>
+                </li>
+                {% endif %}
+            </ul>
+            <div>
+                {% if user.is_authenticated %}
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-bs-toggle='dropdown'
+                            aria-haspopup="true" aria-expanded="false">
+                            {{ user.username }}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                            <a href="{% url 'dashboard:index' %}" role="button"
+                                class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1 dropdown-item"
+                                style="display: inline-block; margin: 5px !important; width: 150px !important;">Dashboard</a>
+                            <a href="{% url 'website:logout' %}" role="button"
+                                class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2 dropdown-item"
+                                style="display: inline-block; margin: 5px !important; width: 150px !important; color: white;">Log
+                                out</a>
+                            <br>
+                            <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type3 dropdown-item"
+                                style="display: inline-block; margin: 5px !important; width: 150px !important; color: white;">Delete
+                                account</a>
+                        </div>
+                    </li>
+                </ul>
+                {% else %}
+                <a href="{% url 'website:signup' %}" role="button"
+                    class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1">Sign up</a>
+                <a href="{% url 'website:login' %}" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2">Log
+                    in</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+
