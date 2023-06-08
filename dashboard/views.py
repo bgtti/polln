@@ -1,16 +1,14 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
-from website.models import User
-from dashboard.models import Project, Question, Respondent, Answer, Result
-from django.http import JsonResponse
-import json
 from django.views.decorators.csrf import csrf_exempt
 from django.core.serializers import serialize
 from django.contrib import messages
-from dashboard.utils import create_prj_code, qr_code_generator, delete_qr_code, compareTwoStrings
-import qrcode
 from collections import Counter
+import json
+from website.models import User
+from dashboard.models import Project, Question, Respondent, Answer, Result
+from dashboard.utils import create_prj_code, qr_code_generator, delete_qr_code
 
 # index is the user's dashboard
 def index(request, message=None):
@@ -53,7 +51,8 @@ def add_project(request):
         else:
             show_answers = False
 
-        # Save project 
+        try:
+            # Save project 
             new_pjt = Project(user=user, name=pjt_name, username_requirement=set_username, pw_requirement=set_pw, pw=pw, show_answers=show_answers)
             new_pjt.save()
             # Give project a prj_code
@@ -63,21 +62,10 @@ def add_project(request):
             # Generate qr code for poll url
             qr_code_generator(prj_code)
             return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': new_pjt.pk}))
-        # try:
-        #     # Save project 
-        #     new_pjt = Project(user=user, name=pjt_name, username_requirement=set_username, pw_requirement=set_pw, pw=pw)
-        #     new_pjt.save()
-        #     # Give project a prj_code
-        #     prj_code = create_prj_code(request.user.pk, new_pjt.pk)
-        #     new_pjt.prj_code = prj_code
-        #     new_pjt.save()
-        #     # Generate qr code for poll url
-        #     qr_code_generator(prj_code)
-
-        #     return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': new_pjt.pk}))
-        # except:
-        #     request.session['index_message'] = "There was an error saving your project, please try again."
-        #     return HttpResponseRedirect(reverse("dashboard:index"))
+        except:
+            print("An error occurred when saving the project")
+            request.session['index_message'] = "There was an error saving your project, please try again."
+            return HttpResponseRedirect(reverse("dashboard:index"))
 
 # view project page
 def project(request, id):
@@ -447,7 +435,6 @@ def project_answers(request, id):
     latest_result = Result.objects.filter(project=the_project).order_by('-poll_batch').first()
     latest_respondents = Respondent.objects.filter(
         linked_answer__poll_batch=latest_result.poll_batch, linked_answer__project=the_project).distinct()
-    # latest_answers = Answer.objects.filter(project=the_project, poll_batch=latest_result.poll_batch)
     # get object from question_list_object in Result
     json_string = latest_result.question_list_object
     question_results = json.loads(json_string)

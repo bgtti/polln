@@ -1,25 +1,30 @@
 from django.shortcuts import render
-from dashboard.models import Project, Question, Respondent, Answer
+from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponseRedirect
 from django.http import JsonResponse
-import json
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.csrf import csrf_protect
+from dashboard.models import Project, Question, Respondent, Answer
 from dashboard.utils import compareTwoStrings
-from django.views.decorators.csrf import csrf_exempt
+import json
 
 def index(request, prj):
-    # Query projects for project code (prj)
-    the_project = Project.objects.get(prj_code=prj)
+    # Remove trailing spaces from the user's input before proceeding
+    prj = prj.strip()
+    try:
+        # Query projects for project code (prj)
+        the_project = Project.objects.get(prj_code=prj)
 
-    # Get questions that belong to the project
-    the_questions = Question.objects.filter(
-        project=the_project).order_by("position")
-    return render(request, "poll/index.html", {
-        "project": the_project,
-        "questions": the_questions,
-        "num_questions": len(the_questions)
-    })
+        # Get questions that belong to the project
+        the_questions = Question.objects.filter(
+            project=the_project).order_by("position")
+        return render(request, "poll/index.html", {
+            "project": the_project,
+            "questions": the_questions,
+            "num_questions": len(the_questions)
+        })
+    except:
+        request.session['home_message'] = "Code not valid. Check the six-digit project code and try again."
+        return HttpResponseRedirect(reverse("website:index"))
 
 # checks if poll is open and sends information to JS function to decide if answers can be submitted
 @csrf_exempt

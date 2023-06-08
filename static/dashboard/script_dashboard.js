@@ -32,7 +32,7 @@ function openOrClosePoll(projectId, openOrClose){
 //function that checks whether a browser tab's visibility changed
 //if user goes to another tab, than returns to the project, the page should be reloaded
 //purpose is to detect poll status, since user is re-directed when presenting
-// function from: https://stackoverflow.com/questions/64659511/refresh-page-when-active-tab
+// This function was written by Andrea Viviani and is available at: https://stackoverflow.com/questions/64659511/refresh-page-when-active-tab
 document.addEventListener("visibilitychange", function () {
     if (document.hidden) {
         console.log("Browser tab is hidden")

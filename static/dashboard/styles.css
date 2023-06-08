@@ -47,11 +47,9 @@
 .DASHBOARD-question-choice-container{
     height: 120px;
     width: 150px;
-    /* padding: 10px; */
     border: 1px solid #d9d9d9;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     border-radius: 5px;
-    /* background-color: rgb(220, 151, 62); */
 }
 .DASHBOARD-question-choice-container-checked {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -86,7 +84,6 @@
     width:15px;
     height: 15px;
     filter: invert(48%) sepia(0%) saturate(20%) hue-rotate(189deg) brightness(104%) contrast(83%);
-    /* background-color: #808080; */
 }
 /* Project: question container with draggable items */
 #BtnSaveQorder{
@@ -124,9 +121,6 @@
 .DASHBOARD-q-edit, .DASHBOARD-q-name, .DASHBOARD-q-type{
     margin: 0;
     padding: 5px 5px;
-    /* line-height: 100%;
-    display: table-cell;
-    vertical-align: middle; */
     display: flex;
     align-items: center;
 }

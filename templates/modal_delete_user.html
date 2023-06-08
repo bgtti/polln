@@ -1,0 +1,25 @@
+<div class="BASE-modal-container BASE-hide" id="modal_delete_user">
+    <div class="BASE-modal">
+        <div class="BASE-modal-header">
+            <div class="BASE-modal-icon-close" onclick="modalHideUnhide('modal_delete_user')">
+                <h2 id="DASHBOARD-Q-modal-title">Delete Account</h2>
+                <i class="fa-solid fa-xmark fa-xl"></i>
+            </div>
+        </div>
+        <hr>
+        <div>
+            <form action="{% url 'website:delete_account' %}" method="post">
+                {% csrf_token %}
+                <p>Are you sure you want to delete your account?</p>
+                <p>This action cannot be undone.</p>
+                <!-- Buttons -->
+                <div class="BASE-modal-btn-group">
+                    <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2"
+                        onclick="modalHideUnhide('modal_delete_user')">Cancel</a>
+                    <input role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type3" type="submit"
+                        value="Delete">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

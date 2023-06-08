@@ -1,4 +1,5 @@
-//load the page on full screen mode ( function from https://www.w3schools.com/howto/howto_js_fullscreen.asp#:%7E:text=Try%20it%20Yourself%20%C2%BB-,Fullscreen%20Document,-To%20open%20the)
+//load the page on full screen mode 
+//The function bellow was taken from W3Schools, available at https://www.w3schools.com/howto/howto_js_fullscreen.asp#:%7E:text=Try%20it%20Yourself%20%C2%BB-,Fullscreen%20Document,-To%20open%20the)
 
 function openFullscreen() {
     event.preventDefault(event);
@@ -15,7 +16,7 @@ function openFullscreen() {
     theBtn.classList.add("BASE-hide")
 }
 
-// if user exits full screen mode, show button again
+// If user exits full screen mode, show button again
 function checkFullscreenClose(){
     if (document.fullscreenElement === null) {
         let theBtn = document.querySelector('#PRESENT-page-1-btn')
@@ -257,7 +258,7 @@ function getPollResults(projectId) {
         .catch(error => console.error(error));
 }
 
-// show next page if user presses 'enter'
+// Change to next or previous page according to user's key press or finger swipe
 function changePage(nextOrPrevious){
     let allPages = document.querySelectorAll('.PRESENT-page');
     let currentPage;
@@ -297,7 +298,8 @@ document.addEventListener("keydown", (event) =>{
     }
 })
 
-// Change page on touch devices by swiping. Source: https://stackoverflow.com/a/56663695/14517941
+// Change page on touch devices by swiping.
+// This function was written by Damjan Pavlica and available at https://stackoverflow.com/a/56663695/14517941
 let touchstartX = 0
 let touchendX = 0
 
