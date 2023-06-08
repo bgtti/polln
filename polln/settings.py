@@ -23,15 +23,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@b!g&8h80or2ebsau-qhqj(vc)lwkc99&cdiho6q(xyigwb0xo'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True <= for deployment debug should be set to false:
 DEBUG = False
 
-# ALLOWED_HOSTS = [] <= for deployment: star is added as we are not restricting any domains, since deployment 
-# on Railway free account, we cannot control the domain:
-ALLOWED_HOSTS = ["*"]
+# ALLOWED_HOSTS = [] <= for deployment: add domain
+ALLOWED_HOSTS = ["polln-production.up.railway.app", "polln.bgtti.dev"]
 
 
 # Application definition
