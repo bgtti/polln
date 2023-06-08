@@ -34,7 +34,7 @@
    - [Third-party code](#third-party-code)
 - [About and license](#about-and-license)
 - [Distinctiveness and complexity](#distinctiveness-and-complexity)
-<br><br>
+<br>
 
 # Introduction
  PollN is an interactive presentation software for real-time audience engagement and feedback.
@@ -205,7 +205,6 @@ The polln folder is the standard django application folder. Changes were made to
 <br><br>
 
 ## The App folders: website, dashboard, present, and poll
-<br>
 
 ### **1. website**
 Contains the files responsible for the homepage, guide page, sign-up, and log-in. It is responsible for the creation and deletion of user accounts.
@@ -248,15 +247,14 @@ Some special mentions:
 - Damjan Pavlica made swipe effects on the presentation possible with https://stackoverflow.com/a/56663695/14517941
 - Kyle from Web Dev Simplified wrote the question drag&drop login in https://www.youtube.com/watch?v=jfYWwQrtzzY&t=655s
 
-<br>
 
 # About and license
 This project was submitted as the capstone project for CS50w from HarvardX.
 More information about the CS50w requirements available at https://cs50.harvard.edu/web/2020/projects/final/capstone/
 
-This is a personal project completed by the author, which you are welcome to use and modify at your discretion.
+This is a personal project completed by the author, which you are welcome to use and modify at your discretion. (MIT Licence)
 
-If you liked this project, motivate the developer by gifing it a :star: on Github!
+If you liked this project, motivate the developer by giving it a :star: on Github!
 <br>
 
 # Distinctiveness and complexity
