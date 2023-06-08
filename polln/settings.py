@@ -26,9 +26,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-@b!g&8h80or2ebsau-qhqj(vc)lwkc99&cdiho6q(xyigwb0xo'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True <= for deployment debug should be set to false:
+DEBUG = False
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = [] <= for deployment: star is added as we are not restricting any domains, since deployment 
+# on Railway free account, we cannot control the domain:
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -129,12 +132,17 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = BASE_DIR / 'static_root'
+# STATIC_ROOT = BASE_DIR / 'static_root'
+
+# STATICFILES_DIRS = [
+#     BASE_DIR / "static",
+# ]
+# => static root and static files above changed for deployment to:
+STATIC_ROOT = os.path.join(BASE_DIR / 'staticfiles/')
 
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    os.path.join(BASE_DIR / "static"),
 ]
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default
