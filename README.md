@@ -2,6 +2,7 @@
   <br>
   <h1><b>PollN</b></h1>
   <strong>helping ideas spread like pollen</strong>
+  <br>
   <strong>deployment version: check the main branch to run this project on your local</strong>
 </div>
 <br>
@@ -16,15 +17,15 @@
   </tr>
 </table>
 <br>
-<div align="center">
-  <strong>Live at https://polln.bgtti.dev</strong>
-</div>
 <hr>
 
 ![Preview of app](static/app_preview/PollN_preview_tablet_and_phone.gif)
 <hr>
 <br>
 
+<div align="center">
+  <strong>Live at https://polln.bgtti.dev</strong>
+</div>
 
 # Table of Contents
 - [Introduction](#introduction)
