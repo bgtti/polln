@@ -3,7 +3,7 @@
   <h1><b>PollN</b></h1>
   <strong>helping ideas spread like pollen</strong>
   <br>
-  <strong>deployment version: check the main branch to run this project on your local</strong>
+  <strong>*deployment version*</strong>
 </div>
 <br>
 <table align="center" style="border-collapse:separate;">
@@ -16,16 +16,12 @@
     <td style="background: #344955; border-radius:20px"><small>Chart JS</small></td>
   </tr>
 </table>
-<br>
 <hr>
 
 ![Preview of app](static/app_preview/PollN_preview_tablet_and_phone.gif)
 <hr>
-<br>
 
-<div align="center">
-  <strong>Live at https://polln.bgtti.dev</strong>
-</div>
+**Live at https://polln.bgtti.dev**
 
 # Table of Contents
 - [Introduction](#introduction)
@@ -46,7 +42,7 @@
  
 # Introduction
  PollN is an interactive presentation software for real-time audience engagement and feedback.
- Users can use PollN for live polling, quizzes, and surveys. The installation bellow is to be used with the main branch code.
+ Users can use PollN for live polling, quizzes, and surveys. The installation bellow is to be used with the main branch code. 
 
 ## Installation
 
