@@ -126,6 +126,7 @@ function getPollResults(projectId) {
                         }
                     }
                     let percentCorrect = (nrCorrectAns/theAnswers.length)*100
+
                     if (!Number.isInteger(percentCorrect)){
                         percentCorrect = percentCorrect.toFixed(1);
                     }
@@ -147,7 +148,7 @@ function getPollResults(projectId) {
                     let thisQ = questionsData.filter(theQ => theQ.pk === question[0]);
                     thisQ = thisQ[0];
                     let numQs = thisQ.fields.nr_choices;
-                    let optionsQ = [thisQ.fields.option1, thisQ.fields.option2]
+                    let optionsQ = [thisQ.fields.option1, thisQ.fields.option2] //chart labels
                     if (numQs > 2){
                         if (numQs >= 3){
                             optionsQ.push(thisQ.fields.option3)
