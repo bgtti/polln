@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
-import mysql.connector
+import mysql.connector # <= for use in deployment
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -27,12 +27,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True <= for deployment debug should be set to false:
-DEBUG = True
-#DEBUG = False
+# DEBUG = True <= used in production, debug is set to false in production
+# DEBUG = True
+DEBUG = False
 
-# ALLOWED_HOSTS = [] <= for deployment: add domain
-#ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = [] <= used in production. In deployment, set allowed hosts and CSRF_TRUSTED_ORIGINS
+# ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ["polln-production.up.railway.app", "polln.bgtti.dev", "www.polln.bgtti.dev"]
 
 CSRF_TRUSTED_ORIGINS = ["polln-production.up.railway.app", "polln.bgtti.dev", "www.polln.bgtti.dev", "https://polln.bgtti.dev", "https://*.bgtti.dev", "https://polln.bgtti.dev", "https://polln-production.up.railway.app"] # for deployment of this app
@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'polln.wsgi.application'
 
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.mysql',
+        # 'ENGINE': 'django.db.backends.mysql', <= used with mysqlclient, but didnt work for deployment, so mysql-connector-python was used instead:
         'ENGINE': 'mysql.connector.django',
         'NAME': os.environ.get('MYSQLDATABASE'),
         'USER': os.environ.get('MYSQLUSER'),

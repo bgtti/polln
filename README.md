@@ -15,16 +15,22 @@
     <td style="background: #344955; border-radius:20px"><small>Chart JS</small></td>
   </tr>
 </table>
+<br>
+<div align="center">
+  <strong>Live at https://polln.bgtti.dev</strong>
+</div>
 <hr>
 
 ![Preview of app](static/app_preview/PollN_preview_tablet_and_phone.gif)
 <hr>
 <br>
 
+
 # Table of Contents
 - [Introduction](#introduction)
    - [Installation](#installation)
    - [How PollN works](#how-polln-works)
+   - [Branches: main and deploy](#branches-main-and-deploy)
 - [Code and organization](#code-and-organization)
    - [The project folder: polln](#the-project-folder-polln)
    - [The App folders: website, dashboard, present, and poll](#the-app-folders-website-dashboard-present-and-poll)
@@ -36,10 +42,10 @@
 - [About and license](#about-and-license)
 - [Distinctiveness and complexity](#distinctiveness-and-complexity)
 <br>
-
+ 
 # Introduction
  PollN is an interactive presentation software for real-time audience engagement and feedback.
- Users can use PollN for live polling, quizzes, and surveys.
+ Users can use PollN for live polling, quizzes, and surveys. The installation bellow is to be used with the main branch code.
 
 ## Installation
 
@@ -49,6 +55,7 @@
    >\
    > More information on how to clone this repository available at https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository
    > It is recommended that you set up a virtual environment. More information: https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#:~:text=To%20create%20a%20virtual%20environment,virtualenv%20in%20the%20below%20commands.&text=The%20second%20argument%20is%20the,project%20and%20call%20it%20env%20.
+   > Use the main branch, which is intended for local (production). The code from the deployment branch was changed to suit the deployment environment. More information bellow.
    ><br/><br/>
 
 </details>
@@ -179,6 +186,49 @@ The user can close a poll any time. Poll opening and closing will happen automat
 
 A full guide on how to use PollN is provided in the url /guide.
 <br><br>
+
+## Branches: main and deploy
+
+This repository contains 2 branches: main and deploy. The main branch contains the code that works in a local environment, while the deploy branch contains the code currently deployed at https://polln.bgtti.dev .
+
+The deploy branch is different from the main branch in the following way:
+
+<details>
+   <summary>1. Database & Settings.py</summary>
+
+   >\
+   > The database being used is one deployed, and the variables under DATABASE (in Settings.py) were changed accordingly.
+   > 
+   > mysql-connector-python is being used, since there were many errors using mysqlclient. You will also see this being reflected in the requirements.txt file.
+   > Debug was also set to false, and a variable CSRF_TRUSTED_ORIGINS was added.  The ALLOWED_HOSTS array was also changed to include the host url.
+   > The content of mydb.py was commented out, since this file is not needed for the db creation - the db was created in Railway.app
+   > 
+   ><br/><br/>
+
+</details>
+
+<details>
+   <summary>2. dashboard>utils.py</summary>
+
+   >\
+   > The qr_code_generator and delete_qr_code functions had a path modification to reflect the static file location after deployment and for the qr code to point to the deployment url instead of the local "http://127.0.0.1:8000" base url. 
+   > 
+   ><br/><br/>
+
+</details>
+
+<details>
+   <summary>3. Procfile and runtime.txt</summary>
+
+   >\
+   > These files were added as per requirements of hosting in Railway.app 
+   > 
+   ><br/><br/>
+
+</details>
+
+If you would like to play around with this code for whatever purpose, you should do so using the main branch, creating the database and running your server locally. The installation instructions should help you with that.
+
 
 # Code and organization
 The polln application has the following structure:
