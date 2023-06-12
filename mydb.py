@@ -6,21 +6,21 @@
 # if "Db set up!" appears on your terminal, all worked well
 # A video on how to set up django with mySQL is available here: https://www.youtube.com/watch?v=t10QcFx7d5k
 
-import mysql.connector
-import os
-from dotenv import load_dotenv
-load_dotenv()
+# import mysql.connector
+# import os
+# from dotenv import load_dotenv
+# load_dotenv()
 
-dataBase = mysql.connector.connect(
-    host='localhost',
-    user='root',
-    passwd=os.environ.get('MY_SQL_ROOT_PASSWORD'),
-)
+# dataBase = mysql.connector.connect(
+#     host='localhost',
+#     user='root',
+#     passwd=os.environ.get('MY_SQL_ROOT_PASSWORD'),
+# )
 
-# prepare a cursor object
-cursorObject = dataBase.cursor()
+# # prepare a cursor object
+# cursorObject = dataBase.cursor()
 
-# create db
-cursorObject.execute("CREATE DATABASE pollnmysql")
+# # create db
+# cursorObject.execute("CREATE DATABASE pollnmysql")
 
-print("Db set up!")
+# print("Db set up!")
