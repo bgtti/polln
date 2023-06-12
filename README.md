@@ -2,6 +2,7 @@
   <br>
   <h1><b>PollN</b></h1>
   <strong>helping ideas spread like pollen</strong>
+  <strong>deployment version: check the main branch to run this project on your local</strong>
 </div>
 <br>
 <table align="center" style="border-collapse:separate;">
