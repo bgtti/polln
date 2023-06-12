@@ -33,8 +33,9 @@ DEBUG = True
 
 # ALLOWED_HOSTS = [] <= for deployment: add domain
 #ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ["polln-production.up.railway.app", "polln.bgtti.dev"]
+ALLOWED_HOSTS = ["polln-production.up.railway.app", "polln.bgtti.dev", "www.polln.bgtti.dev"]
 
+CSRF_TRUSTED_ORIGINS = ["polln-production.up.railway.app", "polln.bgtti.dev", "www.polln.bgtti.dev"] # for deployment of this app
 
 # Application definition
 
