@@ -28,8 +28,8 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True <= for deployment debug should be set to false:
-#DEBUG = True
-DEBUG = False
+DEBUG = True
+#DEBUG = False
 
 # ALLOWED_HOSTS = [] <= for deployment: add domain
 #ALLOWED_HOSTS = []
