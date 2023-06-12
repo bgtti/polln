@@ -47,6 +47,7 @@
 
    >\
    > More information on how to clone this repository available at https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository
+   > It is recommended that you set up a virtual environment. More information: https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#:~:text=To%20create%20a%20virtual%20environment,virtualenv%20in%20the%20below%20commands.&text=The%20second%20argument%20is%20the,project%20and%20call%20it%20env%20.
    ><br/><br/>
 
 </details>
@@ -64,16 +65,6 @@
    > ```pwsh
    >pip freeze > requirements.txt
    >```
-   ><br/><br/>
-
-</details>
-
-<details>
-   <summary>3. Make sure you have mySQL installed</summary>
-
-   >\
-   > You can install mySQL here: https://dev.mysql.com/downloads/installer/
-   > W3Schools has a great article on it: https://www.w3schools.com/mysql/mysql_install_windows.asp
    ><br/><br/>
 
 </details>
