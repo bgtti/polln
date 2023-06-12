@@ -35,7 +35,7 @@ DEBUG = True
 #ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ["polln-production.up.railway.app", "polln.bgtti.dev", "www.polln.bgtti.dev"]
 
-CSRF_TRUSTED_ORIGINS = ["polln-production.up.railway.app", "polln.bgtti.dev", "www.polln.bgtti.dev"] # for deployment of this app
+CSRF_TRUSTED_ORIGINS = ["polln-production.up.railway.app", "polln.bgtti.dev", "www.polln.bgtti.dev", "https://polln.bgtti.dev", "https://www.polln.bgtti.dev", "https://polln-production.up.railway.app"] # for deployment of this app
 
 # Application definition
 
