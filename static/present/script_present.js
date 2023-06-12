@@ -75,7 +75,7 @@ function getPollResults(projectId) {
     fetch(`/present/deliver_answers/${projectId}`)
         .then(response => response.json())
         .then(data => {
-            //console.log(data);
+            console.log(data);
             // get the data objects
             const questionsData = JSON.parse(data.questions);
             const answersData = JSON.parse(data.answers);
@@ -126,6 +126,7 @@ function getPollResults(projectId) {
                         }
                     }
                     let percentCorrect = (nrCorrectAns/theAnswers.length)*100
+
                     if (!Number.isInteger(percentCorrect)){
                         percentCorrect = percentCorrect.toFixed(1);
                     }
@@ -137,17 +138,20 @@ function getPollResults(projectId) {
                     theResultLine2.classList.add('PRESENT-QA-sub')
                     answerPresentation.append(theResultLine1, theResultLine2);
                 } else if (question[1] === "Multiple Choice"){
+                    console.log("in MC")
                     // GET VOTES AND OPTIONS
                     let theVotes = answersToThisQuestion.map(vote => vote.fields.users_choice)
                     // reduce array to object (count nums of elements): https://stackoverflow.com/a/66002712/14517941
                     let votesResult = theVotes.reduce((acc, curr) => (acc[curr] = (acc[curr] || 0) + 1, acc), {});
                     // get array of votes for each option
                     let votesResultArray = [votesResult["1"] ??= 0, votesResult["2"] ??= 0];
+                    console.log(`results: ${votesResultArray}`)
                     // get the MC options: nullish coalescing assignment (??=) operator https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_assignment
                     let thisQ = questionsData.filter(theQ => theQ.pk === question[0]);
                     thisQ = thisQ[0];
                     let numQs = thisQ.fields.nr_choices;
-                    let optionsQ = [thisQ.fields.option1, thisQ.fields.option2]
+                    let optionsQ = [thisQ.fields.option1, thisQ.fields.option2] //chart labels
+                    console.log(optionsQ)
                     if (numQs > 2){
                         if (numQs >= 3){
                             optionsQ.push(thisQ.fields.option3)
