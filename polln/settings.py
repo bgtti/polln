@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True <= used in production, debug is set to false in production
 # DEBUG = True
-DEBUG = False
+DEBUG = True
 
 # ALLOWED_HOSTS = [] <= used in production. In deployment, set allowed hosts and CSRF_TRUSTED_ORIGINS
 # ALLOWED_HOSTS = []
