@@ -33,7 +33,8 @@ def qr_code_generator(project_code):
     Generates QR code that leads to project' poll url.
     Function based on qrcode library: https://pypi.org/project/qrcode/
     """
-    base_url = "http://127.0.0.1:8000"
+    # base_url = "http://127.0.0.1:8000" # while in local
+    base_url = "https://polln.bgtti.dev/" # in production
     url = f"{base_url}/poll/{project_code}"
     qr = qrcode.QRCode(
         version=1,
