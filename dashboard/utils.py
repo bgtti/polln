@@ -36,7 +36,6 @@ def qr_code_generator(project_code):
     # base_url = "http://127.0.0.1:8000" # while in local
     base_url = "https://polln.bgtti.dev" # in production
     url = f"{base_url}/poll/{project_code}"
-    # url = f"/poll/{project_code}"
     qr = qrcode.QRCode(
         version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_H,
@@ -50,7 +49,8 @@ def qr_code_generator(project_code):
     image_name = f"qr_{project_code}.png"
 
     # Save to static folder: static/dashboard/media
-    save_path = os.path.join(settings.BASE_DIR, "static", "dashboard", "media", image_name)
+    # save_path = os.path.join(settings.BASE_DIR, "static", "dashboard", "media", image_name) # while in local/development
+    save_path = os.path.join(settings.STATIC_ROOT, "dashboard", "media", image_name) # for deployment
 
     try:
         img.save(save_path)
@@ -69,8 +69,10 @@ def delete_qr_code(project_code):
     image_name = f"qr_{project_code}.png"
 
     # Delete from static folder: static/dashboard/media
-    delete_path = os.path.join(
-        settings.BASE_DIR, "static", "dashboard", "media", image_name)
+    # delete_path = os.path.join(
+    #     settings.BASE_DIR, "static", "dashboard", "media", image_name) # for production
+    
+    delete_path = os.path.join(settings.STATIC_ROOT, "dashboard", "media", image_name) # for deployment
 
     try:
         os.remove(delete_path)
