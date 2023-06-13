@@ -18,10 +18,18 @@ function reloadPage() {
 
 // function that copies the link to the poll to the clipboard (modal_share_link)
 function copyLinkToPollToClipboard(el) {
+    event.stopImmediatePropagation()
     event.preventDefault()
     let theUrl = el.getAttribute('data-url');
+    if (navigator.clipboard && window.isSecureContext){
+        navigator.clipboard.writeText(theUrl)
+    } else {
+        if (!theUrl.includes('localhost') && !theUrl.includes('127.0.0.1')){
+            theUrl = theUrl.replace('http://', 'https://');
+        }
+        navigator.clipboard.writeText(theUrl)
+    }
     console.log(theUrl)
-    navigator.clipboard.writeText(theUrl);
     //modalHideUnhide('modal_share_link')
 }
 
