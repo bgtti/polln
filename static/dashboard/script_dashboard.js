@@ -21,7 +21,7 @@ function copyLinkToPollToClipboard(el) {
     event.preventDefault()
     let theUrl = el.getAttribute('data-url');
     navigator.clipboard.writeText(theUrl);
-    modalHideUnhide('modal_share_link')
+    //modalHideUnhide('modal_share_link')
 }
 
 //function that opens and closes poll
