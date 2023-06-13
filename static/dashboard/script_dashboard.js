@@ -17,17 +17,17 @@ function reloadPage() {
 }
 
 // function that copies the link to the poll to the clipboard (modal_share_link)
-function copyLinkToPollToClipboard(el) {
-    event.stopImmediatePropagation()
+function copyLinkToPollToClipboard(el, event) {
+    // event.stopImmediatePropagation()
     event.preventDefault()
     let theUrl = el.getAttribute('data-url');
     if (navigator.clipboard && window.isSecureContext){
-        navigator.clipboard.writeText(theUrl)
+        //navigator.clipboard.writeText(theUrl)
     } else {
         if (!theUrl.includes('localhost') && !theUrl.includes('127.0.0.1')){
             theUrl = theUrl.replace('http://', 'https://');
         }
-        navigator.clipboard.writeText(theUrl)
+        //navigator.clipboard.writeText(theUrl)
     }
     console.log(theUrl)
     //modalHideUnhide('modal_share_link')
