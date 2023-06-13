@@ -20,6 +20,7 @@ function reloadPage() {
 function copyLinkToPollToClipboard(el) {
     event.preventDefault()
     let theUrl = el.getAttribute('data-url');
+    console.log(theUrl)
     navigator.clipboard.writeText(theUrl);
     //modalHideUnhide('modal_share_link')
 }
