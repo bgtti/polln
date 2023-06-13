@@ -115,6 +115,7 @@
                     onclick="changePage('previous')">Previous</a>
                 {% if question.position == num_questions %}
                     <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2"
+                        data-wasclicked="true"
                         onclick="checkIfPollIsOpen('{{ project.pk }}')">Submit</a>
                 {% else %}
                     <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2" onclick="changePage('next')">Next</a>

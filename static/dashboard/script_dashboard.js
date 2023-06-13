@@ -16,6 +16,14 @@ function reloadPage() {
     location.reload()
 }
 
+// function that copies the link to the poll to the clipboard (modal_share_link)
+function copyLinkToPollToClipboard(el) {
+    event.preventDefault()
+    let theUrl = el.getAttribute('data-url');
+    navigator.clipboard.writeText(theUrl);
+    modalHideUnhide('modal_share_link')
+}
+
 //function that opens and closes poll
 // function accepts two parameters: the project id and either the string 'open' or 'close'
 function openOrClosePoll(projectId, openOrClose){

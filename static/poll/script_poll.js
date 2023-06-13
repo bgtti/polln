@@ -25,6 +25,12 @@ function changePage(nextOrPrevious) {
 
 function checkIfPollIsOpen(projectId){
     event.preventDefault()
+    //Disable submit button after click to avoid double submission
+    let submitButton = event.target;
+    if (submitButton.dataset.wasclicked === "true") {
+        return;
+    }
+    button.dataset.wasclicked = "true";
     // Create the JSON object
     let data = {
         project: projectId
