@@ -22,6 +22,7 @@
 <hr>
 
 **Live at https://polln.bgtti.dev**
+**Video available at https://youtu.be/9yoCYDmnFfY**
 
 # Table of Contents
 - [Introduction](#introduction)
@@ -199,7 +200,7 @@ The deploy branch is different from the main branch in the following way:
    > mysql-connector-python is being used, since there were many errors using mysqlclient. You will also see this being reflected in the requirements.txt file.
    > Debug was also set to false, and a variable CSRF_TRUSTED_ORIGINS was added.  The ALLOWED_HOSTS array was also changed to include the host url.
    > The content of mydb.py was commented out, since this file is not needed for the db creation - the db was created in Railway.app
-   > 
+   > Another change in Settings.py was the required addition of ```WSGI_APPLICATION = 'polln.wsgi.application'```. Consult the Railway.app documentation for more information.
    ><br/><br/>
 
 </details>
