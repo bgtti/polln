@@ -11,11 +11,12 @@
             {% url 'poll:index' prj=project.prj_code as poll_url %}
             <a href="https://wa.me/?text=Hi!%20I'm%20inviting%20you%20to%20take%20part%20in%20a%20poll!%0A%0A{{ request.scheme }}://{{ request.get_host }}{{ poll_url }}"
                 role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type4"
-                target="_blank"
-                onclick="">Share with WhatsApp</a>
+                target="_blank" 
+                >Share with WhatsApp</a>
             
             <a href="" role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type4"
-                onclick="{()=>{modalHideUnhide('modal_share_link');}}">Copy link</a>
+                data-url="{{ request.scheme }}://{{ request.get_host }}{{ poll_url }}"
+                onclick="copyLinkToPollToClipboard(this)">Copy link</a>
             <p>The respondents can access the poll through the direct link:</p> 
             <p><b>{{ request.scheme }}://{{ request.get_host }}{% url 'poll:index' prj=project.prj_code %}</b></p>
             <p>or place the code <b>{{ project.prj_code }}</b> at</p>

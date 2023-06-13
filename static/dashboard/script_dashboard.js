@@ -9,11 +9,19 @@ function hideUnhideIfChecked(el_id, theCheckbox = event.target) {
         theElement.classList.remove("BASE-hide");
     } else {
         theElement.classList.add("BASE-hide");
-    }
+    } 
 }
 //function to reload the page, used upon closing add_question to reset changes done while edditing question
 function reloadPage() {
     location.reload()
+}
+
+// function that copies the link to the poll to the clipboard (modal_share_link)
+function copyLinkToPollToClipboard(el){
+    event.preventDefault()
+    let theUrl= el.getAttribute('data-url');
+    navigator.clipboard.writeText(theUrl);
+    modalHideUnhide('modal_share_link')
 }
 
 //function that opens and closes poll
