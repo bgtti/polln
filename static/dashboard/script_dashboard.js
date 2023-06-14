@@ -25,15 +25,16 @@ function copyLinkToPollToClipboard(event) {
     if (!theUrl.includes('localhost') || !theUrl.includes('127.0.0.1')) {
         theUrl = theUrl.replace('http://', 'https://');
     }
+    console.log("copying")
 
-    navigator.clipboard
-        .writeText(theUrl)
-        .then(() => {
-            alert("successfully copied");
-        })
-        .catch(() => {
-            alert("something went wrong");
-        });
+    // navigator.clipboard
+    //     .writeText(theUrl)
+    //     .then(() => {
+    //         alert("successfully copied");
+    //     })
+    //     .catch(() => {
+    //         alert("something went wrong");
+    //     });
     //modalHideUnhide('modal_share_link');
 }
 
