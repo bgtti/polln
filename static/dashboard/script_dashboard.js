@@ -16,31 +16,6 @@ function reloadPage() {
     location.reload()
 }
 
-// function that copies the link to the poll to the clipboard (modal_share_link)
-// function copyLinkToPollToClipboard(event) {
-//     event.preventDefault();
-//     let theUrl = event.target.getAttribute('data-url');
-//     console.log(theUrl)
-
-//     if (!theUrl.includes('localhost') || !theUrl.includes('127.0.0.1')) {
-//         theUrl = theUrl.replace('http://', 'https://');
-//     }
-//     console.log("copying")
-
-//     // navigator.clipboard
-//     //     .writeText(theUrl)
-//     //     .then(() => {
-//     //         alert("successfully copied");
-//     //     })
-//     //     .catch(() => {
-//     //         alert("something went wrong");
-//     //     });
-//     //modalHideUnhide('modal_share_link');
-// }
-function hello(){
-    console.log("hi")
-}
-
 //function that opens and closes poll
 // function accepts two parameters: the project id and either the string 'open' or 'close'
 function openOrClosePoll(projectId, openOrClose){
