@@ -19,8 +19,11 @@
 ![Preview of app](static/app_preview/PollN_preview_tablet_and_phone.gif)
 <hr>
 
-**Live at https://polln.bgtti.dev**
-**Video available at https://youtu.be/9yoCYDmnFfY**
+**Live at [https://polln.bgtti.dev](https://polln.bgtti.dev)** 
+\
+**Video available at [https://youtu.be/9yoCYDmnFfY](https://youtu.be/9yoCYDmnFfY)**
+\
+**Original git repo with main and deploy branches: [https://github.com/bgtti/polln](https://github.com/bgtti/polln)**
 
 # Table of Contents
 - [Introduction](#introduction)
@@ -225,6 +228,7 @@ The deploy branch is different from the main branch in the following way:
 
 If you would like to play around with this code for whatever purpose, you should do so using the main branch, creating the database and running your server locally. The installation instructions should help you with that.
 
+Another thing to note is that the 'Copy Link' button in the project page might not properly copy the link to the poll to the clipboard. The issue could not be solved.
 
 # Code and organization
 The polln application has the following structure:
