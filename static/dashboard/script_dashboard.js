@@ -17,23 +17,24 @@ function reloadPage() {
 }
 
 // function that copies the link to the poll to the clipboard (modal_share_link)
-function copyLinkToPollToClipboard() {
-    window.onbeforeunload = function (e) {
-        // Turning off the event
-        e.preventDefault();
-    }
+function copyLinkToPollToClipboard(event) {
+    event.preventDefault();
     let theUrl = event.target.getAttribute('data-url');
     console.log(theUrl)
 
-    if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(theUrl)
-    } else {
-        if (!theUrl.includes('localhost') || !theUrl.includes('127.0.0.1')) {
-            theUrl = theUrl.replace('http://', 'https://');
-        }
+    if (!theUrl.includes('localhost') || !theUrl.includes('127.0.0.1')) {
+        theUrl = theUrl.replace('http://', 'https://');
     }
+
+    navigator.clipboard
+        .writeText(theUrl)
+        .then(() => {
+            alert("successfully copied");
+        })
+        .catch(() => {
+            alert("something went wrong");
+        });
     //modalHideUnhide('modal_share_link');
-    alert(`${theUrl}`)
 }
 
 //function that opens and closes poll
