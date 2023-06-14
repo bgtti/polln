@@ -18,19 +18,26 @@ function reloadPage() {
 
 // function that copies the link to the poll to the clipboard (modal_share_link)
 function copyLinkToPollToClipboard(el, event) {
-    // event.stopImmediatePropagation()
-    event.preventDefault()
+    event.preventDefault();
     let theUrl = el.getAttribute('data-url');
-    if (navigator.clipboard && window.isSecureContext){
-        //navigator.clipboard.writeText(theUrl)
+
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(theUrl).then(function () {
+            console.log('URL copied to clipboard:', theUrl);
+            // Perform any additional actions or show a success message
+        }).catch(function (error) {
+            console.error('Failed to copy URL to clipboard:', error);
+            // Handle the error, show an error message, or provide a fallback method
+        });
     } else {
-        if (!theUrl.includes('localhost') && !theUrl.includes('127.0.0.1')){
+        if (!theUrl.includes('localhost') && !theUrl.includes('127.0.0.1')) {
             theUrl = theUrl.replace('http://', 'https://');
         }
-        //navigator.clipboard.writeText(theUrl)
+        console.log('URL:', theUrl);
+        // Perform any necessary fallback actions or display the modified URL
     }
-    console.log(theUrl)
-    //modalHideUnhide('modal_share_link')
+    //modalHideUnhide('modal_share_link');
+    return false
 }
 
 //function that opens and closes poll
