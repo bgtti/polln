@@ -16,6 +16,7 @@
             
             <a href="" role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type4"
                 data-url="{{ request.scheme }}://{{ request.get_host }}{{ poll_url }}"
+                onclick="{()=>{copyLinkToPollToClipboard(event)}}"
                 >Copy links</a>
             <p>The respondents can access the poll through the direct link:</p> 
             <p><b>{{ request.scheme }}://{{ request.get_host }}{% url 'poll:index' prj=project.prj_code %}</b></p>
