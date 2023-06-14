@@ -21,9 +21,7 @@
 
 **Live at [https://polln.bgtti.dev](https://polln.bgtti.dev)** 
 \
-**Video available at [https://youtu.be/9yoCYDmnFfY](https://youtu.be/9yoCYDmnFfY)**
-\
-**Original git repo with main and deploy branches: [https://github.com/bgtti/polln](https://github.com/bgtti/polln)**
+**Video demo at [https://youtu.be/9yoCYDmnFfY](https://youtu.be/9yoCYDmnFfY)**
 
 # Table of Contents
 - [Introduction](#introduction)
