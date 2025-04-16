@@ -3,10 +3,10 @@
 
 <!-- Content -->
 {% if message %}
-    <div class="alert alert-secondary alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+<div class="alert alert-secondary alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
 {% endif %}
 
 <div class="WEBSITE-form-container">
@@ -15,11 +15,13 @@
     <form action="{% url 'website:login' %}" method="post">
         {% csrf_token %}
         <div class="form-group">
-            <input autofocus class="form-control" type="text" name="username" placeholder="Username">
+            <input autocomplete="username" autofocus class="form-control" type="text" name="username"
+                placeholder="Username">
         </div>
         <br>
         <div class="form-group">
-            <input class="form-control" type="password" name="password" placeholder="Password">
+            <input autocomplete="current-password" class="form-control" type="password" name="password"
+                placeholder="Password">
         </div>
         <br>
         <input class="btn btn-primary BASE-btn BASE-btn-type2" type="submit" value="Login">
