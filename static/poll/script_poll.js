@@ -1,6 +1,6 @@
 // show next poll page
 function changePage(nextOrPrevious) {
-    if (event){
+    if (event) {
         event.preventDefault()
     }
     let allPages = document.querySelectorAll('.POLL-page');
@@ -23,14 +23,14 @@ function changePage(nextOrPrevious) {
     nextPage.classList.remove("BASE-hide")
 }
 
-function checkIfPollIsOpen(projectId){
+function checkIfPollIsOpen(projectId, event) {
     event.preventDefault()
     //Disable submit button after click to avoid double submission
     let submitButton = event.target;
     if (submitButton.dataset.wasclicked === "true") {
         return;
     }
-    button.dataset.wasclicked = "true";
+    submitButton.dataset.wasclicked = "true";
     // Create the JSON object
     let data = {
         project: projectId
@@ -45,7 +45,7 @@ function checkIfPollIsOpen(projectId){
     })
         .then(response => response.json())
         .then(responseData => {
-            if (responseData.status === 'success'){
+            if (responseData.status === 'success') {
                 submitPollAnswers(projectId) //submit answers if poll is open
             } else {
                 let submissionStatus = document.getElementById('POLL-submission-status')
@@ -59,7 +59,7 @@ function checkIfPollIsOpen(projectId){
 }
 
 // submit answers from poll
-function submitPollAnswers(projectId){
+function submitPollAnswers(projectId) {
     // Create an array to store the answers
     let answers = [];
 
@@ -108,7 +108,7 @@ function submitPollAnswers(projectId){
 }
 
 //check poll password
-function poll_password_check(projectId){
+function poll_password_check(projectId) {
     event.preventDefault()
     //get password and CSRF token from form
     let givenPassword = document.getElementById('projectpassword').value;

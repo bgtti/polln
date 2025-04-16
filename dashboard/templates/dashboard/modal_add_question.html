@@ -1,42 +1,48 @@
 <div class="BASE-modal-container BASE-hide" id="modal_add_question">
     <div class="BASE-modal">
         <div class="BASE-modal-header">
-            <div class="BASE-modal-icon-close" onclick="{()=>{modalHideUnhide('modal_add_question')}; reloadPage()}">
-                <h2 id="DASHBOARD-Q-modal-title">Add Question</h2>
+            <h2 id="DASHBOARD-Q-modal-title">Add Question</h2>
+            <div class="BASE-modal-icon-close" onclick="modalHideUnhide('modal_add_question'); reloadPage();">
                 <i class="fa-solid fa-xmark fa-xl"></i>
             </div>
         </div>
-        <hr>
+
         <div>
             <form action="{% url 'dashboard:add_question' %}" method="post" id="DASHBOARD-Q-edit-form">
                 {% csrf_token %}
-                <input type="hidden" id="project_pk" name="project_pk" value="{{ project.pk }}" >
+                <input type="hidden" id="project_pk" name="project_pk" value="{{ project.pk }}">
                 <!-- Question type choice -->
                 <div class="DASHBOARD-question-choices">
-                    <div class="DASHBOARD-question-choice-container DASHBOARD-question-choice-container-checked" id="DASHBOARD-choice-1">
-                            <label for="question" class="DASHBOARD-question-choice-label">
-                                <input type="checkbox" name="question" id="question" class="DASHBOARD-question-checkbox" checked onclick="checkedQuestionType('DASHBOARD-choice-1')">
-                                {% load static %}
-                                <div><img class="DASHBOARD-question-icon" src="{% static 'dashboard/media/icon_question.png' %}" alt="Question" aria-hidden="true" focusable="false"/></div>
-                                <span>Open Ended</span>
-                            </label>
+                    <div class="DASHBOARD-question-choice-container DASHBOARD-question-choice-container-checked"
+                        id="DASHBOARD-choice-1">
+                        <label for="question" class="DASHBOARD-question-choice-label">
+                            <input type="checkbox" name="question" id="question" class="DASHBOARD-question-checkbox"
+                                checked onclick="checkedQuestionType('DASHBOARD-choice-1')">
+                            {% load static %}
+                            <div><img class="DASHBOARD-question-icon"
+                                    src="{% static 'dashboard/media/icon_question.png' %}" alt="Question"
+                                    aria-hidden="true" focusable="false" /></div>
+                            <span>Open Ended</span>
+                        </label>
                     </div>
                     <div class="DASHBOARD-question-choice-container" id="DASHBOARD-choice-2">
                         <label for="qanda" class="DASHBOARD-question-choice-label">
                             <input type="checkbox" name="qanda" id="qanda" class="DASHBOARD-question-checkbox"
                                 onclick="checkedQuestionType('DASHBOARD-choice-2')">
                             {% load static %}
-                            <div><img class="DASHBOARD-question-icon" src="{% static 'dashboard/media/icon_qanda.png' %}" alt="Q and A"
-                                    aria-hidden="true" focusable="false" /></div>
+                            <div><img class="DASHBOARD-question-icon"
+                                    src="{% static 'dashboard/media/icon_qanda.png' %}" alt="Q and A" aria-hidden="true"
+                                    focusable="false" /></div>
                             <span>Q & A</span>
                         </label>
                     </div>
                     <div class="DASHBOARD-question-choice-container" id="DASHBOARD-choice-3">
                         <label for="multiplechoice" class="DASHBOARD-question-choice-label">
-                            <input type="checkbox" name="multiplechoice" id="multiplechoice" class="DASHBOARD-question-checkbox"
-                                onclick="checkedQuestionType('DASHBOARD-choice-3')">
+                            <input type="checkbox" name="multiplechoice" id="multiplechoice"
+                                class="DASHBOARD-question-checkbox" onclick="checkedQuestionType('DASHBOARD-choice-3')">
                             {% load static %}
-                            <div><img class="DASHBOARD-question-icon" src="{% static 'dashboard/media/icon_multiple_choice.png' %}" alt="Multiple Choice"
+                            <div><img class="DASHBOARD-question-icon"
+                                    src="{% static 'dashboard/media/icon_multiple_choice.png' %}" alt="Multiple Choice"
                                     aria-hidden="true" focusable="false" /></div>
                             <span>Multiple Choice</span>
                         </label>
@@ -46,14 +52,16 @@
                 <!-- The question -->
                 <div>
                     <label for="thequestion" class="BASE-modal-label">What is your question?</label>
-                    <input autofocus class="form-control" type="text" name="thequestion" placeholder="Type your question here">
+                    <input autofocus class="form-control" type="text" name="thequestion"
+                        placeholder="Type your question here">
                 </div>
                 <br>
                 <!-- If Q&A -->
                 <div id="DASHBOARD-question-type-qanda-container" class="BASE-hide">
                     <div>
                         <label for="theanswer" class="BASE-modal-label">What is the answer?</label>
-                        <input autofocus class="form-control" type="text" name="theanswer" placeholder="Type the answer here">
+                        <input autofocus class="form-control" type="text" name="theanswer"
+                            placeholder="Type the answer here">
                     </div>
                     <br>
                 </div>
@@ -70,48 +78,60 @@
                     </div>
                     <!-- Option arrows from  "https://www.flaticon.com/free-icons/arrow" title="arrow icons">Arrow icons created by Creatype - Flaticon -->
                     <div>
-                        <label for="choice1" class="BASE-modal-label DASHBOARD-question-multi-label"><img src="{% static 'dashboard/media/icon_arrow.png' %}" alt="arrow" class="DASHBOARD-question-multi-arrow">Option 1:</label> 
-                        <input autofocus class="form-control" type="text" name="choice1" placeholder="Type option 1 here">
+                        <label for="choice1" class="BASE-modal-label DASHBOARD-question-multi-label"><img
+                                src="{% static 'dashboard/media/icon_arrow.png' %}" alt="arrow"
+                                class="DASHBOARD-question-multi-arrow">Option 1:</label>
+                        <input autofocus class="form-control" type="text" name="choice1"
+                            placeholder="Type option 1 here">
                     </div>
                     <div>
                         <div>
                             <label for="choice2" class="BASE-modal-label DASHBOARD-question-multi-label"><img
-                                    src="{% static 'dashboard/media/icon_arrow.png' %}" alt="arrow" class="DASHBOARD-question-multi-arrow">Option
+                                    src="{% static 'dashboard/media/icon_arrow.png' %}" alt="arrow"
+                                    class="DASHBOARD-question-multi-arrow">Option
                                 2:</label>
-                            <input autofocus class="form-control" type="text" name="choice2" placeholder="Type option 2 here">
+                            <input autofocus class="form-control" type="text" name="choice2"
+                                placeholder="Type option 2 here">
                         </div>
                     </div>
                     <div class="BASE-hide DASHBOARD-multi-choice" data-multiChoice="3">
                         <div>
                             <label for="choice3" class="BASE-modal-label DASHBOARD-question-multi-label"><img
-                                    src="{% static 'dashboard/media/icon_arrow.png' %}" alt="arrow" class="DASHBOARD-question-multi-arrow">Option
+                                    src="{% static 'dashboard/media/icon_arrow.png' %}" alt="arrow"
+                                    class="DASHBOARD-question-multi-arrow">Option
                                 3:</label>
-                            <input autofocus class="form-control" type="text" name="choice3" placeholder="Type option 3 here">
+                            <input autofocus class="form-control" type="text" name="choice3"
+                                placeholder="Type option 3 here">
                         </div>
                     </div>
                     <div class="BASE-hide DASHBOARD-multi-choice" data-multiChoice="4">
                         <div>
                             <label for="choice4" class="BASE-modal-label DASHBOARD-question-multi-label"><img
-                                    src="{% static 'dashboard/media/icon_arrow.png' %}" alt="arrow" class="DASHBOARD-question-multi-arrow">Option
+                                    src="{% static 'dashboard/media/icon_arrow.png' %}" alt="arrow"
+                                    class="DASHBOARD-question-multi-arrow">Option
                                 4:</label>
-                            <input autofocus class="form-control" type="text" name="choice4" placeholder="Type option 4 here">
+                            <input autofocus class="form-control" type="text" name="choice4"
+                                placeholder="Type option 4 here">
                         </div>
                     </div>
                     <div class="BASE-hide DASHBOARD-multi-choice" data-multiChoice="5">
                         <div>
                             <label for="choice5" class="BASE-modal-label DASHBOARD-question-multi-label"><img
-                                    src="{% static 'dashboard/media/icon_arrow.png' %}" alt="arrow" class="DASHBOARD-question-multi-arrow">Option
+                                    src="{% static 'dashboard/media/icon_arrow.png' %}" alt="arrow"
+                                    class="DASHBOARD-question-multi-arrow">Option
                                 5:</label>
-                            <input autofocus class="form-control" type="text" name="choice5" placeholder="Type option 5 here">
+                            <input autofocus class="form-control" type="text" name="choice5"
+                                placeholder="Type option 5 here">
                         </div>
                     </div>
                     <!-- Whether Multiple choice has answer -->
                     <br>
                     <div class="form-group">
                         <div class="form-check form-switch" id="DASHBOARD-Q-SwitchParent">
-                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="choiceAnswerEnabled"
-                                role="switch" onclick="hideUnhideIfChecked('choiceAnswer')">
-                            <label class="form-check-label" for="flexSwitchCheckDefault" class="BASE-modal-label">Set correct answer</label>
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"
+                                name="choiceAnswerEnabled" role="switch" onclick="hideUnhideIfChecked('choiceAnswer')">
+                            <label class="form-check-label" for="flexSwitchCheckDefault" class="BASE-modal-label">Set
+                                correct answer</label>
                         </div>
                     </div>
                     <br>
@@ -129,14 +149,17 @@
                 </div>
                 <!-- Buttons -->
                 <div class="BASE-modal-btn-group">
-                    <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2"
-                        onclick="{()=>{modalHideUnhide('modal_add_question'); reloadPage()}}">Cancel</a>
-                    <input role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1" type="submit" value="Save" onclick="openOrClosePoll('{{project.pk}}', 'close')">
-                    <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type3 BASE-hide" id="DASHBOARD-Q-delete"
+                    <a href="javascript:void(0)" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2"
+                        onclick="modalHideUnhide('modal_add_question'); reloadPage();">Cancel</a>
+
+                    <input role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1" type="submit"
+                        value="Save" onclick="openOrClosePoll('{{project.pk}}', 'close')">
+
+                    <a href="javascript:void(0)" role="button"
+                        class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type3 BASE-hide" id="DASHBOARD-Q-delete"
                         onclick="openOrClosePoll('{{project.pk}}', 'close')">Delete</a>
                 </div>
             </form>
         </div>
     </div>
 </div>
-

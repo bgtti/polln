@@ -17,5 +17,6 @@ urlpatterns = [
     path("open_poll/<int:id>", views.open_poll, name="open_poll"),
     path("close_poll/<int:id>", views.close_poll, name="close_poll"),
     path("project_answers/<int:id>", views.project_answers, name="project_answers"),
+    path('set_session_message/', views.set_session_message, name='set_session_message')
 ]
 urlpatterns += staticfiles_urlpatterns()

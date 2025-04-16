@@ -8,7 +8,7 @@ from collections import Counter
 import json
 from website.models import User
 from dashboard.models import Project, Question, Respondent, Answer, Result
-from dashboard.utils import create_prj_code, qr_code_generator, delete_qr_code
+from dashboard.utils import create_prj_code, qr_code_generator, delete_qr_code 
 
 # index is the user's dashboard
 def index(request, message=None):
@@ -300,6 +300,7 @@ def question_order(request):
     if request.method == "POST":
         data = json.loads(request.body)
         body = data.get('body', [])
+        request.session['index_message'] = None
 
         for question_data in body:
             if len(question_data) == 2:
@@ -449,3 +450,12 @@ def project_answers(request, id):
         "question_results": question_results,
         "respondents": latest_respondents,
     })
+
+# @csrf_exempt 
+def set_session_message(request):
+    if request.method == "POST":
+        message = request.POST.get("message")
+        if message:
+            request.session["index_message"] = message
+            return JsonResponse({"status": "ok"})
+    return JsonResponse({"status": "error"}, status=400)
