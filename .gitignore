@@ -123,6 +123,7 @@ celerybeat.pid
 .env
 .env.production
 .env.example
+.env.example.txt
 .venv
 env/
 venv/
