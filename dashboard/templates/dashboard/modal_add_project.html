@@ -1,12 +1,12 @@
 <div class="BASE-modal-container BASE-hide" id="modal_add_project">
     <div class="BASE-modal">
         <div class="BASE-modal-header">
-            <div class="BASE-modal-icon-close" onclick="{()=>{modalHideUnhide('modal_add_project')}; reloadPage()}">
-                <h2 id="DASHBOARD-P-modal-title">Add Project</h2>
+            <h2 id="DASHBOARD-P-modal-title">Add Project</h2>
+            <div class="BASE-modal-icon-close" onclick="modalHideUnhide('modal_add_project'); reloadPage();">
                 <i class="fa-solid fa-xmark fa-xl"></i>
             </div>
         </div>
-        <hr>
+
         <div>
             <form action="{% url 'dashboard:add_project' %}" method="post" id="DASHBOARD-P-edit-form">
                 {% csrf_token %}
@@ -18,20 +18,24 @@
                 <div class="form-group">
                     <div class="form-check form-switch" id="DASHBOARD-P-SwitchParentUsername">
                         <input class="form-check-input" type="checkbox" id="flexSwitchUsername" name="usernamenabled">
-                        <label class="form-check-label" for="flexSwitchUsername" class="BASE-modal-label">Require username</label>
+                        <label class="form-check-label BASE-modal-label" for="flexSwitchUsername">Require
+                            username</label>
                     </div>
                 </div>
                 <br>
                 <div class="form-group">
                     <div class="form-check form-switch" id="DASHBOARD-P-SwitchParent">
-                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="pwenabled" onclick="hideUnhideIfChecked('setProjectPasswordContainer')">
-                        <label class="form-check-label" for="flexSwitchCheckDefault" class="BASE-modal-label">Set password</label>
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="pwenabled"
+                            onclick="hideUnhideIfChecked('setProjectPasswordContainer')">
+                        <label class="form-check-label BASE-modal-label" for="flexSwitchCheckDefault">Set
+                            password</label>
                     </div>
-                    <small id="pwhelp" class="form-text text-muted">If you set a password, only persons with the password will be able to answer your questions.</small>
+                    <small id="pwhelp" class="form-text text-muted">If you set a password, only persons with the
+                        password will be able to answer your questions.</small>
                 </div>
                 <br>
                 <div class="form-group BASE-hide" id="setProjectPasswordContainer">
-                    <label for="projectname" class="BASE-modal-label">What is the password?</label>
+                    <label for="projectpw" class="BASE-modal-label">What is the password?</label>
                     <br>
                     <input autofocus class="form-control" type="text" name="projectpw" placeholder="Project Password">
                     <br>
@@ -39,14 +43,18 @@
                 <div class="form-group">
                     <div class="form-check form-switch" id="DASHBOARD-P-SwitchParentAnswer">
                         <input class="form-check-input" type="checkbox" id="flexSwitchAnswer" name="answernabled">
-                        <label class="form-check-label" for="flexSwitchAnswer" class="BASE-modal-label">Show answer</label>
+                        <label class="form-check-label BASE-modal-label" for="flexSwitchAnswer">Show
+                            answer</label>
                     </div>
-                    <small id="answerhelp" class="form-text text-muted">Show respondents the answers after submission.</small>
+                    <small id="answerhelp" class="form-text text-muted">Show respondents the answers after
+                        submission.</small>
                 </div>
                 <br>
                 <div class="BASE-modal-btn-group">
-                    <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2" onclick="{()=>{modalHideUnhide('modal_add_project'); reloadPage()}}">Cancel</a>
-                    <input class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1" type="submit" id="DASHBOARD-save-edit-prj-btn" value="Save">
+                    <a href="javascript:void(0)" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2"
+                        onclick="modalHideUnhide('modal_add_project'); reloadPage();">Cancel</a>
+                    <input class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1" type="submit"
+                        id="DASHBOARD-save-edit-prj-btn" value="Save">
                 </div>
             </form>
         </div>

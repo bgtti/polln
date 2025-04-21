@@ -6,62 +6,64 @@
     <div id="PRESENT-page-1" class="PRESENT-page " data-pagenr="1">
         <div id="PRESENT-page-1-btn">
             <small><a href="" role="button" class="BASE-btn BASE-btn-small-gray" onclick="openFullscreen(event)">
-                Full screen</a></small>
+                    Full screen</a></small>
         </div>
         <br>
         <div class="PRESENT-page-1-content PRESENT-flex">
             <h1>{{ project.name }}</h1>
             <p>Code: {{ project.prj_code }}</p>
             {% load static %}
-            <img src="{% static 'dashboard/media/qr_'|add:project.prj_code|add:'.png' %}" alt="QR Code">
+            <img src="{% url 'dashboard:qr_code' project.prj_code %}" alt="QR Code">
             <br>
             <div class="PRESENT-votes-container PRESENT-flex">
                 <i class="fa-solid fa-user"></i>
                 <p><b id="PRESENT-display-live-vote">0</b></p>
             </div>
         </div>
-        
+
     </div>
     <!-- Page 2 -->
-    <div id="PRESENT-page-2" class="PRESENT-page PRESENT-flex BASE-hide" data-pagenr="2" >
+    <div id="PRESENT-page-2" class="PRESENT-page PRESENT-flex BASE-hide" data-pagenr="2">
         <h2>Poll closed</h2>
         <p class="PRESENT-sub">Let's check the results!</p>
     </div>
     <!-- Page 3 and so forth -->
 
     {% for question in questions %}
-        <div id="PRESENT-page-{{ 2|add:question.position }}" class="PRESENT-page PRESENT-flex PRESENT-q-answer BASE-hide" data-pagenr="{{ 2|add:question.position }}">
-            <h2>{{ question.question }}</h2>
-            {% if question.question_type == "Open-ended Question" %}
-                <div class="PRESENT-flex PRESENT-open-ended" id="PRESENT-OE-{{ question.id }}">
+    <div id="PRESENT-page-{{ 2|add:question.position }}" class="PRESENT-page PRESENT-flex PRESENT-q-answer BASE-hide"
+        data-pagenr="{{ 2|add:question.position }}">
+        <h2>{{ question.question }}</h2>
+        {% if question.question_type == "Open-ended Question" %}
+        <div class="PRESENT-flex PRESENT-open-ended" id="PRESENT-OE-{{ question.id }}">
+            <!-- populated by script_present -->
+        </div>
+        {% elif question.question_type == "Question and Answer" %}
+        <div class="PRESENT-flex PRESENT-q-answer">
+            <p class="PRESENT-QA-sub">The correct answer is...</p>
+            <p class="PRESENT-correct-QA"><b>{{ question.answer }}</b></p>
+            <div class="PRESENT-flex PRESENT-q-answer" id="PRESENT-QA-{{ question.id }}">
+                <!-- populated by script_present -->
+            </div>
+        </div>
+        {% elif question.question_type == "Multiple Choice" %}
+        <div>
+            <div class="PRESENT-flex PRESENT-q-answer">
+                <!-- <p>multiple choice graph comes here?</p> -->
+                <canvas class="PRESENT-canvas" id="PRESENT-chart-{{ question.id }}"></canvas>
+                <div class="PRESENT-flex PRESENT-q-answer" id="PRESENT-MC-{{ question.id }}">
                     <!-- populated by script_present -->
                 </div>
-            {% elif question.question_type == "Question and Answer" %}
-                <div class="PRESENT-flex PRESENT-q-answer">
-                    <p class="PRESENT-QA-sub">The correct answer is...</p>
-                    <p class="PRESENT-correct-QA"><b>{{ question.answer }}</b></p>
-                    <div class="PRESENT-flex PRESENT-q-answer" id="PRESENT-QA-{{ question.id }}">
-                        <!-- populated by script_present -->
-                    </div>
-                </div>
-            {% elif question.question_type == "Multiple Choice" %}
-            <div>
-                <div class="PRESENT-flex PRESENT-q-answer">
-                    <!-- <p>multiple choice graph comes here?</p> -->
-                    <canvas class ="PRESENT-canvas" id="PRESENT-chart-{{ question.id }}"></canvas>
-                    <div class="PRESENT-flex PRESENT-q-answer" id="PRESENT-MC-{{ question.id }}">
-                        <!-- populated by script_present -->
-                    </div>
-                </div>
             </div>
-            {% else %}
-                <p>Oops, we had an issue fetching the results</p>
-            {% endif %}
         </div>
+        {% else %}
+        <p>Oops, we had an issue fetching the results</p>
+        {% endif %}
+    </div>
     {% endfor %}
 
     <!-- Last page -->
-    <div id="PRESENT-page-{{ num_questions|add:3 }}" class="PRESENT-page PRESENT-flex BASE-hide" data-pagenr="{{ num_questions|add:3 }}">
+    <div id="PRESENT-page-{{ num_questions|add:3 }}" class="PRESENT-page PRESENT-flex BASE-hide"
+        data-pagenr="{{ num_questions|add:3 }}">
         <h2>Thank you!</h2>
     </div>
 

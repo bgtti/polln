@@ -1,7 +1,13 @@
+"""
+Website: views pertaining to user when viewing website or creating/deleting a user account
+
+If you encounter migration issues run: `python -m manage makemigrations`
+https://stackoverflow.com/questions/44651760/django-db-migrations-exceptions-inconsistentmigrationhistory
+"""
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseNotAllowed
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -9,10 +15,10 @@ from .models import User
 from dashboard.models import Project
 from dashboard.utils import delete_qr_code
 
-# If you encounter migration issues: python -m manage makemigrations
-# https://stackoverflow.com/questions/44651760/django-db-migrations-exceptions-inconsistentmigrationhistory
-
 def index(request, message=None):
+    """
+    Returns template for website's homepage (method = GET)
+    """
     message = request.session.get('home_message')
     request.session['home_message'] = None
     return render(request, "website/index.html", {
@@ -20,9 +26,15 @@ def index(request, message=None):
     })
 
 def guide(request):
+    """
+    Returns template for website's guide page (method = GET)
+    """
     return render(request, "website/guide.html")
 
 def login_view(request):
+    """
+    Renders login page and logs user in (methods = GET and POST)
+    """
     if request.method == "POST":
 
         # Attempt to sign user in
@@ -37,16 +49,22 @@ def login_view(request):
             return HttpResponseRedirect(reverse("dashboard:index"))
         else:
             return render(request, "website/login.html", {
-                "message": "Invalid username and/or password."
-            })
+                    "message": "Invalid username and/or password."
+                })
     else:
         return render(request, "website/login.html")
 
 def logout_view(request):
+    """
+    Logs user out (method = GET)
+    """
     logout(request)
     return HttpResponseRedirect(reverse("website:index"))
 
 def signup(request):
+    """
+    Renders signup page and sirgns up user (methods = GET and POST)
+    """
     if request.method == "POST":
         username = request.POST["username"]
         email = request.POST["email"]
@@ -71,9 +89,11 @@ def signup(request):
     else:
         return render(request, "website/signup.html")
 
-
 @login_required
 def delete_account(request):
+    """
+    Deletes user account (method = POST)
+    """
     if request.method == 'POST':
         user = User.objects.get(pk=request.user.pk)
         projects = Project.objects.filter(user=user)
@@ -83,3 +103,4 @@ def delete_account(request):
         # Account deleted, send user to homepage with success message
         request.session['home_message'] = "Account deleted successfully!"
         return HttpResponseRedirect(reverse("website:index"))
+    return HttpResponseNotAllowed(['POST'])

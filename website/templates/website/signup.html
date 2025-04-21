@@ -4,10 +4,10 @@
 <!-- Content -->
 
 {% if message %}
-    <div class="alert alert-secondary alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+<div class="alert alert-secondary alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
 {% endif %}
 
 <div class="WEBSITE-form-container">
@@ -16,19 +16,22 @@
     <form action="{% url 'website:signup' %}" method="post">
         {% csrf_token %}
         <div class="form-group">
-            <input class="form-control" autofocus type="text" name="username" placeholder="Username">
+            <input class="form-control" autocomplete="username" autofocus type="text" name="username" minlength="1"
+                placeholder="Username">
         </div>
         <br>
         <div class="form-group">
-            <input class="form-control" type="email" name="email" placeholder="Email Address">
+            <input class="form-control" autocomplete="email" type="email" name="email" placeholder="Email Address">
         </div>
         <br>
         <div class="form-group">
-            <input class="form-control" type="password" name="password" placeholder="Password">
+            <input class="form-control" autocomplete="new-password" type="password" name="password" minlength="8"
+                placeholder="Password">
         </div>
         <br>
         <div class="form-group">
-            <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
+            <input class="form-control" autocomplete="repeat-password" type="password" name="confirmation" minlength="8"
+                placeholder="Confirm Password">
         </div>
         <br>
         <input class="btn btn-primary BASE-btn BASE-btn-type2" type="submit" value="Signup">

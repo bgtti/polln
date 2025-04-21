@@ -33,9 +33,20 @@ def qr_code_generator(project_code):
     Generates QR code that leads to project' poll url.
     Function based on qrcode library: https://pypi.org/project/qrcode/
     """
-    # base_url = "http://127.0.0.1:8000" # while in local
-    base_url = "https://polln.bgtti.dev" # in production
+    image_name = f"qr_{project_code}.png"
+    save_dir = os.path.join(settings.MEDIA_ROOT, "qr_codes")
+    save_path = os.path.join(save_dir, image_name)
+
+    # If QR code already exists, skip regeneration
+    if os.path.exists(save_path):
+        return f"{settings.MEDIA_URL}qr_codes/{image_name}"
+    
+    os.makedirs(save_dir, exist_ok=True)
+
+    # Build QR code content
+    base_url = settings.BASE_URL  # from settings.py / .env
     url = f"{base_url}/poll/{project_code}"
+
     qr = qrcode.QRCode(
         version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_H,
@@ -46,18 +57,12 @@ def qr_code_generator(project_code):
     qr.make(fit=True)
     img = qr.make_image(back_color=(255, 255, 255), fill_color=(0, 0, 0))
 
-    image_name = f"qr_{project_code}.png"
-
-    # Save to static folder: static/dashboard/media
-    # save_path = os.path.join(settings.BASE_DIR, "static", "dashboard", "media", image_name) # use in production
-    save_path = os.path.join(settings.STATIC_ROOT, "dashboard", "media", image_name) # use in deployment
-
     try:
         img.save(save_path)
-        return True
+        return f"{settings.MEDIA_URL}qr_codes/{image_name}"
     except Exception as error:
         print(f"Failed to save QR code image: {error}")
-        return False
+        return None
 
 
 def delete_qr_code(project_code):
@@ -70,9 +75,8 @@ def delete_qr_code(project_code):
 
     # Delete from static folder: static/dashboard/media
     # delete_path = os.path.join(
-    #     settings.BASE_DIR, "static", "dashboard", "media", image_name) # use in production
-    
-    delete_path = os.path.join(settings.STATIC_ROOT, "dashboard", "media", image_name) # use in deployment
+    #     settings.BASE_DIR, "static", "dashboard", "media", image_name)
+    delete_path = os.path.join(settings.MEDIA_ROOT, "qr_codes", image_name)
 
     try:
         os.remove(delete_path)

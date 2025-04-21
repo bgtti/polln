@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,6 +26,12 @@ urlpatterns = [
     path('dashboard/', include('dashboard.urls')),
     path('present/', include('present.urls')),
     path('poll/', include('poll.urls')),
+    path('favicon.ico', RedirectView.as_view(url='/static/favicon_io/favicon.ico')), #favicon issue only in local dev. This line avoids getting favicon error
+    path("__reload__/", include("django_browser_reload.urls")), # reloading static when in local testing
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# The following will be used in development environment only:
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # See Serving static files during development: https://docs.djangoproject.com/en/4.2/howto/static-files/

@@ -15,50 +15,57 @@
         <div class="form-group">
             <div class="form-check form-switch" id="DASHBOARD-P-SwitchParentPoll">
                 {% if project.is_live == True %}
-                <input class="form-check-input" type="checkbox" id="DASHBOARD-project-live" name="projectlive" checked onclick="openOrClosePoll('{{project.pk}}', 'close')">
-                <label class="form-check-label BASE-modal-label DASHBOARD-label-projectlive" for="DASHBOARD-project-live">Poll open</label>
+                <input class="form-check-input" type="checkbox" id="DASHBOARD-project-live" name="projectlive" checked
+                    onclick="openOrClosePoll('{{project.pk}}', 'close')">
+                <label class="form-check-label BASE-modal-label DASHBOARD-label-projectlive"
+                    for="DASHBOARD-project-live">Poll open</label>
                 {% elif project.is_live == False %}
-                <input class="form-check-input" type="checkbox" id="DASHBOARD-project-live" name="projectlive" onclick="openOrClosePoll('{{project.pk}}', 'open')">
-                <label class="form-check-label BASE-modal-label DASHBOARD-label-projectlive" for="DASHBOARD-project-live">Poll closed</label>
+                <input class="form-check-input" type="checkbox" id="DASHBOARD-project-live" name="projectlive"
+                    onclick="openOrClosePoll('{{project.pk}}', 'open')">
+                <label class="form-check-label BASE-modal-label DASHBOARD-label-projectlive"
+                    for="DASHBOARD-project-live">Poll closed</label>
                 {% else %}
                 <p>Status unknown</p>
                 {% endif %}
+                <!-- newer bootstap: <a tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover" ...> -->
                 <sup><a tabindex="0" data-toggle="popover" data-trigger="hover"
-                    title="Open poll before sharing the link. Results are available after the poll closes.When you are presenting, your poll will open automatically and close when you are displaying the results." >
-                    <i class="fa-solid fa-circle-info" style="color: #b9bcc1;"></i>
-                </a></sup>
+                        title="Open poll before sharing the link. Results are available after the poll closes.When you are presenting, your poll will open automatically and close when you are displaying the results.">
+                        <i class="fa-solid fa-circle-info" style="color: #b9bcc1;"></i>
+                    </a></sup>
             </div>
         </div>
         <p><small>Presentation code: {{ project.prj_code }}</small></p>
         {% if project.pw_requirement == True %}
-            <p><small>Password: {{ project.pw }}</small></p>
+        <p><small>Password: {{ project.pw }}</small></p>
         {% else %}
-            <p><small>No password set</small></p>
+        <p><small>No password set</small></p>
         {% endif %}
         {% if project.show_answers == True %}
-            <p><small>Show answers: yes</small></p>
+        <p><small>Show answers: yes</small></p>
         {% else %}
-            <p><small>Show answers: no</small></p>
+        <p><small>Show answers: no</small></p>
         {% endif %}
         {% if project.poll_nr > 1 %}
-            <p><small><a href="{% url 'dashboard:project_answers' id=project.pk %}" target="_blank" class="DASHBOARD-a-tag">Click here</a> to see all answers </small></p>
+        <p><small><a href="{% url 'dashboard:project_answers' id=project.pk %}" target="_blank"
+                    class="DASHBOARD-a-tag">Click here</a> to see all answers </small></p>
         {% endif %}
     </div>
     <div class="DASHBOARD-project-btn-group">
         {% if questions %}
-        <small><a href="{% url 'present:index' prj=project.prj_code %}" target="_blank" role="button" 
-            class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2 DASHBOARD-add-prj-btn" onclick="openOrClosePoll('{{project.pk}}', 'open')">
-            Present</a></small>
-        <small><a href="#" role="button" class="BASE-btn BASE-btn-small-gray" 
-            onclick="modalHideUnhide('modal_share_link')">
+        <small><a href="{% url 'present:index' prj=project.prj_code %}" target="_blank" role="button"
+                class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2 DASHBOARD-add-prj-btn"
+                onclick="openOrClosePoll('{{project.pk}}', 'open')">
+                Present</a></small>
+        <small><a href="javascript:void(0)" role="button" class="BASE-btn BASE-btn-small-gray"
+                onclick="modalHideUnhide('modal_share_link')">
                 Share Link</a></small>
         {% endif %}
-        <small><a href="#" role="button" class="BASE-btn BASE-btn-small-gray"
-            onclick="editProjectData('{{project.pk}}')">
-            Edit Project</a></small>
-        <small><a href="#" role="button" class="BASE-btn BASE-btn-small-gray"
-            onclick="modalHideUnhide('modal_delete_project')">
-            Delete Project</a></small>
+        <small><a href="javascript:void(0)" role="button" class="BASE-btn BASE-btn-small-gray"
+                onclick="editProjectData('{{project.pk}}')">
+                Edit Project</a></small>
+        <small><a href="javascript:void(0)" role="button" class="BASE-btn BASE-btn-small-gray"
+                onclick="modalHideUnhide('modal_delete_project')">
+                Delete Project</a></small>
     </div>
     <hr>
     <!-- Questions -->
@@ -69,19 +76,23 @@
     <br>
     {% endif %}
     <div>
-        <a href="#" role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1 DASHBOARD-add-prj-btn"
+        <a href="javascript:void(0)" role="button"
+            class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1 DASHBOARD-add-prj-btn"
             onclick="modalHideUnhide('modal_add_question')">
             + Question</a>
     </div>
     <section>
-        <a href="#" role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type4 DASHBOARD-add-prj-btn BASE-hide"
+        <a href="javascript:void(0)" role="button"
+            class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type4 DASHBOARD-add-prj-btn BASE-hide"
             onclick="getOrderOfQuestions('{{project.pk}}')" id="BtnSaveQorder">
             Save order</a>
         {% if questions %}
-        <div id="DASHBOARD-project-question-container" class="DASHBOARD-project-question-container" ondragover="positionInContainer(event)">
+        <div id="DASHBOARD-project-question-container" class="DASHBOARD-project-question-container"
+            ondragover="positionInContainer(event)">
             {% for question in questions %}
             <div class="DASHBOARD-project-question-item" draggable="true" data-questionpk="{{question.pk}}">
-                <p class="DASHBOARD-q-edit"><a href="#" onclick="editQuestionData('{{question.pk}}')">Edit</a></p>
+                <p class="DASHBOARD-q-edit"><a href="javascript:void(0)"
+                        onclick="editQuestionData('{{question.pk}}')">Edit</a></p>
                 <p class="DASHBOARD-q-name">{{ question.question }}</p>
                 <p class="DASHBOARD-q-type">Type: {{question.question_type}}</p>
             </div>
@@ -91,7 +102,7 @@
         <br>
         <p> You have no questions yet. Add a question!</p>
         {% endif %}
-        
+
     </section>
 </div>
 

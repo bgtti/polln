@@ -11,9 +11,10 @@
 * {
     font-family: var(--font-quicksand);
 }
+
 /* Useful links: */
 /* filter: https://codepen.io/sosuke/pen/Pjoqqp */
-/* box-shadow: https://getcssscan.com/css-box-shadow-examples */ 
+/* box-shadow: https://getcssscan.com/css-box-shadow-examples */
 
 /* Buttons */
 .BASE-btn {
@@ -40,7 +41,7 @@
     width: 100px !important;
 }
 
-.BASE-btn-small-gray{
+.BASE-btn-small-gray {
     display: inline-block;
     width: 120px;
     height: 33px;
@@ -53,11 +54,13 @@
     text-align: center;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
 }
+
 @media (hover: hover) {
     .BASE-btn:hover {
         box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
     }
-    .BASE-btn-small-gray:hover{
+
+    .BASE-btn-small-gray:hover {
         color: black;
     }
 }
@@ -71,10 +74,10 @@
 }
 
 /* Modal */
-.BASE-modal-container{
+.BASE-modal-container {
     position: fixed;
     top: 0;
-    left:0;
+    left: 0;
     height: 100vh;
     width: 100vw;
     background-color: #50575bce;
@@ -84,40 +87,59 @@
     justify-content: center;
     overflow-y: initial !important
 }
-.BASE-modal{
+
+.BASE-modal {
     padding: 25px;
     border-radius: 5px;
     background-color: white;
     overflow-y: auto;
 }
-.BASE-modal-icon-close{
+
+.BASE-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid #b7bbbd;
+    padding: 0 0 5px 0;
+    margin: 0 0 15px 0;
+}
+
+.BASE-modal-header>* {
+    padding: 0;
+    margin: 0;
+}
+
+.BASE-modal-icon-close {
     cursor: pointer;
     height: 20px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     font-size: 1.5em;
     color: var(--main-blue);
 }
-.BASE-modal-icon-close > *{
+
+.BASE-modal-icon-close>* {
     font-size: 1.2em;
     color: var(--main-blue);
 }
-.BASE-modal-label{
+
+.BASE-modal-label {
     padding-bottom: 5px;
 }
-.BASE-modal-btn-group{
+
+.BASE-modal-btn-group {
     display: flex;
     gap: 15px;
 }
 
 /* HIDE Modals */
-.BASE-hide{
+.BASE-hide {
     display: none;
 }
 
 /* Adapting Bootstrap input focus */
-.form-control:focus, .form-select:focus {
+.form-control:focus,
+.form-select:focus {
     border: none;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 }
@@ -134,12 +156,14 @@
     border-color: var(--main-yellow);
     border: none;
 }
+
 /* Adapting Bootstrap radio btns */
 .form-check .form-check-input:focus {
     border-color: rgba(0, 0, 0, 0.25);
     outline: 0;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 }
+
 .form-check .form-check-input:checked {
     background-color: var(--main-yellow);
     border-color: var(--main-yellow);

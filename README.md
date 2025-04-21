@@ -23,7 +23,7 @@
 
 **Live at [https://polln.bgtti.dev](https://polln.bgtti.dev)** 
 \
-**Video available at [https://youtu.be/9yoCYDmnFfY](https://youtu.be/9yoCYDmnFfY)**
+**Video demo at [https://youtu.be/9yoCYDmnFfY](https://youtu.be/9yoCYDmnFfY)**
 \
 **Original git repo with main and deploy branches: [https://github.com/bgtti/polln](https://github.com/bgtti/polln)**
 
@@ -39,9 +39,10 @@
    - [Templates](#templates)
    - [mydb.py](#mydb.py)
    - [env, gitignore, requirements](#env-gitignore-requirements)
+   - [tests](#tests)
    - [Third-party code](#third-party-code)
 - [About and license](#about-and-license)
-- [Distinctiveness and complexity](#distinctiveness-and-complexity)
+- [Contributions](#contributions)
 <br>
  
 # Introduction
@@ -54,6 +55,8 @@
    <summary>1. Clone this repository</summary>
 
    >\
+   > Fork this repository, then clone into your fork.
+   >
    > More information on how to clone this repository available at https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository
    > It is recommended that you set up a virtual environment. More information: https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#:~:text=To%20create%20a%20virtual%20environment,virtualenv%20in%20the%20below%20commands.&text=The%20second%20argument%20is%20the,project%20and%20call%20it%20env%20.
    > Use the main branch, which is intended for local (production). The code from the deployment branch was changed to suit the deployment environment. More information bellow.
@@ -62,9 +65,21 @@
 </details>
 
 <details>
-   <summary>2. Install dependencies</summary>
+   <summary>2. Create virtual env and install dependencies</summary>
 
    >\
+   > Create a virtual environment:
+   > ```pwsh
+   >python -m venv env
+   >```
+   >
+   >Then activate the environment with the following command:
+   > ```pwsh
+   >.\env\Scripts\activate
+   >```
+   >
+   >Then proceed to install the requirements:
+   >
    > ```pwsh
    >pip install -r requirements.txt
    >```
@@ -188,9 +203,11 @@ The user can close a poll any time. Poll opening and closing will happen automat
 A full guide on how to use PollN is provided in the url /guide.
 <br><br>
 
-## Branches: main and deploy
+## Branches: main, deploy, and older versions
 
 This repository contains 2 branches: main and deploy. The main branch contains the code that works in a local environment, while the deploy branch contains the code currently deployed at https://polln.bgtti.dev .
+
+Apart from the `main`and `deploy` branches (which are the lattest versions of the app), other branches may exist which are older versions. `version_1` is the original version of this app.  
 
 The deploy branch is different from the main branch in the following way:
 
@@ -230,8 +247,6 @@ The deploy branch is different from the main branch in the following way:
 
 If you would like to play around with this code for whatever purpose, you should do so using the main branch, creating the database and running your server locally. The installation instructions should help you with that.
 
-Another thing to note is that the 'Copy Link' button in the project page might not properly copy the link to the poll to the clipboard. The issue could not be solved.
-
 # Code and organization
 The polln application has the following structure:
 - It is divided into 4 apps: website, dashboard, present, and poll
@@ -239,6 +254,7 @@ The polln application has the following structure:
 - Only two apps have db models in models.py: website and dashboard
 - The static folder is a standalone. All css and JS files, as well as media are there
 - A standalone templates folder contain shared templates only.
+- Each app also contains a tests.py file.
 
 Let's take a look at what each app does.
 <br>
@@ -259,11 +275,13 @@ Contains the logic needed for the user to present and gather the responses in li
 ### **4. poll**
 Will check if the respondent has access to the poll, check if the poll is open, and gather poll results. It is responsible for the way the project is viewed by respondents. 
 
-## The static folder
+## The static and media folders
 Shared styling is under common.cs, while shared JS functions are in main.js.
 Styling and JS logic, as well as media files (pictures, videos, icons) are organized into subfolders named after the app using them. Website, dashboard, present, and poll have their own static folder here. the app_preview folder contains media used in this readme.md while favicon_io is the folder containing the favicon for this application.
 
 Classes were named after their origin. For instance, the class 'BASE-hide' (or any class starting with 'BASE') will be in the common.css file. Any class starting with 'DASHBOARD-...' will be styled in the dashboard css file, and so on. Bootstrap was also used.
+
+The media folder will keep the generated QR codes. If not available, the directory will be created to host the qr code images.
 <br>
 
 ## Templates
@@ -280,6 +298,14 @@ As noted in the installation instructions, an .env file (and a .gitignore so tha
 The requirements.txt hold dependencies such as dotenv and mysql-connector-python.
 <br>
 
+## tests
+As noted before, each app contains a tests.py file.
+To run all tests, use the following command from the root folder: 
+```pwsh
+   python manage.py test
+```
+<br>
+
 ## Third-party code
 Writing the codebase required some research. Source for media such as icons are included in the code. In comments you will also see helpful sources for styling (for instance, border-boxes), and links to helpful content that made this project possible. Some functions that were written by other authors or based on someone else's logic are clearly described as such and contain the original source link and author (when available).
 
@@ -293,14 +319,36 @@ Some special mentions:
 
 
 # About and license
-This project was submitted as the capstone project for CS50w from HarvardX.
+
+This project was originally created as the capstone project for CS50w from HarvardX. The original (submitted version) can still be found in the branch `version_1`.
 More information about the CS50w requirements available at https://cs50.harvard.edu/web/2020/projects/final/capstone/
+
+A newer version of the app has since then been released. The lattest app version is in the branch `main`. Newer versions contain bug fixes, improved code, and new features.
 
 This is a personal project completed by the author, which you are welcome to use and modify at your discretion. (MIT Licence)
 
+PollN is a free open-source software that makes no claims as to its quality or reliability. The creator shall not be liable for any damage, loss of profit, revenue, or data incurred by you or any third-party arising from the access of or content created through the use of this site.
+
 If you liked this project, motivate the developer by giving it a :star: on Github!
+
 <br>
 
-# Distinctiveness and complexity
-This Django-vanilla-JavaScript project is very distinct in nature than the projects from the lessons and from other final projects submitted by students - where a live polling app could not be found up to the date of writing (June 6, 2023).
-PollN is also more complex in that it involved the creation of four inter-connected django apps holding multiple template and styling files, communication from back- and front-end via JSON files, interactive interface with animations, the use of the MySQL database, and changes in the Settings.py beyond what was covered in the course. 
+# Contributions
+
+PollN featured in an article by Hazem Abbas in 2023 ("15 Open-source Free Self-hosted Survey, Poll Generators and Vote Management Solutions")[https://medevel.com/15-poll-generator/]!
+
+You can help make PollN a great software by contributing to this project!
+
+How to contribute:
+1. Fork the repository: Click the "Fork" button at the top right of this page
+2. Clone your fork locally
+3. Create a new branch, naming it with the new feature or bug fix:  `git checkout -b your-feature-name`
+4. Make your changes
+5. Make sure the tests still pass (or write test if necessary)
+6. Push to your fork
+7. Create a Pull Request
+
+Guidelines:
+- Write tests for any new functionality
+- Stick to existing coding conventions
+- Keep commits focused and meaningful
