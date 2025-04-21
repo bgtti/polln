@@ -163,3 +163,5 @@ cython_debug/
 
 # Media (qr codes generated)
 media/
+# Media (qr codes generated)
+media/
