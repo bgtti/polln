@@ -1,7 +1,7 @@
 <div align="center">
   <br>
   <h1><b>PollN</b></h1>
-  <strong>helping ideas spread like pollen</strong>
+  <strong>Version 1 (original version)</strong>
 </div>
 <br>
 <table align="center" style="border-collapse:separate;">
