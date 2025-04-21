@@ -26,6 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Define environment
 ENVIRONMENT = os.getenv("ENVIRONMENT", "development")  # default to 'development'
 
+if ENVIRONMENT == "production":
+    import mysql.connector
+
 # Define base url (points to localhost in development)
 BASE_URL = os.getenv("BASE_URL", "http://127.0.0.1:8000")
 
