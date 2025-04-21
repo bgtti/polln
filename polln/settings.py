@@ -152,6 +152,10 @@ else:
     STATIC_ROOT = BASE_DIR / "static_root"
     STATICFILES_DIRS = [ BASE_DIR / "static", ]
 
+# Media files (to save QR codes)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # settings a default for the login page (so that @login_required decorators redirects correctly)
 LOGIN_URL = '/login/'
 

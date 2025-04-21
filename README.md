@@ -271,11 +271,13 @@ Contains the logic needed for the user to present and gather the responses in li
 ### **4. poll**
 Will check if the respondent has access to the poll, check if the poll is open, and gather poll results. It is responsible for the way the project is viewed by respondents. 
 
-## The static folder
+## The static and media folders
 Shared styling is under common.cs, while shared JS functions are in main.js.
 Styling and JS logic, as well as media files (pictures, videos, icons) are organized into subfolders named after the app using them. Website, dashboard, present, and poll have their own static folder here. the app_preview folder contains media used in this readme.md while favicon_io is the folder containing the favicon for this application.
 
 Classes were named after their origin. For instance, the class 'BASE-hide' (or any class starting with 'BASE') will be in the common.css file. Any class starting with 'DASHBOARD-...' will be styled in the dashboard css file, and so on. Bootstrap was also used.
+
+The media folder will keep the generated QR codes. If not available, the directory will be created to host the qr code images.
 <br>
 
 ## Templates

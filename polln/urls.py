@@ -30,4 +30,8 @@ urlpatterns = [
     path("__reload__/", include("django_browser_reload.urls")), # reloading static when in local testing
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
+# The following will be used in development environment only:
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 # See Serving static files during development: https://docs.djangoproject.com/en/4.2/howto/static-files/
