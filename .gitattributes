@@ -1,0 +1,3 @@
+Procfile merge=ours
+runtime.txt merge=ours
+mydb.py merge=ours
