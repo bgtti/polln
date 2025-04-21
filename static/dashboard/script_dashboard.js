@@ -1,40 +1,82 @@
-// *****************MULTIPLE***************************
+// *****************MULTIPLE*************************** 
 // Hiding/unhiding elements in modals add project and add question
 // Accepts two parameters: the first is the id of the element that should be hidden/unhidden
 // the second is an optional parameter: the targeted checkbox. If none is given, the event target will be used
 function hideUnhideIfChecked(el_id, theCheckbox = event.target) {
     let theElement = document.querySelector(`#${el_id}`);
     // let theCheckbox = event.target;
-    if (theCheckbox.checked){
+    if (theCheckbox.checked) {
         theElement.classList.remove("BASE-hide");
     } else {
         theElement.classList.add("BASE-hide");
-    } 
+    }
 }
 //function to reload the page, used upon closing add_question to reset changes done while edditing question
 function reloadPage() {
     location.reload()
 }
 
-// function that copies the link to the poll to the clipboard (modal_share_link)
-function copyLinkToPollToClipboard(el){
-    event.preventDefault()
-    let theUrl= el.getAttribute('data-url');
+// function that copies the link to the poll to the clipboard DESKTOP (modal_share_link)
+function copyLinkToPollToClipboard(el) {
+    let theUrl = el.getAttribute('data-url');
     navigator.clipboard.writeText(theUrl);
     modalHideUnhide('modal_share_link')
 }
 
+// helper function to get cookie access:
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// function that copies the link to the poll to the clipboard MOBILE (modal_share_link)
+function sharePollNative(shareUrl) {
+    if (navigator.share) {
+        navigator.share({
+            title: 'Join My Poll!',
+            text: "Hi! I'm inviting you to take part in a poll!",
+            url: shareUrl
+        }).catch(err => console.log("Sharing failed:", err));
+    } else {
+        let message = "Your device doesn't support native sharing."
+        fetch('/set-session-message/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: `message=${encodeURIComponent(message)}`
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Message stored:", data);
+            })
+            .catch(err => {
+                console.error("Failed to store message:", err);
+            });
+    }
+}
+
 //function that opens and closes poll
 // function accepts two parameters: the project id and either the string 'open' or 'close'
-function openOrClosePoll(projectId, openOrClose){
-    // event.preventDefault()
+function openOrClosePoll(projectId, openOrClose) {
     fetch(`/dashboard/${openOrClose}_poll/${projectId}`)
         .then(response => response.json())
         .then(data => {
             // console.log(data);
             reloadPage();
         })
-        .catch (error => console.error(error));
+        .catch(error => console.error(error));
 }
 
 //function that checks whether a browser tab's visibility changed
@@ -53,7 +95,6 @@ document.addEventListener("visibilitychange", function () {
 // *****************MODAL ADD PROJECT***************************
 // editing projects
 function editProjectData(projectId) {
-    event.preventDefault()
     // change modal title and form action
     document.querySelector('#DASHBOARD-P-modal-title').textContent = "Edit Project"
     document.querySelector('#DASHBOARD-P-edit-form').action = `/dashboard/edit_project/${projectId}`
@@ -62,7 +103,6 @@ function editProjectData(projectId) {
         .then(response => response.json())
         .then(data => {
             let projectData = JSON.parse(data.project);
-            // console.log(projectData)
             // use the data information to populate the modal:
             document.querySelector('[name="projectname"]').value = projectData[0].fields.name;
             if (projectData[0].fields.username_requirement === true) {
@@ -87,7 +127,7 @@ function editProjectData(projectId) {
                 hideUnhideIfChecked('setProjectPasswordContainer', newSwitch.firstChild)
                 document.querySelector('[name="projectpw"]').value = projectData[0].fields.pw
             }
-            if (projectData[0].fields.show_answers === true){
+            if (projectData[0].fields.show_answers === true) {
                 let theSwitchParentU = document.querySelector('#DASHBOARD-P-SwitchParentAnswer')
                 theSwitchParentU.removeChild(theSwitchParentU.lastElementChild)
                 let newSwitchU = document.createElement('div')
@@ -115,7 +155,7 @@ function checkedQuestionType(el_id, theCheckbox = event.target) {
     //Remove styling from other 'checked' containers
     all_containers = document.querySelectorAll('.DASHBOARD-question-choice-container');
     all_containers.forEach(container => {
-        if (container.classList.contains('DASHBOARD-question-choice-container-checked')){
+        if (container.classList.contains('DASHBOARD-question-choice-container-checked')) {
             container.classList.remove('DASHBOARD-question-choice-container-checked');
         }
     });
@@ -130,13 +170,13 @@ function checkedQuestionType(el_id, theCheckbox = event.target) {
     // Display correct form elements according to question type
     qAndA = document.querySelector("#DASHBOARD-question-type-qanda-container");
     multipleChoice = document.querySelector("#DASHBOARD-question-type-multiple-choice-container");
-    if (el_id === "DASHBOARD-choice-2"){
+    if (el_id === "DASHBOARD-choice-2") {
         qAndA.classList.remove("BASE-hide");
         multipleChoice.classList.add("BASE-hide");
     } else if (el_id === "DASHBOARD-choice-3") {
         qAndA.classList.add("BASE-hide");
         multipleChoice.classList.remove("BASE-hide");
-    } else{
+    } else {
         qAndA.classList.add("BASE-hide");
         multipleChoice.classList.add("BASE-hide");
     }
@@ -144,7 +184,7 @@ function checkedQuestionType(el_id, theCheckbox = event.target) {
 
 // displaying elements accordingly for multi-choice type in modal add question
 // And define options in select answer
-function displayMultiChoices(nrChoice = event.target.value){
+function displayMultiChoices(nrChoice = event.target.value) {
     let allChoices = document.querySelectorAll('[data-multiChoice]');
     let selectChoiceContainer = document.querySelector("#rightChoice");
     let options = [...selectChoiceContainer.children]
@@ -179,7 +219,6 @@ function displayMultiChoices(nrChoice = event.target.value){
 
 //getting data from the edit_question function for modal add question (adapted to edit question)
 function editQuestionData(questionId) {
-    event.preventDefault()
     // change modal title and form action
     document.querySelector('#DASHBOARD-Q-modal-title').textContent = "Edit Question";
     document.querySelector('#DASHBOARD-Q-edit-form').action = `/dashboard/edit_question/${questionId}`;
@@ -233,7 +272,7 @@ function editQuestionData(questionId) {
 const questionContainer = document.querySelector('#DASHBOARD-project-question-container')
 const questionElements = document.querySelectorAll('.DASHBOARD-project-question-item')
 
-function moveElements(event){
+function moveElements(event) {
     event.target.classList.add('DASHBOARD-project-question-item-dragging');
 }
 function stopMoveElement(event) {
@@ -242,33 +281,33 @@ function stopMoveElement(event) {
     const orderBtn = document.querySelector('#BtnSaveQorder');
     orderBtn.classList.remove('BASE-hide')
 }
-function elementPosition(container, y){
+function elementPosition(container, y) {
     //getting all draggable elements
     const draggableEls = [...container.querySelectorAll('.DASHBOARD-project-question-item:not(.DASHBOARD-project-question-item-dragging)')];
     //define which element comes after the cursor's position when dragging an element
-    return draggableEls.reduce((elBellowCursor, draggableEl)=>{
+    return draggableEls.reduce((elBellowCursor, draggableEl) => {
         //get size of element and its position relative to viewport
         const box = draggableEl.getBoundingClientRect();
         //get center of box
-        const offset = y - box.top - box.height/2;
+        const offset = y - box.top - box.height / 2;
         //negative offsets means the cursor is hovering above an element
         //and the closest element bellow the cursor will have an offset closest to 0
-        if (offset < 0 && offset > elBellowCursor.offset){
+        if (offset < 0 && offset > elBellowCursor.offset) {
             return { offset: offset, element: draggableEl }
         } else {
             return elBellowCursor
         }
         //the default offset is a number infinitely lower than any other possible offset
-    },{offset: Number.NEGATIVE_INFINITY}).element
+    }, { offset: Number.NEGATIVE_INFINITY }).element
 }
-function positionInContainer(event){
+function positionInContainer(event) {
     event.preventDefault();
     //get the element which is bellow the element we want to insert
     const afterEl = elementPosition(event.target, event.clientY)
     //get the element we are currently dragging
     const theEl = document.querySelector('.DASHBOARD-project-question-item-dragging');
     //if element being dragged has no element above it, it goes to the bottom, else, it goes above an element
-    if (afterEl == null){
+    if (afterEl == null) {
         questionContainer.append(theEl);
     } else {
         questionContainer.insertBefore(theEl, afterEl);
@@ -282,8 +321,7 @@ questionElements.forEach(el => {
 // After a dragend event the user can save the new question order.
 // This function returns an array of arrays for each question, where the first number represents the 
 // pk of the question, and the second number represents the new position of the question. 
-function getOrderOfQuestions(projectId){
-    event.preventDefault()
+function getOrderOfQuestions(projectId) {
     let questionsAndPositions = [];
     let allQuestions = [...questionContainer.children];
     allQuestions.forEach(child => {
@@ -291,29 +329,28 @@ function getOrderOfQuestions(projectId){
         questionsAndPositions.push(el)
     })
     fetch(`/dashboard/question_order`, {
-        method:'POST',
+        method: 'POST',
         body: JSON.stringify({
             body: questionsAndPositions,
         })
     })
-    .then(response => {
-        console.log(response);
-        return response.json();
-    })
-    .then(result => console.log(result))
-    //make sure poll is closed when changes are made
-    //when debugging, comment out the next line
-    .then(
-        openOrClosePoll(projectId, 'close')
-    )
+        .then(response => {
+            console.log(response);
+            return response.json();
+        })
+        .then(result => console.log(result))
+        //make sure poll is closed when changes are made
+        //when debugging, comment out the next line
+        .then(
+            openOrClosePoll(projectId, 'close')
+        )
 }
 
 //*****************DOWNLOAD EXCEL TABLE***************************
 //how to convert html table to excel from https://phppot.com/javascript/convert-html-table-excel-javascript/
 
 //in function used for onclick events in project_answers.html
-function downloadTableExcel(table_id) {
-    event.preventDefault();
+function downloadTableCSV(table_id) {
     const table = document.getElementById(table_id);
     const rows = table.rows;
     let sourceData = "data:text/csv;charset=utf-8,";

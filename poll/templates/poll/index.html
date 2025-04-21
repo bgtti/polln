@@ -6,41 +6,44 @@
     <div class="POLL-page" data-pagenr="1">
         <h1>{{ project.name }}</h1>
         {% if project.is_live%}
-            {% if project.username_requirement or project.pw_requirement %}
-                <form action="" class="POLL-form">
-                    <div class="BASE-hide" id="POLL-token" data-token="{{ csrf_token }}"></div>
-                    {% if project.username_requirement %}
-                    <div class="form-group POLL-form-part">
-                        <label for="username"></label>
-                        <input autofocus class="form-control" type="text" name="username" placeholder="Username" id="POLL-username" required>
-                    </div>
-                    {% endif %}
-                    {% if project.pw_requirement %}
-                    <div class="form-group POLL-form-part">
-                        <label for="projectpassword"></label>
-                        <input type="password" class="form-control" id="projectpassword" placeholder="Password" required>
-                        <p class="POLL-wrong-pw BASE-hide" id="POLL-wrong-pw"><i>Oops, wrong password. Try again.</i></p>
-                    </div>
-                    {% endif %}
-                    <div class="POLL-page-part POLL-form-part POLL-lets-begin">
-                        <p>Let's begin!</p>
-                        {% if project.pw_requirement %}
-                            <input class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1" type="submit" value="Start" onclick="poll_password_check('{{project.pk}}')">
-                        {% else %}
-                            <input class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1" type="submit" value="Start"
-                            onclick="changePage('next')">
-                        {% endif %}
-                    </div>
-                </form>
-            {% else %}
-                <br>
-                <div class="POLL-page-part">
-                    <p>Let's begin!</p>
-                    <br>
-                    <a href="" role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1"
-                        onclick="changePage('next')">Start</a>
-                </div>
+        {% if project.username_requirement or project.pw_requirement %}
+        <form action="" class="POLL-form">
+            <div class="BASE-hide" id="POLL-token" data-token="{{ csrf_token }}"></div>
+            {% if project.username_requirement %}
+            <div class="form-group POLL-form-part">
+                <label for="username"></label>
+                <input autofocus class="form-control" type="text" name="username" placeholder="Username"
+                    id="POLL-username" required>
+            </div>
             {% endif %}
+            {% if project.pw_requirement %}
+            <div class="form-group POLL-form-part">
+                <label for="projectpassword"></label>
+                <input type="password" class="form-control" id="projectpassword" placeholder="Password"
+                    name="projectpassword" required>
+                <p class="POLL-wrong-pw BASE-hide" id="POLL-wrong-pw"><i>Oops, wrong password. Try again.</i></p>
+            </div>
+            {% endif %}
+            <div class="POLL-page-part POLL-form-part POLL-lets-begin">
+                <p>Let's begin!</p>
+                {% if project.pw_requirement %}
+                <input class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1" type="submit" value="Start"
+                    onclick="poll_password_check('{{project.pk}}')">
+                {% else %}
+                <input class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1" type="submit" value="Start"
+                    onclick="changePage('next')">
+                {% endif %}
+            </div>
+        </form>
+        {% else %}
+        <br>
+        <div class="POLL-page-part">
+            <p>Let's begin!</p>
+            <br>
+            <a href="" role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1"
+                onclick="changePage('next')">Start</a>
+        </div>
+        {% endif %}
         {% else %}
         <br>
         <div class="POLL-page-part">
@@ -51,122 +54,132 @@
     </div>
     <!-- Page 2 and more-->
     {% for question in questions %}
-        <div class="BASE-hide POLL-page" data-pagenr="{{ 1|add:question.position }}">
-            <h2>{{ question.question }}</h2>
-            <div class="POLL-page-part">
-                {% if question.question_type == "Open-ended Question" %}
-                    <div class="form-group">
-                        <label for="OE_{{question.pk}}"></label>
-                        <br>
-                        <input autofocus class="form-control" type="text" name="OE_{{question.pk}}" placeholder="Your answer" data-answer="OE" data-question="{{question.pk}}">
-                    </div>
-                {% elif question.question_type == "Question and Answer" %}
-                    <div class="form-group">
-                        <label for="QA_{{question.pk}}"></label>
-                        <br>
-                        <input autofocus class="form-control" type="text" name="QA_{{question.pk}}" placeholder="Your answer" data-answer="QA" data-question="{{question.pk}}">
-                    </div>
-                {% elif question.question_type == "Multiple Choice" %}
-                    <div class="POLL-radio-container-parent">
-                        <div class="form-check POLL-radio-container">
-                            <input class="form-check-input" type="radio" name="radio_{{question.pk}}" value="option1" id="MC_{{question.pk}}_1" data-answer="MC" data-question="{{question.pk}}">
-                            <label class="form-check-label" for="MC_{{question.pk}}_1"> 
-                                {{question.option1}} 
-                            </label>
-                        </div>
-                        <div class="form-check POLL-radio-container">
-                            <input class="form-check-input" type="radio" name="radio_{{question.pk}}" value="option2" id="MC_{{question.pk}}_2" data-answer="MC" data-question="{{question.pk}}">
-                            <label class="form-check-label" for="MC_{{question.pk}}_2">
-                                {{question.option2}}
-                            </label>
-                        </div>
-                        {% if question.nr_choices >= 3 %}
-                            <div class="form-check POLL-radio-container">
-                                <input class="form-check-input" type="radio" name="radio_{{question.pk}}" value="option3" id="MC_{{question.pk}}_3" data-answer="MC" data-question="{{question.pk}}">
-                                <label class="form-check-label" for="MC_{{question.pk}}_3">
-                                    {{question.option3}}
-                                </label>
-                            </div>
-                        {% endif %}
-                        {% if question.nr_choices >= 4 %}
-                            <div class="form-check POLL-radio-container">
-                                <input class="form-check-input" type="radio" name="radio_{{question.pk}}" value="option4" id="MC_{{question.pk}}_4" data-answer="MC" data-question="{{question.pk}}">
-                                <label class="form-check-label" for="MC_{{question.pk}}_4">
-                                    {{question.option4}}
-                                </label>
-                            </div>
-                        {% endif %}
-                        {% if question.nr_choices == 5 %}
-                            <div class="form-check POLL-radio-container">
-                                <input class="form-check-input" type="radio" name="radio_{{question.pk}}" value="option5" id="MC_{{question.pk}}_5" data-answer="MC" data-question="{{question.pk}}">
-                                <label class="form-check-label" for="MC_{{question.pk}}_5">
-                                    {{question.option5}}
-                                </label>
-                            </div>
-                        {% endif %}
-                    </div>
-                {% else %}
-                    <p>Opps, there was a problem.</p>
+    <div class="BASE-hide POLL-page" data-pagenr="{{ 1|add:question.position }}">
+        <h2>{{ question.question }}</h2>
+        <div class="POLL-page-part">
+            {% if question.question_type == "Open-ended Question" %}
+            <div class="form-group">
+                <label for="OE_{{question.pk}}"></label>
+                <br>
+                <input autofocus class="form-control" type="text" name="OE_{{question.pk}}" placeholder="Your answer"
+                    data-answer="OE" data-question="{{question.pk}}">
+            </div>
+            {% elif question.question_type == "Question and Answer" %}
+            <div class="form-group">
+                <label for="QA_{{question.pk}}"></label>
+                <br>
+                <input autofocus class="form-control" type="text" name="QA_{{question.pk}}" placeholder="Your answer"
+                    data-answer="QA" data-question="{{question.pk}}">
+            </div>
+            {% elif question.question_type == "Multiple Choice" %}
+            <div class="POLL-radio-container-parent">
+                <div class="form-check POLL-radio-container">
+                    <input class="form-check-input" type="radio" name="radio_{{question.pk}}" value="option1"
+                        id="MC_{{question.pk}}_1" data-answer="MC" data-question="{{question.pk}}">
+                    <label class="form-check-label" for="MC_{{question.pk}}_1">
+                        {{question.option1}}
+                    </label>
+                </div>
+                <div class="form-check POLL-radio-container">
+                    <input class="form-check-input" type="radio" name="radio_{{question.pk}}" value="option2"
+                        id="MC_{{question.pk}}_2" data-answer="MC" data-question="{{question.pk}}">
+                    <label class="form-check-label" for="MC_{{question.pk}}_2">
+                        {{question.option2}}
+                    </label>
+                </div>
+                {% if question.nr_choices >= 3 %}
+                <div class="form-check POLL-radio-container">
+                    <input class="form-check-input" type="radio" name="radio_{{question.pk}}" value="option3"
+                        id="MC_{{question.pk}}_3" data-answer="MC" data-question="{{question.pk}}">
+                    <label class="form-check-label" for="MC_{{question.pk}}_3">
+                        {{question.option3}}
+                    </label>
+                </div>
+                {% endif %}
+                {% if question.nr_choices >= 4 %}
+                <div class="form-check POLL-radio-container">
+                    <input class="form-check-input" type="radio" name="radio_{{question.pk}}" value="option4"
+                        id="MC_{{question.pk}}_4" data-answer="MC" data-question="{{question.pk}}">
+                    <label class="form-check-label" for="MC_{{question.pk}}_4">
+                        {{question.option4}}
+                    </label>
+                </div>
+                {% endif %}
+                {% if question.nr_choices == 5 %}
+                <div class="form-check POLL-radio-container">
+                    <input class="form-check-input" type="radio" name="radio_{{question.pk}}" value="option5"
+                        id="MC_{{question.pk}}_5" data-answer="MC" data-question="{{question.pk}}">
+                    <label class="form-check-label" for="MC_{{question.pk}}_5">
+                        {{question.option5}}
+                    </label>
+                </div>
                 {% endif %}
             </div>
-            <br>
-            <div class="POLL-page-part-flex">
-                <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type4"
-                    onclick="changePage('previous')">Previous</a>
-                {% if question.position == num_questions %}
-                    <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2"
-                    data-wasclicked="true"
-                        onclick="checkIfPollIsOpen('{{ project.pk }}')">Submit</a>
-                {% else %}
-                    <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2" onclick="changePage('next')">Next</a>
-                {% endif %}
-            </div>
-            
+            {% else %}
+            <p>Opps, there was a problem.</p>
+            {% endif %}
         </div>
+        <br>
+        <div class="POLL-page-part-flex">
+            <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type4"
+                onclick="changePage('previous')">Previous</a>
+            {% if question.position == num_questions %}
+            <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2" data-wasclicked="false"
+                onclick="checkIfPollIsOpen('{{ project.pk }}', event)">Submit</a>
+            {% else %}
+            <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2"
+                onclick="changePage('next')">Next</a>
+            {% endif %}
+        </div>
+
+    </div>
     {% endfor %}
     <!-- Last page -->
     <div class="BASE-hide POLL-page POLL-last-page" data-pagenr="{{ num_questions|add:2 }}">
         <h2>Thank you for participating!</h2>
         <p id="POLL-submission-status">Your answers have been submitted!</p>
         {% if project.show_answers %}
-            <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2 POLL-ans-btn" onclick="changePage('next')">Check out the answers!</a>
+        <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2 POLL-ans-btn"
+            onclick="changePage('next')">Check out the answers!</a>
         {% else %}
-            <a href="{% url 'website:index' %}" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2 POLL-ans-btn">To homepage</a>
+        <a href="{% url 'website:index' %}" role="button"
+            class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2 POLL-ans-btn">To homepage</a>
         {% endif %}
     </div>
     <!-- Results page -->
     {% if project.show_answers %}
-        <div class="BASE-hide POLL-page POLL-last-page" data-pagenr="{{ num_questions|add:3 }}">
-            <h2>Correct Answers</h2>
-            <div>
-                {% for question in questions %}
-                    {% if question.question_type == "Question and Answer" %}
-                        <div class="POLL-RESULTS">
-                            <p class="POLL-RESULTS-question"><b>{{ question.question }}</b></p>
-                            <p>{{ question.answer }}</p>
-                        </div>
-                    {% elif question.question_type == "Multiple Choice" %}
-                        <div class="POLL-RESULTS">
-                            <p class="POLL-RESULTS-question"><b>{{ question.question }}</b></p>
-                            <p class="POLL-RESULTS-option">Option {{ question.correctOption }}</p>
-                            {% if question.correctOption == 1 %}
-                                <p>{{ question.option1 }}</p>
-                            {% elif question.correctOption == 2 %}
-                                <p>{{ question.option2 }}</p>
-                            {% elif question.correctOption == 3 %}
-                                <p>{{ question.option3 }}</p>
-                            {% elif question.correctOption == 4 %}
-                                <p>{{ question.option4 }}</p>
-                            {% elif question.correctOption == 5 %}
-                                <p>{{ question.option5 }}</p>
-                            {% endif %}
-                        </div>
-                    {% endif %}
-                {% endfor %}
+    <div class="BASE-hide POLL-page POLL-last-page" data-pagenr="{{ num_questions|add:3 }}">
+        <h2>Correct Answers</h2>
+        <div>
+            {% for question in questions %}
+            {% if question.question_type == "Question and Answer" %}
+            <div class="POLL-RESULTS">
+                <p class="POLL-RESULTS-question"><b>{{ question.question }}</b></p>
+                <p>{{ question.answer }}</p>
             </div>
-            <a href="{% url 'website:index' %}" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2 POLL-ans-btn">To
-                homepage</a>
+            {% elif question.question_type == "Multiple Choice" %}
+            <div class="POLL-RESULTS">
+                <p class="POLL-RESULTS-question"><b>{{ question.question }}</b></p>
+                <p class="POLL-RESULTS-option">Option {{ question.correctOption }}</p>
+                {% if question.correctOption == 1 %}
+                <p>{{ question.option1 }}</p>
+                {% elif question.correctOption == 2 %}
+                <p>{{ question.option2 }}</p>
+                {% elif question.correctOption == 3 %}
+                <p>{{ question.option3 }}</p>
+                {% elif question.correctOption == 4 %}
+                <p>{{ question.option4 }}</p>
+                {% elif question.correctOption == 5 %}
+                <p>{{ question.option5 }}</p>
+                {% endif %}
+            </div>
+            {% endif %}
+            {% endfor %}
         </div>
+        <a href="{% url 'website:index' %}" role="button"
+            class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2 POLL-ans-btn">To
+            homepage</a>
+    </div>
     {% endif %}
 </div>
 

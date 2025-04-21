@@ -1,3 +1,6 @@
+"""
+Poll: views pertaining to poll respondents
+"""
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
@@ -8,6 +11,9 @@ from dashboard.utils import compareTwoStrings
 import json
 
 def index(request, prj):
+    """
+    Returns template for respondents to answer poll questions (method = GET)
+    """
     # Remove trailing spaces from the user's input before proceeding
     prj = prj.strip()
     try:
@@ -26,86 +32,106 @@ def index(request, prj):
         request.session['home_message'] = "Code not valid. Check the six-digit project code and try again."
         return HttpResponseRedirect(reverse("website:index"))
 
-# checks if poll is open and sends information to JS function to decide if answers can be submitted
+# check if poll is open
 @csrf_exempt
 def check_if_poll_open(request):
+    """
+    Checks if poll is open and sends information to JS function to decide if answers can be submitted (method = POST)
+    """
     if request.method == 'POST':
         data = json.loads(request.body)
-        project_id = int(data.get('project'))
-        if project_id:
+        project_id = data.get('project')
+        if not project_id:
+            return JsonResponse({'status': 'error', 'message': 'Invalid Id'})
+        
+        try:
+            project_id = int(project_id)
             the_project = Project.objects.get(pk=project_id)
-            poll_is_open = the_project.is_live
-            if poll_is_open:
+            if the_project.is_live:
                 return JsonResponse({'status': 'success'})
             else:
                 return JsonResponse({'status': 'error', 'message': 'Poll is closed'})
-        else:
+        except (ValueError, Project.DoesNotExist):
             return JsonResponse({'status': 'error', 'message': 'Invalid Id'})
 
-# get_answers function: get the answer sent by JS function submitPollAnswers and save to db
-# Sample data being received:
-# {
-#     "project": "14",
-#     "answers": [
-#         {
-#             "question": "15",
-#             "answer": "good",
-#             "type": "OE"
-#         },
-#         {
-#             "question": "16",
-#             "answer": "hello",
-#             "type": "QA"
-#         },
-#         {
-#             "question": "17",
-#             "answer": "option3",
-#             "type": "MC"
-#         }
-#     ]
-# }
+# Getting the answers
 @csrf_exempt
 def get_answers(request):
+    """
+    get the answer sent by JS function submitPollAnswers and save to db (method = POST)
+
+    ---
+    Sample data being received:
+    {
+        "project": "14",
+        "answers": [
+            {
+                "question": "15",
+                "answer": "good",
+                "type": "OE"
+            },
+            {
+                "question": "16",
+                "answer": "hello",
+                "type": "QA"
+            },
+            {
+                "question": "17",
+                "answer": "option3",
+                "type": "MC"
+            }
+        ]
+    }
+    """
     if request.method == 'POST':
-        data = json.loads(request.body)
-        project_id = int(data.get('project'))
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({'status': 'error', 'message': 'Malformed JSON'})
+        
+        project_id_raw = data.get('project')
         answers = data.get('answers')
-        username = data.get('username')
-        if project_id and answers:
+        username = data.get('username', 'anonymous') or "anonymous"
+
+        if project_id_raw is None or not answers:
+            print("Invalid data in get_answers")
+            return JsonResponse({'status': 'error', 'message': 'Invalid data'})
+        
+        try:
+            project_id = int(project_id_raw)
             the_project = Project.objects.get(pk=project_id)
-            # Create a new Respondent object
-            the_username = "anonymous"
-            if username:
-                the_username = username
-            new_respondent = Respondent(username=the_username)
-            new_respondent.save()
-            # Iterate over the received answers and create new Answer objects
-            for answer_data in answers:
+        except (ValueError, Project.DoesNotExist):
+            return JsonResponse({'status': 'error', 'message': 'Invalid project ID'})
+        
+        # Create a new Respondent object
+        new_respondent = Respondent(username=username)
+        new_respondent.save()
+
+        # Iterate over the received answers and create new Answer objects
+        for answer_data in answers:
+            try:
                 question_id = int(answer_data.get('question'))
                 answer_text = answer_data.get('answer')
                 question_type = answer_data.get('type')
 
                 if question_id and answer_text and question_type:
-                    # Get Question
+                    # Get question
                     the_question = Question.objects.get(pk=question_id)
+
                     choice = 0
                     correctness = 0
+
                     if question_type == "OE":
                         correctness = 0
                     elif question_type == "QA":
-                        if compareTwoStrings(the_question.answer, answer_text):
-                            correctness = 1
-                        else:
-                            correctness = 2
+                        correctness = 1 if compareTwoStrings(the_question.answer, answer_text) else 2
                     elif question_type == "MC":
                         choice = int(answer_text[-1])
                         if the_question.correctOptionEnabled:
-                            if choice == the_question.correctOption:
-                                correctness = 1
-                            else:
-                                correctness = 2
+                            correctness = 1 if choice == the_question.correctOption else 2
                     else:
                         return JsonResponse({'status': 'error', 'message': 'Invalid type'})
+                    
                     # Create a new Answer object
                     new_answer = Answer(
                         user=new_respondent,
@@ -116,26 +142,37 @@ def get_answers(request):
                         is_correct=correctness
                     )
                     new_answer.save()
-            # Update number of respondents on project
-            the_project.num_respondents = the_project.num_respondents + 1 
-            the_project.save()
 
-            return JsonResponse({'status': 'success'})
-        else:
-            print("invalid data")
-            return JsonResponse({'status': 'error', 'message': 'Invalid data'})
+            except Question.DoesNotExist:
+                return JsonResponse({'status': 'error', 'message': 'Question does not exist.'})
+
+        the_project.num_respondents += 1
+        the_project.save()
+
+        return JsonResponse({'status': 'success'})
+
+    print("Invalid data in get_answers")
+    return JsonResponse({'status': 'error', 'message': 'Invalid method'})
         
 
 def check_poll_password(request):
+    """
+    Checks poll password (method = POST)
+
+    ---
+    Request requires project id and password
+    """
     if request.method == 'POST':
         data = json.loads(request.body)
-        project_id = int(data.get('project'))
+        project_id_raw = data.get('project')
         project_password = data.get('password')
-        if project_id:
-            the_project = Project.objects.get(pk=project_id)
-            if the_project.pw == project_password:
-                return JsonResponse({'status': 'success'})
-            else:
-                return JsonResponse({'status': 'error', 'message': 'Wrong password'})
-        else:
+        if not project_id_raw:
             return JsonResponse({'status': 'error', 'message': 'Invalid Id'})
+        
+        project_id = int(project_id_raw)
+        the_project = Project.objects.get(pk=project_id)
+
+        if the_project.pw == project_password:
+            return JsonResponse({'status': 'success'})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Wrong password'})

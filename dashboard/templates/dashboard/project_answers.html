@@ -16,10 +16,11 @@
         <p>Poll closed on {{ results.submission_date }}</p>
         <p>Nr of respondents: {{ results.num_respondents }}</p>
     </div>
-    
+
     <div class="DASHBOARD-results-download-btn-container">
-        <small><a href="#" role="button" class="BASE-btn BASE-btn-small-gray" onclick="downloadTableExcel('DASHBOARD-Q-Results-Table')">
-                Download excel</a></small>
+        <small><a href="javascript:void(0)" role="button" class="BASE-btn BASE-btn-small-gray"
+                onclick="downloadTableCSV('DASHBOARD-Q-Results-Table')">
+                Download CSV</a></small>
     </div>
 
     <table class="table table-striped table-bordered table-hover" id="DASHBOARD-Q-Results-Table">
@@ -35,41 +36,41 @@
             <th>Opt 4</th>
             <th>Opt 5</th>
         </tr>
-            {% for result in question_results %}
-                <tr>
-                    <th>Q{{ forloop.counter }}</th>
-                    <td>{{ result.question }}</td>
-                    <td>{{ result.total_answers }}</td>
-                    {% if result.question_has_answer or result.question_type == "Question and Answer" %}
-                        <td>{{ result.percentage_ans_that_are_correct }}</td>
-                    {% else %}
-                        <td class="DASHBOARD-results-NA">N/A</td>
-                    {% endif %}
-                        <td>{{ result.question_type }}</td>
-                    {% if result.question_type == "Multiple Choice" %}
-                        {% for option in result.question_option_and_total %}
-                            {% if option.0 == "" %}
-                                <td class="DASHBOARD-results-NA">N/A</td>
-                            {% else %}
-                                <td>{{ option.1 }}<br><small class="DASHBOARD-results-NA">({{ option.0 }})</small></td>
-                            {% endif %}
-                        {% endfor %}
-                    {% else %}
-                        <td class="DASHBOARD-results-NA">N/A</td>
-                        <td class="DASHBOARD-results-NA">N/A</td>
-                        <td class="DASHBOARD-results-NA">N/A</td>
-                        <td class="DASHBOARD-results-NA">N/A</td>
-                        <td class="DASHBOARD-results-NA">N/A</td>
-                    {% endif %}
-                </tr>
+        {% for result in question_results %}
+        <tr>
+            <th>Q{{ forloop.counter }}</th>
+            <td>{{ result.question }}</td>
+            <td>{{ result.total_answers }}</td>
+            {% if result.question_has_answer or result.question_type == "Question and Answer" %}
+            <td>{{ result.percentage_ans_that_are_correct }}</td>
+            {% else %}
+            <td class="DASHBOARD-results-NA">N/A</td>
+            {% endif %}
+            <td>{{ result.question_type }}</td>
+            {% if result.question_type == "Multiple Choice" %}
+            {% for option in result.question_option_and_total %}
+            {% if option.0 == "" %}
+            <td class="DASHBOARD-results-NA">N/A</td>
+            {% else %}
+            <td>{{ option.1 }}<br><small class="DASHBOARD-results-NA">({{ option.0 }})</small></td>
+            {% endif %}
             {% endfor %}
+            {% else %}
+            <td class="DASHBOARD-results-NA">N/A</td>
+            <td class="DASHBOARD-results-NA">N/A</td>
+            <td class="DASHBOARD-results-NA">N/A</td>
+            <td class="DASHBOARD-results-NA">N/A</td>
+            <td class="DASHBOARD-results-NA">N/A</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
     </table>
     <br>
 
     <div class="DASHBOARD-results-download-btn-container">
-        <small><a href="#" role="button" class="BASE-btn BASE-btn-small-gray"
-                onclick="downloadTableExcel('DASHBOARD-R-Results-Table')">
-                Download excel</a></small>
+        <small><a href="javascript:void(0)" role="button" class="BASE-btn BASE-btn-small-gray"
+                onclick="downloadTableCSV('DASHBOARD-R-Results-Table')">
+                Download CSV</a></small>
     </div>
     <table class="table table-striped table-bordered table-hover" id="DASHBOARD-R-Results-Table">
         <tr class="DASHBOARD-table-headers">
@@ -83,8 +84,8 @@
         <tr>
             <td>{{ respondent.username }}</td>
             <td>{{ respondent.creation_date }}</td>
-            {% for answer in respondent.linked_answer.all%}
-                <td>{{ answer.users_answer }}</td>
+            {% for answer in respondent.linked_answer.all %}
+            <td>{{ answer.users_answer }}</td>
             {% endfor %}
         </tr>
         {% endfor %}

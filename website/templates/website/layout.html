@@ -24,9 +24,11 @@
 <footer>
     <p>2023</p>
     <p>by</p>
-    <p><a href="https://github.com/bgtti/">
-        <ion-icon name="logo-github"></ion-icon>
-    </a></p>
+    <p>
+        <a href="https://github.com/bgtti/">
+            <ion-icon name="logo-github"></ion-icon>
+        </a>
+    </p>
 </footer>
 <!-- Modal -->
 {% include "modal_delete_user.html" %}
@@ -36,8 +38,9 @@
 
 {% block extra_body %}
 <!-- Additional JS or other body content for the website app goes here -->
-<script src="{% static 'website/script_website.js' %}"></script>
-<!-- Ion Icon (github icon footer) -->
-<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<!-- may be included by any template using this layout -->
+
+<!-- Ion Icon (github icon footer) See: https://ionic.io/ionicons -->
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 {% endblock %}
