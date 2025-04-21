@@ -16,7 +16,7 @@
     <form action="{% url 'website:signup' %}" method="post">
         {% csrf_token %}
         <div class="form-group">
-            <input class="form-control" autocomplete="username" autofocus type="text" name="username"
+            <input class="form-control" autocomplete="username" autofocus type="text" name="username" minlength="1"
                 placeholder="Username">
         </div>
         <br>
@@ -25,12 +25,12 @@
         </div>
         <br>
         <div class="form-group">
-            <input class="form-control" autocomplete="new-password" type="password" name="password"
+            <input class="form-control" autocomplete="new-password" type="password" name="password" minlength="8"
                 placeholder="Password">
         </div>
         <br>
         <div class="form-group">
-            <input class="form-control" autocomplete="repeat-password" type="password" name="confirmation"
+            <input class="form-control" autocomplete="repeat-password" type="password" name="confirmation" minlength="8"
                 placeholder="Confirm Password">
         </div>
         <br>

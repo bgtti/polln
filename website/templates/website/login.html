@@ -15,12 +15,12 @@
     <form action="{% url 'website:login' %}" method="post">
         {% csrf_token %}
         <div class="form-group">
-            <input autocomplete="username" autofocus class="form-control" type="text" name="username"
+            <input autocomplete="username" autofocus class="form-control" type="text" name="username" minlength="1"
                 placeholder="Username">
         </div>
         <br>
         <div class="form-group">
-            <input autocomplete="current-password" class="form-control" type="password" name="password"
+            <input autocomplete="current-password" class="form-control" type="password" name="password" minlength="1"
                 placeholder="Password">
         </div>
         <br>

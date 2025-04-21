@@ -1,9 +1,13 @@
+"""
+Dashboard: views pertaining to user (who sets up the polls)
+"""
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.serializers import serialize
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from collections import Counter
 import json
 from website.models import User
@@ -11,7 +15,11 @@ from dashboard.models import Project, Question, Respondent, Answer, Result
 from dashboard.utils import create_prj_code, qr_code_generator, delete_qr_code 
 
 # index is the user's dashboard
+@login_required
 def index(request, message=None):
+    """
+    Returns user's dashboard (method = GET)
+    """
     user = User.objects.get(pk=request.user.pk)
     projects = Project.objects.filter(user=user).order_by("pk").reverse()
     if not projects:
@@ -27,8 +35,21 @@ def index(request, message=None):
 
 # add new project
 def add_project(request):
+    """
+    Adds a project (method = POST)
+    ------------
+    Request:
+    - project name (projectname string)
+    - require username (boolean derived from usernamenabled)
+    - require password (string projectpw if pwenabled in request)
+    - show answer (string derived from answernabled)
+    """
     if request.method == "POST":
-        pjt_name = request.POST['projectname']
+        pjt_name = request.POST.get('projectname')
+        if not pjt_name:
+            request.session['index_message'] = "No project name provided: project could not be saved."
+            return HttpResponseRedirect(reverse("dashboard:index"))
+        
         user = User.objects.get(pk=request.user.pk)
 
         if 'usernamenabled' in request.POST:
@@ -38,9 +59,9 @@ def add_project(request):
 
         if 'pwenabled' in request.POST:
             set_pw = True
-            pw = request.POST['projectpw']
+            pw = request.POST.get('projectpw', "")
             if not pw or pw == "":
-                request.session['index_message'] = "No password set, project could not be saved."
+                request.session['index_message'] = "No password set: project could not be saved."
                 return HttpResponseRedirect(reverse("dashboard:index"))
         else:
             set_pw = False
@@ -69,6 +90,9 @@ def add_project(request):
 
 # view project page
 def project(request, id):
+    """
+    Shows projects in project template (method = GET)
+    """
     try:
         the_project = Project.objects.get(pk=id)
         if the_project.num_questions > 0:
@@ -92,6 +116,12 @@ def project(request, id):
 # Open poll on project
 @csrf_exempt
 def open_poll(request,id):
+    """
+    Opens poll (method = GET)
+
+    ---
+    Requires project id
+    """
     try:
         project = Project.objects.get(pk=id)
         project.is_live = True
@@ -105,6 +135,12 @@ def open_poll(request,id):
 # Close poll on project
 @csrf_exempt
 def close_poll(request, id):
+    """
+    Closes poll (method = GET)
+    
+    ---
+    Requires project id
+    """
     try:
         project = Project.objects.get(pk=id)
         if project.is_live == True:
@@ -176,22 +212,31 @@ def close_poll(request, id):
 # Function that send project data to JS editProjectData function for modal_add_project to edit project, and gets back editted data.
 @csrf_exempt
 def edit_project(request, id):
+    """
+    Edit project (methods = GET and POST)
+
+    ---
+    GET: will send project data to JS editProjectData function for modal_add_project to enable user to edit project
+    POST: changes the project object (name, username requirement, password requirement and password, show answer requirement)
+
+    ---
+    Sample data being sent from edit_project when request.method == "GET":
+    {
+        "model": "dashboard.project",
+        "pk": 3,
+        "fields": {
+            "user": 2,
+            "name": "My Pjkt",
+            "pw_requirement": false,
+            "pw": "",
+            "num_questions": 0
+        }
+    }
+    """
     if request.method == "GET":
         project = Project.objects.get(pk=id)
         serialized_question = serialize('json', [project])
         return JsonResponse({'project': serialized_question})
-    # Sample data being sent from edit_project when request.method == "GET":
-        # {
-        #     "model": "dashboard.project",
-        #     "pk": 3,
-        #     "fields": {
-        #         "user": 2,
-        #         "name": "My Pjkt",
-        #         "pw_requirement": false,
-        #         "pw": "",
-        #         "num_questions": 0
-        #     }
-        # }
     else:
         if request.method == "POST":
             pjt_name = request.POST['projectname']
@@ -202,7 +247,7 @@ def edit_project(request, id):
                 set_username = False
             if 'pwenabled' in request.POST:
                 set_pw = True
-                pw = request.POST['projectpw']
+                pw = request.POST.get('projectpw', "")
                 if not pw or pw == "":
                     the_project = Project.objects.get(pk=id)
                     request.session['project_message'] = "No password set, project could not be saved."
@@ -230,6 +275,12 @@ def edit_project(request, id):
 
 # deleting a project
 def delete_project(request, id):
+    """
+    Deletes project (method = GET)
+    
+    ---
+    Requires project id
+    """
     try:
         the_project = Project.objects.get(pk=id)
         delete_qr_code(the_project.prj_code)
@@ -242,6 +293,12 @@ def delete_project(request, id):
 
 # adding new question
 def add_question(request):
+    """
+    Adds question (method = POST)
+    
+    ---
+    Request should include: project id, question type, and optionally more question info (answer, options,etc)
+    """
     if request.method == "POST":
         the_user = User.objects.get(pk=request.user.pk)
         the_project = Project.objects.get(pk=int(request.POST['project_pk']))
@@ -264,15 +321,15 @@ def add_question(request):
             the_answer = ""
         if 'choiceAnswerEnabled' in request.POST:
             correct_option_enabled = True
-            the_correct_choice = request.POST['rightChoice']
+            the_correct_choice = int(request.POST['rightChoice'])
         else:
             correct_option_enabled = False
             the_correct_choice = 1
-        the_1_option = request.POST['choice1']
-        the_2_option = request.POST['choice2']
-        the_3_option = request.POST['choice3']
-        the_4_option = request.POST['choice4']
-        the_5_option = request.POST['choice5']
+        the_1_option = request.POST.get('choice1', "")
+        the_2_option = request.POST.get('choice2', "")
+        the_3_option = request.POST.get('choice3', "")
+        the_4_option = request.POST.get('choice4', "")
+        the_5_option = request.POST.get('choice5', "")
 
         the_position = the_project.num_questions + 1
 
@@ -292,11 +349,17 @@ def add_question(request):
             request.session['project_message'] = "There was a problem adding your question. Please try again"
             return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': the_project.pk}))
 
-# question_order gets data from JS getOrderOfQuestions() function and saves the new question position
-# Sample json data: {'body': [[1, 0], [2, 1], [3, 2], [4, 3]]}
-# Each inner array contains: the question's pk and it's new position. Question order might be important for the user.
+# Question ordering
 @csrf_exempt
 def question_order(request):
+    """
+    Defines question order (method = POST)
+    
+    ---
+    question_order gets data from JS getOrderOfQuestions() function and saves the new question position
+    Sample json data: {'body': [[1, 0], [2, 1], [3, 2], [4, 3]]}
+    Each inner array contains: the question's pk and it's new position. Question order might be important for the user.
+    """
     if request.method == "POST":
         data = json.loads(request.body)
         body = data.get('body', [])
@@ -326,33 +389,43 @@ def question_order(request):
 # Function that sends Question object information to JS the function editQuestionData, and received editted project info. 
 @csrf_exempt
 def edit_question(request, id):
+    """
+    Edit question (methods = POST or GET)
+    
+    ---
+    GET: sends question information
+    POST: received changed question information
+
+    ---
+    Sample data being sent from edit_question when request.method == "GET":
+    [
+        {
+            "model": "dashboard.question",
+            "pk": 1,
+            "fields": {
+                "user": 2,
+                "project": 4,
+                "question": "How are you today",
+                "question_type": "Open-ended Question",
+                "answer": null,
+                "nr_choices": 0,
+                "option1": null,
+                "option2": null,
+                "option3": null,
+                "option4": null,
+                "option5": null,
+                "correctOptionEnabled": false,
+                "correctOption": 1,
+                "position": 0
+            }
+        }
+    ]
+    """
     if request.method == "GET":
         question = Question.objects.get(pk=id)
         serialized_question = serialize('json', [question])
         return JsonResponse({'question': serialized_question})
-        # Sample data being sent from edit_question when request.method == "GET":
-        # [
-        #     {
-        #         "model": "dashboard.question",
-        #         "pk": 1,
-        #         "fields": {
-        #             "user": 2,
-        #             "project": 4,
-        #             "question": "How are you today",
-        #             "question_type": "Open-ended Question",
-        #             "answer": null,
-        #             "nr_choices": 0,
-        #             "option1": null,
-        #             "option2": null,
-        #             "option3": null,
-        #             "option4": null,
-        #             "option5": null,
-        #             "correctOptionEnabled": false,
-        #             "correctOption": 1,
-        #             "position": 0
-        #         }
-        #     }
-        # ]
+
     else:
         the_question = request.POST['thequestion']
         if 'question' in request.POST:
@@ -375,7 +448,7 @@ def edit_question(request, id):
             the_answer = ""
         if 'choiceAnswerEnabled' in request.POST:
             correct_option_enabled = True
-            the_correct_choice = request.POST['rightChoice']
+            the_correct_choice = int(request.POST['rightChoice'])
         else:
             correct_option_enabled = False
             the_correct_choice = 1
@@ -409,6 +482,12 @@ def edit_question(request, id):
 
 @csrf_exempt
 def delete_question(request, id):
+    """
+    Deletes question (method = GET)
+    
+    ---
+    Requires question id
+    """
     try:
         delete_q = Question.objects.get(pk=id)
         # Update positions of all elements after the element being deleted
@@ -423,15 +502,21 @@ def delete_question(request, id):
         the_project.num_questions -= 1
         the_project.save()
         delete_q.delete()
-        request.session['project_message'] = "Message deleted successfully!"
+        request.session['project_message'] = "Question deleted successfully!"
         return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': the_project.pk}))
     except:
-        request.session['project_message'] = "There was a problem deleting your question. Please try again"
-        return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': the_project.pk}))
+        request.session['index_message'] = "There was a problem deleting your question. Please try again"
+        return HttpResponseRedirect(reverse("dashboard:index"))
 
 
 # Project Answers
 def project_answers(request, id):
+    """
+    Gets project answers (method = GET)
+    
+    ---
+    Requires project's id
+    """
     the_project = Project.objects.get(pk=id)
     latest_result = Result.objects.filter(project=the_project).order_by('-poll_batch').first()
     latest_respondents = Respondent.objects.filter(
@@ -453,6 +538,12 @@ def project_answers(request, id):
 
 # @csrf_exempt 
 def set_session_message(request):
+    """
+    Sets a session message (error/success) (method = POST)
+    
+    ---
+    Requires a string with the message to be displayed
+    """
     if request.method == "POST":
         message = request.POST.get("message")
         if message:
