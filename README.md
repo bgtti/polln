@@ -3,7 +3,7 @@
   <h1><b>PollN</b></h1>
   <strong>helping ideas spread like pollen</strong>
   <br>
-  <strong>*deployment version*</strong>
+  <strong>*original deployment version*</strong>
 </div>
 <br>
 <table align="center" style="border-collapse:separate;">
