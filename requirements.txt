@@ -1,16 +1,17 @@
-asgiref==3.6.0
+﻿asgiref==3.6.0
 certifi==2025.1.31
 charset-normalizer==3.4.1
 colorama==0.4.6
 coverage==7.8.0
 Django==4.2
-django-browser-reload==1.18.0
+# django-browser-reload==1.18.0 => no need for deployment
 gunicorn==20.1.0
 idna==3.10
-mysql==0.0.3
+# mysql==0.0.3 => didnt work for deployment
 mysql-connector-python==8.0.33
-mysqlclient==2.2.7
+# mysqlclient==2.1.1 => didnt work for deployment
 protobuf==3.20.3
+# PyMySQL==1.0.3 => not needed, bt an alternative to mysqlclient and mysql-connector-python
 pypng==0.20220715.0
 python-dotenv==0.21.0
 qrcode==7.4.2

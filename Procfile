@@ -1,0 +1,1 @@
+web: gunicorn polln.wsgi --log-file -
