@@ -31,7 +31,11 @@ function checkIfPollIsOpen(projectId, event) {
         return;
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
     button.dataset.wasclicked = "true";
+=======
+    submitButton.dataset.wasclicked = "true";
+>>>>>>> main
 =======
     submitButton.dataset.wasclicked = "true";
 >>>>>>> main

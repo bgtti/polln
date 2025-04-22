@@ -8,19 +8,6 @@
         </div>
 
         <div class="DASHBOARD-link-share-container">
-<<<<<<< HEAD
-            {% url 'poll:index' prj=project.prj_code as poll_url %}
-            <a href="https://wa.me/?text=Hi!%20I'm%20inviting%20you%20to%20take%20part%20in%20a%20poll!%0A%0A{{ request.scheme }}://{{ request.get_host }}{{ poll_url }}"
-                role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type4"
-                target="_blank"
-                onclick="">Share with WhatsApp</a>
-            
-            <a href="" role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type4"
-                data-url="{{ request.scheme }}://{{ request.get_host }}{{ poll_url }}"
-                onclick="{()=>{copyLinkToPollToClipboard(event)}}"
-                >Copy links</a>
-            <p>The respondents can access the poll through the direct link:</p> 
-=======
             <!-- display issues with copying to clipboard -->
             <form id="session-message-form" method="POST" action="{% url 'dashboard:set_session_message' %}"
                 style="display: none;">
@@ -28,17 +15,8 @@
                 <input type="hidden" name="message" id="session-message-input">
             </form>
 
-            <!-- Message -->
-            {% if message %}
-            <div class="alert alert-secondary alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            {% endif %}
-
             <!-- Modal text -->
             <p>The respondents can access the poll through the direct link:</p>
->>>>>>> main
             <p><b>{{ request.scheme }}://{{ request.get_host }}{% url 'poll:index' prj=project.prj_code %}</b></p>
             <p>or place the code <b>{{ project.prj_code }}</b> at</p>
             <p>{{ request.scheme }}://{{ request.get_host }}</p>

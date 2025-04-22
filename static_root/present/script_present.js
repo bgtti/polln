@@ -127,9 +127,14 @@ function getPollResults(projectId) {
                         }
                     }
 <<<<<<< HEAD
+<<<<<<< HEAD
                     let percentCorrect = (nrCorrectAns/theAnswers.length)*100
 
                     if (!Number.isInteger(percentCorrect)){
+=======
+                    let percentCorrect = (nrCorrectAns / theAnswers.length) * 100
+                    if (!Number.isInteger(percentCorrect)) {
+>>>>>>> main
 =======
                     let percentCorrect = (nrCorrectAns / theAnswers.length) * 100
                     if (!Number.isInteger(percentCorrect)) {
@@ -155,9 +160,15 @@ function getPollResults(projectId) {
                     thisQ = thisQ[0];
                     let numQs = thisQ.fields.nr_choices;
 <<<<<<< HEAD
+<<<<<<< HEAD
                     let optionsQ = [thisQ.fields.option1, thisQ.fields.option2] //chart labels
                     if (numQs > 2){
                         if (numQs >= 3){
+=======
+                    let optionsQ = [thisQ.fields.option1, thisQ.fields.option2]
+                    if (numQs > 2) {
+                        if (numQs >= 3) {
+>>>>>>> main
 =======
                     let optionsQ = [thisQ.fields.option1, thisQ.fields.option2]
                     if (numQs > 2) {

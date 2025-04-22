@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // *****************MULTIPLE*************************** 
 // Hiding/unhiding elements in modals add project and add question
 // Accepts two parameters: the first is the id of the element that should be hidden/unhidden
@@ -7,10 +8,90 @@ function hideUnhideIfChecked(el_id, theCheckbox = event.target) {
     // let theCheckbox = event.target;
     if (theCheckbox.checked) {
         theElement.classList.remove("BASE-hide");
+=======
+// *****************MULTIPLE***************************
+
+// Hiding/unhiding elements in modals add project and add question
+
+/**
+ * @function hideUnhideIfChecked
+ * Shows or hides a given element based on the state of a checkbox.
+ *
+ * @param {string} el_id - The ID of the element that should be shown or hidden.
+ * @param {HTMLElement} [theCheckbox=event.target] - (Optional) The checkbox element whose checked status determines visibility.
+ *     If not provided, defaults to the event target.
+ *
+ * @description
+ * If the checkbox is checked, the specified element will have the "BASE-hide" class removed (making it visible).
+ * If unchecked, the element will be hidden by adding the "BASE-hide" class.
+ *
+ * @example
+ * <input type="checkbox" onchange="hideUnhideIfChecked('extra-options', this)">
+ * <div id="extra-options" class="BASE-hide">More options here</div>
+ */
+function hideUnhideIfChecked(el_id, theCheckbox = event.target) {
+    let theElement = document.querySelector(`#${el_id}`);
+    if (theCheckbox.checked) { theElement.classList.remove("BASE-hide"); }
+    else { theElement.classList.add("BASE-hide"); }
+}
+
+//function to reload the page, used upon closing add_question to reset changes done while edditing question
+function reloadPage() {
+    location.reload()
+}
+
+// function that copies the link to the poll to the clipboard DESKTOP (modal_share_link)
+function copyLinkToPollToClipboard(el) {
+    let theUrl = el.getAttribute('data-url');
+    navigator.clipboard.writeText(theUrl);
+    modalHideUnhide('modal_share_link')
+}
+
+// helper function to get cookie access:
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// function that copies the link to the poll to the clipboard MOBILE (modal_share_link)
+function sharePollNative(shareUrl) {
+    if (navigator.share) {
+        navigator.share({
+            title: 'Join My Poll!',
+            text: "Hi! I'm inviting you to take part in a poll!",
+            url: shareUrl
+        }).catch(err => console.log("Sharing failed:", err));
+>>>>>>> main
     } else {
-        theElement.classList.add("BASE-hide");
+        let message = "Your device doesn't support native sharing."
+        fetch('/set-session-message/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: `message=${encodeURIComponent(message)}`
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Message stored:", data);
+            })
+            .catch(err => {
+                console.error("Failed to store message:", err);
+            });
     }
 }
+<<<<<<< HEAD
 //function to reload the page, used upon closing add_question to reset changes done while edditing question
 function reloadPage() {
     location.reload()
@@ -93,6 +174,8 @@ function sharePollNative(shareUrl) {
     }
 >>>>>>> main
 }
+=======
+>>>>>>> main
 
 //function that opens and closes poll
 // function accepts two parameters: the project id and either the string 'open' or 'close'
@@ -293,6 +376,30 @@ function editQuestionData(questionId) {
         .catch(error => console.error(error));
 }
 
+<<<<<<< HEAD
+=======
+// Submitting a question
+function submitQuestion(projectId) {
+    // Make sure poll is closed before adding the question
+    fetch(`/dashboard/close_poll/${projectId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // After poll closes, submit the form
+                document.getElementById('DASHBOARD-Q-edit-form').submit();
+            } else {
+                console.warn("Could not close the poll. Try adding question again.");
+            }
+        })
+        .catch(error => {
+            console.error("Error closing poll:", error);
+        });
+
+    // Prevent the default form submission while waiting for fetch
+    return false;
+}
+
+>>>>>>> main
 // *****************DRAG AND DROP QUESTIONS***************************
 //Adding event listeners to projects.html where questions can be dragged into position
 //This was written with the help of Web Dev Simplified's video available at: https://www.youtube.com/watch?v=jfYWwQrtzzY&t=655s
