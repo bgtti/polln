@@ -1,1 +1,1 @@
-web: gunicorn polln.wsgi --workers 2 --preload --log-file -
+web: gunicorn polln.wsgi --workers 8 --preload --log-file -
