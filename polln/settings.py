@@ -31,7 +31,7 @@ if ENVIRONMENT == "production":
     import mysql.connector
 
 # Define base url (points to localhost in development)
-BASE_URL = os.getenv("BASE_URL", "http://127.0.0.1:8000")
+BASE_URL = os.getenv("BASE_URL")
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
@@ -43,7 +43,7 @@ DEBUG = (ENVIRONMENT == 'development')
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',') if ENVIRONMENT == "production" else []
 CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',') if ENVIRONMENT == "production" else []
 
-CSRF_TRUSTED_ORIGINS = ["polln-production.up.railway.app", "polln.bgtti.dev", "www.polln.bgtti.dev", "https://polln.bgtti.dev", "https://*.bgtti.dev", "https://polln.bgtti.dev", "https://polln-production.up.railway.app"] # for deployment of this app
+# CSRF_TRUSTED_ORIGINS = ["polln-production.up.railway.app", "polln.bgtti.dev", "www.polln.bgtti.dev", "https://polln.bgtti.dev", "https://*.bgtti.dev", "https://polln.bgtti.dev", "https://polln-production.up.railway.app"] # for deployment of this app
 
 # Application definition
 
