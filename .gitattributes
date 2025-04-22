@@ -1,6 +1,9 @@
+# These files exist in production only:
 Procfile merge=ours
 runtime.txt merge=ours
+# This file's content is not needed in production:
 mydb.py merge=ours
-templates/base.html merge=ours
-requirements.txt merge=ours
-polln/settings.py merge=ours
+# These files need to be merged manually:
+templates/django_reload.html merge=ours # django_browser_reload reference needs to be deleted in prod
+polln/settings.py merge=ours # django_browser_reload reference needs to be deleted in prod
+requirements.txt merge=ours # some requirements are not needed in production

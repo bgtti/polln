@@ -45,8 +45,8 @@
         crossorigin="anonymous"></script>
 
     <!-- django-browser-reload -->
-    <!-- This will result in an error in production: django_browser_reload needs to be removed completely -->
-
+    <!-- django_browser_reload is only needed in development environments -->
+    {% include "django_reload.html" ignore missing %}
 
     <!-- JS main.js -->
     <script src="{% static 'main.js' %}"></script>
