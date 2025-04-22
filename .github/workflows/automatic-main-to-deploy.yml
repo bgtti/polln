@@ -32,21 +32,8 @@ jobs:
           fi
 
       - name: Merge main into deploy
-        run: git merge main --no-commit --no-ff
+        run: git merge main --no-commit --no-ff || true
 
       - name: Revert changes to excluded files if they exist
         run: |
-          FILES_TO_KEEP="Procfile runtime.txt .env.example mydb.py requirements.txt polln/settings/dev_settings.py polln/settings/prod_settings.py templates/django_reload.html"
-          for file in $FILES_TO_KEEP; do
-            if [ -f "$file" ]; then
-              git reset HEAD -- "$file"
-              git checkout -- "$file"
-            fi
-          done
-
-      - name: Commit the merge
-        run: |
-          git commit -m "Merge main into deploy, excluding specific files"
-
-      - name: Push changes to deploy branch
-        run: git push origin deploy
+          FILES_TO_KEEP="Procfile runtime.txt .env.example mydb.py requirements.txt polln

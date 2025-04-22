@@ -35,7 +35,17 @@ jobs:
           git reset HEAD -- Procfile runtime.txt .env.example mydb.py requirements.txt polln/settings/dev_settings.py polln/settings/prod_settings.py templates/django_reload.html || true
           git checkout -- Procfile runtime.txt requirements.txt polln/settings/prod_settings.py templates/django_reload.html || true
           git restore --staged .env.example mydb.py || true
-          git commit -m "Manual merge main into deploy, keeping deploy-specific files" || echo "Nothing to commit"
+
+      - name: Remove GitHub workflow files from deploy
+        run: |
+          rm -f .github/workflows/sync-on-push.yml
+          rm -f .github/workflows/any-other-workflow.yml
+          git rm --cached -f .github/workflows/sync-on-push.yml .github/workflows/any-other-workflow.yml || true
+
+      - name: Commit merge and cleanup
+        run: |
+          git commit -am "Manual merge main into deploy, cleaned up deploy-only files" || echo "Nothing to commit"
 
       - name: Push to deploy
         run: git push origin deploy
+
