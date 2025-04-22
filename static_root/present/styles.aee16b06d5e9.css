@@ -1,0 +1,84 @@
+.PRESENT-flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
+#PRESENT-presentation{
+    background-color: white;
+}
+.PRESENT-page{
+    height: 100vh;
+}
+@media screen and (min-width: 992px) {
+    .PRESENT-page>* {
+        max-width: 80vw;
+    }
+}
+#PRESENT-page-1-btn{
+    margin: 15px !important;
+    display: flex;
+    justify-content: center;
+}
+.PRESENT-page-1-content{
+    flex-grow: 5;
+    min-height: 85vh;
+    flex-direction: column;
+}
+.PRESENT-votes-container{
+    align-items: baseline;
+    gap: 10px;
+}
+.PRESENT-votes-container > *{
+    color: rgb(183, 183, 183);
+    font-size: 1.5em;
+}
+#PRESENT-page-2{
+    flex-direction: column;
+}
+.PRESENT-q-answer{
+    flex-direction: column;
+    gap: 10px;
+}
+.PRESENT-open-ended{
+    flex-direction: column;
+    gap: 5px;
+    color: var(--main-blue);
+}
+.PRESENT-open-ended > *{
+    border: 1px solid var(--main-yellow);
+    padding: 3px 5px !important;
+    border-radius: 5px;
+}
+.PRESENT-correct-QA{
+    border: 2px solid var(--main-yellow);
+    padding: 20px 30px !important;
+    font-size: 2em;
+    border-radius: 5px;
+}
+.PRESENT-displayMoreThan10{
+    border: none;
+    color: grey;
+    font-weight: bold;
+}
+.PRESENT-canvas {
+    margin: 15px 0;
+}
+
+@media only screen and (min-width: 600px) {
+    .PRESENT-canvas {
+            min-width: 500px;
+    }
+}
+
+.PRESENT-MC-correct-ans, .PRESENT-QA-correct-ans{
+    font-weight: bold;
+    color: gray;
+}
+.PRESENT-MC-sub, .PRESENT-QA-sub, .PRESENT-sub{
+    color: gray;
+}
+
+.BASE-hide{
+    display: none !important;
+}

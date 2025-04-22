@@ -1,9 +1,9 @@
 /**
  * @function modalHideUnhide
  * Toggles the visibility of a modal by adding/removing the "BASE-hide" class.
- * 
+ *
  * @param {string} modal_id - The ID of the modal element to toggle.
- * 
+ *
  * @example
  * <div class="BASE-modal-container BASE-hide" id="modal_add_question">
  *   <!-- modal content here -->

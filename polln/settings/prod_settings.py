@@ -6,7 +6,7 @@ from .base_settings import *
 import mysql.connector
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True #change
+DEBUG = False
 
 # Define base url (points to localhost in development)
 BASE_URL = os.getenv("BASE_URL")

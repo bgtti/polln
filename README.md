@@ -1,7 +1,7 @@
 <div align="center">
   <br>
   <h1><b>PollN</b></h1>
-  <strong>helping ideas spread like pollen</strong>
+  <strong>helping ideas spread like pollen</strong> 
 </div>
 <br>
 <table align="center" style="border-collapse:separate;">
@@ -27,7 +27,7 @@
 - [Introduction](#introduction)
    - [Installation](#installation)
    - [How PollN works](#how-polln-works)
-   - [Branches: main and deploy](#branches-main-and-deploy)
+   - [Branches: main and production](#branches-main-and-production)
 - [Code and organization](#code-and-organization)
    - [The project folder: polln](#the-project-folder-polln)
    - [The App folders: website, dashboard, present, and poll](#the-app-folders-website-dashboard-present-and-poll)
@@ -55,7 +55,7 @@
    >
    > More information on how to clone this repository available at https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository
    > It is recommended that you set up a virtual environment. More information: https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#:~:text=To%20create%20a%20virtual%20environment,virtualenv%20in%20the%20below%20commands.&text=The%20second%20argument%20is%20the,project%20and%20call%20it%20env%20.
-   > Use the main branch, which is intended for local (production). The code from the deployment branch was changed to suit the deployment environment. More information bellow.
+   > Use the main branch, which is intended for local (production). The code from the production branch was changed to suit the production environment. More information bellow.
    ><br/><br/>
 
 </details>
@@ -194,22 +194,22 @@ The user can close a poll any time. Poll opening and closing will happen automat
 A full guide on how to use PollN is provided in the url /guide.
 <br><br>
 
-## Branches: main, deploy, and older versions
+## Branches: main, production, and older versions
 
-This repository contains 2 branches up-to-date: main and deploy. The main branch contains the code that works in a local environment, while the deploy branch contains the code currently deployed at https://polln.bgtti.dev .
+This repository contains 2 branches up-to-date: main and production. The main branch contains the code that works in a local environment, while the production branch contains the code currently deployed at https://polln.bgtti.dev .
 
-Apart from the `main`and `deploy` branches (which are the lattest versions of the app), other branches may exist which are older versions. `version_1` is the original version of this app.  
+Apart from the `main`and `production` branches (which are the lattest versions of the app), other branches may exist which are older versions. `version_1` is the original version of this app.  
 
-The deploy branch is different from the main branch in the following way:
+The production branch is different from the main branch in the following way:
 
 <details>
    <summary>1. Settings and requirements</summary>
 
    >\
-   > Production (the `deploy` branch) requires some specific settings (prod_settings), while other are not relevant (dev_settings).
+   > Production (the `production` branch) requires some specific settings (prod_settings), while other are not relevant (dev_settings).
    > These two files (prod_settings and dev_settings) are not merged automatically.
    > Similarly, the `requirements.txt` is also never automatically merged, since this could cause issues in the production environment. 
-   > Example: mysql-connector-python is used in production since mysqlclient lead to many errors. django-browser-reload id not useful in production environments, so it also removed from the requirements in the `deploy`branch.
+   > Example: mysql-connector-python is used in production since mysqlclient lead to many errors. django-browser-reload id not useful in production environments, so it also removed from the requirements in the `production`branch.
    > Another file that is not merged directly is templates/django_reload.html - since it is connected to django-browser-reload and could cause errors in production.
    ><br/><br/>
 
@@ -219,7 +219,7 @@ The deploy branch is different from the main branch in the following way:
    <summary>2. Procfile and runtime.txt</summary>
 
    >\
-   > These files were added as per requirements of hosting in Railway.app, and as such, they only exist in the `deploy` branch. 
+   > These files were added as per requirements of hosting in Railway.app, and as such, they only exist in the `production` branch. 
    > 
    ><br/><br/>
 
