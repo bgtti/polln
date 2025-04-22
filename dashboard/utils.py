@@ -72,10 +72,7 @@ def delete_qr_code(project_code):
     To be used when project is deleted.
     """
     image_name = f"qr_{project_code}.png"
-
-    # Delete from static folder: static/dashboard/media
-    # delete_path = os.path.join(
-    #     settings.BASE_DIR, "static", "dashboard", "media", image_name)
+    
     delete_path = os.path.join(settings.MEDIA_ROOT, "qr_codes", image_name)
 
     try:
