@@ -34,10 +34,11 @@ if ENVIRONMENT == "production":
 BASE_URL = os.getenv("BASE_URL")
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = (ENVIRONMENT == 'development')
+# DEBUG = (ENVIRONMENT == 'development')
+DEBUG = True
 
 # In deployment, set allowed hosts and CSRF_TRUSTED_ORIGINS
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',') if ENVIRONMENT == "production" else []
