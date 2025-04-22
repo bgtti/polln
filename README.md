@@ -196,20 +196,21 @@ A full guide on how to use PollN is provided in the url /guide.
 
 ## Branches: main, deploy, and older versions
 
-This repository contains 2 branches: main and deploy. The main branch contains the code that works in a local environment, while the deploy branch contains the code currently deployed at https://polln.bgtti.dev .
+This repository contains 2 branches up-to-date: main and deploy. The main branch contains the code that works in a local environment, while the deploy branch contains the code currently deployed at https://polln.bgtti.dev .
 
 Apart from the `main`and `deploy` branches (which are the lattest versions of the app), other branches may exist which are older versions. `version_1` is the original version of this app.  
 
 The deploy branch is different from the main branch in the following way:
 
 <details>
-   <summary>1. Database, Settings & Requirements</summary>
+   <summary>1. Settings and requirements</summary>
 
    >\
-   > Production (the `deploy` branch) requires some specific settings (prod_settings). 
-   > This includes the use of mysql-connector-python (mysqlclient lead to many errors). Similarly, there are some requirements such as django-browser-reload that are not useful in production environments. Such differences can be seen in the requirements.txt file from branches.
-   > The content of mydb.py was commented out, since this file is not needed for the db creation - the db was created in Railway.app
-   > Another change in Settings was the required addition of ```WSGI_APPLICATION = 'polln.wsgi.application'```. Consult the Railway.app documentation for more information.
+   > Production (the `deploy` branch) requires some specific settings (prod_settings), while other are not relevant (dev_settings).
+   > These two files (prod_settings and dev_settings) are not merged automatically.
+   > Similarly, the `requirements.txt` is also never automatically merged, since this could cause issues in the production environment. 
+   > Example: mysql-connector-python is used in production since mysqlclient lead to many errors. django-browser-reload id not useful in production environments, so it also removed from the requirements in the `deploy`branch.
+   > Another file that is not merged directly is templates/django_reload.html - since it is connected to django-browser-reload and could cause errors in production.
    ><br/><br/>
 
 </details>
@@ -218,17 +219,18 @@ The deploy branch is different from the main branch in the following way:
    <summary>2. Procfile and runtime.txt</summary>
 
    >\
-   > These files were added as per requirements of hosting in Railway.app 
+   > These files were added as per requirements of hosting in Railway.app, and as such, they only exist in the `deploy` branch. 
    > 
    ><br/><br/>
 
 </details>
 
 <details>
-   <summary>3. gitattributes</summary>
+   <summary>3. mydb.py and .env.example</summary>
 
    >\
-   > Since there are small differences between the `deploy` and development branches, both contain a `.gitattribute` file with some rules for merging. Files that contain very specific content should not be overwritten. In case files listed there are changed, the changes will not be pushed - and these files require manual handling.
+   > The content of mydb.py is only relevant for the db creation locally, and it is not needed in production. The file therefore only exists in `main` (or other branches).
+   > Similarly, .env.example is only available in the `main` branch, since it is meant to be helpful to run this app locally.
    > 
    ><br/><br/>
 
