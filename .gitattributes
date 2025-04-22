@@ -7,3 +7,4 @@ mydb.py merge=ours
 templates/django_reload.html merge=ours # django_browser_reload reference needs to be deleted in prod
 polln/settings.py merge=ours # django_browser_reload reference needs to be deleted in prod
 requirements.txt merge=ours # some requirements are not needed in production
+.gitattributes merge=ours #dev and prod have different needs
