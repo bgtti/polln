@@ -1,3 +1,6 @@
 Procfile merge=ours
 runtime.txt merge=ours
 mydb.py merge=ours
+templates/base.html merge=ours
+requirements.txt merge=ours
+polln/settings.py merge=ours
