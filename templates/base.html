@@ -45,8 +45,8 @@
         crossorigin="anonymous"></script>
 
     <!-- django-browser-reload -->
-    {% load django_browser_reload %}
-    {% django_browser_reload_script %}
+    <!-- django_browser_reload is only needed in development environments -->
+    {% include "django_reload.html" %}
 
     <!-- JS main.js -->
     <script src="{% static 'main.js' %}"></script>

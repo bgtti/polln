@@ -15,14 +15,6 @@
                 <input type="hidden" name="message" id="session-message-input">
             </form>
 
-            <!-- Message -->
-            {% if message %}
-            <div class="alert alert-secondary alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            {% endif %}
-
             <!-- Modal text -->
             <p>The respondents can access the poll through the direct link:</p>
             <p><b>{{ request.scheme }}://{{ request.get_host }}{% url 'poll:index' prj=project.prj_code %}</b></p>

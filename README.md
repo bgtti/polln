@@ -102,26 +102,21 @@
 </details>
 
 <details>
-   <summary>4. Change the DB password</summary>
+   <summary>4. Create a .env file</summary>
 
    >\
-   > Go to the PollN folder and open the settings.py file
-   > ```python
-   > DATABASES = {
-   >    'default': {
-   >    'ENGINE': 'django.db.backends.mysql',
-   >    'NAME': 'pollnmysql',
-   >    'USER': 'root',
-   >    'PASSWORD': os.environ.get('MY_SQL_ROOT_PASSWORD'), # Your password here
-   >    'HOST': 'localhost',  
-   >    'PORT': '3306',
-   >     }
-   > }
+   > In the root folder, you will see a file called `.env.example`.
+   > Create a file names `.env`in the root folder and copy the contents of `.env.example` into it.
+   > You should change at least one variable in this file:
+   >
+   > ```txt
+   > MYSQL_USER = 'root' # <- the name of the user you set with MySQL, change if necessary
+   > MYSQL_PASSWORD = 'your_MySQL_password_here' # <- you want to change this
    >```
    >
-   > Alternatively, you can create an .env file in the main folder, then create the variable 'MY_SQL_ROOT_PASSWORD'='your_password_here'
+   > You want to use the same name and password you used to setup MySQL during installation.
    > 
-   > python-dotenv should be a dependency already. More information here:
+   > More information about .env files (and python-dotenv ) here:
    > https://pypi.org/project/python-dotenv/
    ><br/><br/>
 
@@ -208,31 +203,19 @@ Apart from the `main`and `deploy` branches (which are the lattest versions of th
 The deploy branch is different from the main branch in the following way:
 
 <details>
-   <summary>1. Database & Settings.py</summary>
+   <summary>1. Database, Settings & Requirements</summary>
 
    >\
-   > The database being used is one deployed, and the variables under DATABASE (in Settings.py) were changed accordingly.
-   > 
-   > mysql-connector-python is being used, since there were many errors using mysqlclient. You will also see this being reflected in the requirements.txt file.
-   > Debug was also set to false, and a variable CSRF_TRUSTED_ORIGINS was added.  The ALLOWED_HOSTS array was also changed to include the host url.
+   > Production (the `deploy` branch) requires some specific settings (prod_settings). 
+   > This includes the use of mysql-connector-python (mysqlclient lead to many errors). Similarly, there are some requirements such as django-browser-reload that are not useful in production environments. Such differences can be seen in the requirements.txt file from branches.
    > The content of mydb.py was commented out, since this file is not needed for the db creation - the db was created in Railway.app
-   > Another change in Settings.py was the required addition of ```WSGI_APPLICATION = 'polln.wsgi.application'```. Consult the Railway.app documentation for more information.
+   > Another change in Settings was the required addition of ```WSGI_APPLICATION = 'polln.wsgi.application'```. Consult the Railway.app documentation for more information.
    ><br/><br/>
 
 </details>
 
 <details>
-   <summary>2. dashboard>utils.py</summary>
-
-   >\
-   > The qr_code_generator and delete_qr_code functions had a path modification to reflect the static file location after deployment and for the qr code to point to the deployment url instead of the local "http://127.0.0.1:8000" base url. 
-   > 
-   ><br/><br/>
-
-</details>
-
-<details>
-   <summary>3. Procfile and runtime.txt</summary>
+   <summary>2. Procfile and runtime.txt</summary>
 
    >\
    > These files were added as per requirements of hosting in Railway.app 
@@ -241,7 +224,17 @@ The deploy branch is different from the main branch in the following way:
 
 </details>
 
-If you would like to play around with this code for whatever purpose, you should do so using the main branch, creating the database and running your server locally. The installation instructions should help you with that.
+<details>
+   <summary>3. gitattributes</summary>
+
+   >\
+   > Since there are small differences between the `deploy` and development branches, both contain a `.gitattribute` file with some rules for merging. Files that contain very specific content should not be overwritten. In case files listed there are changed, the changes will not be pushed - and these files require manual handling.
+   > 
+   ><br/><br/>
+
+</details>
+
+If you would like to play around with this code for whatever purpose, you should do so **using the main branch**, creating the database and running your server locally. The installation instructions should help you with that.
 
 # Code and organization
 The polln application has the following structure:
@@ -257,7 +250,7 @@ Let's take a look at what each app does.
 
 ## The project folder: polln
 <br>
-The polln folder is the standard django application folder. Changes were made to settings.py, please check the installation section for more information.
+The polln folder is the standard django application folder. It contains the settings module, which contain environment-specific configurations. If you clone the main branch, you may delete the prod_settings.py as it is not relevant for local development purposes and it will not impact the running of the application.
 <br><br>
 
 ## The App folders: website, dashboard, present, and poll

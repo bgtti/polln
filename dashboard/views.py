@@ -292,6 +292,7 @@ def delete_project(request, id):
         return HttpResponseRedirect(reverse("dashboard:index"))
 
 # adding new question
+@csrf_exempt
 def add_question(request):
     """
     Adds question (method = POST)

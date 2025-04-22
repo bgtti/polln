@@ -1,9 +1,14 @@
 # These files exist in production only:
 # Procfile 
 # runtime.txt 
+
 # This file's content is not needed in production:
 mydb.py merge=ours
+
 # These files need to be merged manually:
 templates/django_reload.html merge=ours # django_browser_reload reference needs to be deleted in prod
-# polln/settings.py merge=ours # django_browser_reload reference needs to be deleted in prod
 requirements.txt merge=ours # some requirements are not needed in production
+# polln/settings/... merge=ours # django_browser_reload reference needs to be deleted in prod
+
+# Static root (different in dev and prod), need to run: python manage.py collectstatic --noinput in each
+static_root/ merge=ours

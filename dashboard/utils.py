@@ -65,35 +65,6 @@ def qr_code_generator(project_code):
         return None
 
 
-    # base_url = settings.BASE_URL
-    # url = f"{base_url}/poll/{project_code}"
-    # qr = qrcode.QRCode(
-    #     version=1,
-    #     error_correction=qrcode.constants.ERROR_CORRECT_H,
-    #     box_size=10,
-    #     border=4,
-    # )
-    # qr.add_data(url)
-    # qr.make(fit=True)
-    # img = qr.make_image(back_color=(255, 255, 255), fill_color=(0, 0, 0))
-
-    # image_name = f"qr_{project_code}.png"
-
-    # # Save to static folder: static/dashboard/media
-    # save_path = os.path.join(settings.BASE_DIR, "static", "dashboard", "media", image_name)
-    # # Save to media folder
-    
-    # # save_path = os.path.join(settings.MEDIA_ROOT, "qr_codes", image_name)
-    # # os.makedirs(os.path.dirname(save_path), exist_ok=True)
-
-    # try:
-    #     img.save(save_path)
-    #     return True
-    # except Exception as error:
-    #     print(f"Failed to save QR code image: {error}")
-    #     return False
-
-
 def delete_qr_code(project_code):
     """
     Requires one argument: the project code: prj_code on the Project db model.
@@ -102,9 +73,6 @@ def delete_qr_code(project_code):
     """
     image_name = f"qr_{project_code}.png"
 
-    # Delete from static folder: static/dashboard/media
-    # delete_path = os.path.join(
-    #     settings.BASE_DIR, "static", "dashboard", "media", image_name)
     delete_path = os.path.join(settings.MEDIA_ROOT, "qr_codes", image_name)
 
     try:

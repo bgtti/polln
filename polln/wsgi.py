@@ -11,6 +11,10 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'polln.settings')
+# Settings module should be:
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'polln.settings.prod_settings') # for production
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'polln.settings.dev_settings') # for development
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", os.getenv("DJANGO_SETTINGS_MODULE", "polln.settings.dev_settings"))
 
 application = get_wsgi_application()
