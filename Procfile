@@ -1,1 +1,1 @@
-web: gunicorn polln.wsgi --workers 4 --threads 2 --timeout 120 --log-file -
+web: gunicorn polln.wsgi --workers 2 --threads 4 --timeout 120 --log-file -
