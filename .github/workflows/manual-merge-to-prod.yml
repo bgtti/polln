@@ -1,4 +1,4 @@
-name: Manual merge from main to deploy
+name: Manual merge from main to production
 
 on:
   workflow_dispatch:
@@ -21,22 +21,22 @@ jobs:
       - name: Fetch all branches
         run: git fetch --all
 
-      - name: Switch to deploy branch
+      - name: Switch to production branch
         run: |
-          if git show-ref --verify --quiet refs/heads/deploy; then
-            git checkout deploy
+          if git show-ref --verify --quiet refs/heads/production; then
+            git checkout production
           else
-            git checkout -b deploy
+            git checkout -b production
           fi
 
-      - name: Merge main into deploy, excluding specific files
+      - name: Merge main into production, excluding specific files
         run: |
           git merge main --no-commit --no-ff || true
           git reset HEAD -- Procfile runtime.txt .env.example mydb.py requirements.txt polln/settings/dev_settings.py polln/settings/prod_settings.py templates/django_reload.html || true
           git checkout -- Procfile runtime.txt requirements.txt polln/settings/prod_settings.py templates/django_reload.html || true
           git restore --staged .env.example mydb.py || true
 
-      - name: Remove GitHub workflow files from deploy
+      - name: Remove GitHub workflow files from production
         run: |
           rm -f .github/workflows/sync-on-push.yml
           rm -f .github/workflows/any-other-workflow.yml
@@ -44,8 +44,8 @@ jobs:
 
       - name: Commit merge and cleanup
         run: |
-          git commit -am "Manual merge main into deploy, cleaned up deploy-only files" || echo "Nothing to commit"
+          git commit -am "Manual merge main into production, cleaned up production-only files" || echo "Nothing to commit"
 
-      - name: Push to deploy
-        run: git push origin deploy
+      - name: Push to production
+        run: git push origin production
 
