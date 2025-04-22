@@ -1,4 +1,4 @@
-name: Sync main to deploy
+name: Automatically merge main to deploy when push occurs in main
 
 on:
   push:
