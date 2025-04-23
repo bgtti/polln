@@ -1,0 +1,40 @@
+# Ignore python stuff
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore logs, sqlite
+*.log
+*.sqlite3
+
+# Ignore .env files
+.env
+.env.production
+.env.prod
+.env.development
+.env.docker
+.env.example
+.env.*
+
+# Ignore certain files
+mydb.py
+media/
+staticfiles/
+
+# Ignore git and vscode stuff
+.vscode/
+.idea/
+.git/
+.git
+.gitignore
+
+# Ignore virtual environment
+env/
+venv/
+.venv/
+
+# Ignore coverage report artifacts
+.coverage
+htmlcov/
+coverage.xml

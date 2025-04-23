@@ -2,15 +2,28 @@ services:
   db:
     image: mysql:8.0
     container_name: polln_mysql
-    ports:
-      - "3306:3306"
+    restart: always
     environment:
       MYSQL_DATABASE: pollndb
-      MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_USER: pollnuser
       MYSQL_PASSWORD: pollnpassword
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+
+  web:
+    build: .
+    container_name: polln_web
+    volumes:
+      - .:/app # Optional for live reload in dev
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    env_file:
+      - .env
 
 volumes:
   mysql_data:

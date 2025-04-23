@@ -4,13 +4,14 @@ charset-normalizer==3.4.1
 colorama==0.4.6
 coverage==7.8.0
 Django==4.2
-django-browser-reload==1.18.0
+django-browser-reload==1.18.0 
 gunicorn==20.1.0
 idna==3.10
-mysql==0.0.3
+# mysql==0.0.3 => do not use for docker
 mysql-connector-python==8.0.33
-mysqlclient==2.2.7
+# mysqlclient==2.1.1 => do not use for docker
 protobuf==3.20.3
+# PyMySQL==1.0.3 => do not use for docker
 pypng==0.20220715.0
 python-dotenv==0.21.0
 qrcode==7.4.2
