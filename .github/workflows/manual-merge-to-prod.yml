@@ -38,9 +38,9 @@ jobs:
 
       - name: Remove GitHub workflow files from production
         run: |
-          rm -f .github/workflows/manual-merge-to-dockarized.yml
+          rm -f .github/workflows/manual-merge-to-dockerized.yml
           rm -f .github/workflows/manual-merge-to-prod.yml
-          git rm --cached -f .github/workflows/manual-merge-to-dockarized.yml .github/workflows/manual-merge-to-prod.yml || true
+          git rm --cached -f .github/workflows/manual-merge-to-dockerized.yml .github/workflows/manual-merge-to-prod.yml || true
 
       - name: Commit merge and cleanup
         run: |
