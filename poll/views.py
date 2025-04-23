@@ -83,76 +83,68 @@ def get_answers(request):
         ]
     }
     """
-    if request.method == 'POST':
+    if request.method != 'POST':
+        return JsonResponse({'status': 'error', 'message': 'Invalid method'})
+    
+    try:
+        data = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse({'status': 'error', 'message': 'Malformed JSON'})
+
+    project_id_raw = data.get('project')
+    answers = data.get('answers')
+    username = data.get('username', 'anonymous') or "anonymous" 
+
+    if project_id_raw is None or not answers:
+        return JsonResponse({'status': 'error', 'message': 'Invalid data'})
+
+    try:
+        project_id = int(project_id_raw)
+        the_project = Project.objects.get(pk=project_id)
+    except (ValueError, Project.DoesNotExist):
+        return JsonResponse({'status': 'error', 'message': 'Invalid project ID'})
+
+    # Create a new Respondent
+    new_respondent = Respondent(username=username)
+    new_respondent.save()   
+    
+    # Iterate over the received answers and create new Answer objects
+    for answer_data in answers:
         try:
-            data = json.loads(request.body)
-        except json.JSONDecodeError:
-            return JsonResponse({'status': 'error', 'message': 'Malformed JSON'})
-        
-        project_id_raw = data.get('project')
-        answers = data.get('answers')
-        username = data.get('username', 'anonymous') or "anonymous"
-
-        if project_id_raw is None or not answers:
-            print("Invalid data in get_answers")
-            return JsonResponse({'status': 'error', 'message': 'Invalid data'})
-        
-        try:
-            project_id = int(project_id_raw)
-            the_project = Project.objects.get(pk=project_id)
-        except (ValueError, Project.DoesNotExist):
-            return JsonResponse({'status': 'error', 'message': 'Invalid project ID'})
-        
-        # Create a new Respondent object
-        new_respondent = Respondent(username=username)
-        new_respondent.save()
-
-        # Iterate over the received answers and create new Answer objects
-        for answer_data in answers:
-            try:
-                question_id = int(answer_data.get('question'))
-                answer_text = answer_data.get('answer')
-                question_type = answer_data.get('type')
-
-                if question_id and answer_text and question_type:
-                    # Get question
-                    the_question = Question.objects.get(pk=question_id)
-
-                    choice = 0
+            question_id = int(answer_data.get('question'))
+            answer_text = answer_data.get('answer')
+            question_type = answer_data.get('type') 
+            if question_id and answer_text and question_type:
+                # Get question
+                the_question = Question.objects.get(pk=question_id) 
+                choice = 0
+                correctness = 0 
+                if question_type == "OE":
                     correctness = 0
+                elif question_type == "QA":
+                    correctness = 1 if compareTwoStrings(the_question.answer, answer_text) else 2
+                elif question_type == "MC":
+                    choice = int(answer_text[-1])
+                    if the_question.correctOptionEnabled:
+                        correctness = 1 if choice == the_question.correctOption else 2
+                else:
+                    return JsonResponse({'status': 'error', 'message': 'Invalid type'})
 
-                    if question_type == "OE":
-                        correctness = 0
-                    elif question_type == "QA":
-                        correctness = 1 if compareTwoStrings(the_question.answer, answer_text) else 2
-                    elif question_type == "MC":
-                        choice = int(answer_text[-1])
-                        if the_question.correctOptionEnabled:
-                            correctness = 1 if choice == the_question.correctOption else 2
-                    else:
-                        return JsonResponse({'status': 'error', 'message': 'Invalid type'})
-                    
-                    # Create a new Answer object
-                    new_answer = Answer(
-                        user=new_respondent,
-                        project=the_project,
-                        question=the_question,
-                        users_answer=answer_text,
-                        users_choice=choice,
-                        is_correct=correctness
-                    )
-                    new_answer.save()
-
-            except Question.DoesNotExist:
-                return JsonResponse({'status': 'error', 'message': 'Question does not exist.'})
-
-        the_project.num_respondents += 1
-        the_project.save()
-
-        return JsonResponse({'status': 'success'})
-
-    print("Invalid data in get_answers")
-    return JsonResponse({'status': 'error', 'message': 'Invalid method'})
+                # Create a new Answer object
+                new_answer = Answer(
+                    user=new_respondent,
+                    project=the_project,
+                    question=the_question,
+                    users_answer=answer_text,
+                    users_choice=choice,
+                    is_correct=correctness
+                )
+                new_answer.save()   
+        except Question.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Question does not exist.'}) 
+    the_project.num_respondents += 1
+    the_project.save()  
+    return JsonResponse({'status': 'success'})
         
 
 def check_poll_password(request):

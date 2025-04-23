@@ -61,7 +61,7 @@ def qr_code_generator(project_code):
         img.save(save_path)
         return f"{settings.MEDIA_URL}qr_codes/{image_name}"
     except Exception as error:
-        print(f"Failed to save QR code image: {error}")
+        # print(f"Failed to save QR code image: {error}")
         return None
 
 
@@ -79,20 +79,14 @@ def delete_qr_code(project_code):
         os.remove(delete_path)
         return True
     except OSError as error:
-        print(f"Failed to delete QR code image: {error}")
+        # print(f"Failed to delete QR code image: {error}")
         return False
 
 def compareTwoStrings(string1, string2):
     """
     Compares the equality of two strings. Returns true if strings are equal and false if they are not.
     """
-    string_1 = string1.lower()
-    string_1 = string_1.replace(" ", "")
-    string_2 = string2.lower()
-    string_2 = string_2.replace(" ", "")
-
-    if string_1 == string_2:
-        return True
-    else:
-        return False
+    normalized_1 = string1.lower().replace(" ", "")
+    normalized_2 = string2.lower().replace(" ", "")
+    return normalized_1 == normalized_2
 

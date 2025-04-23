@@ -2,8 +2,6 @@
 Test cases for dashboard.
 To run tests in the terminal, run: 
 `python manage.py test dashboard.tests`
-
-Note: `Failed to delete QR code image: [WinError 2] The system cannot find the file specified:...` may appear on the terminal. You can ignore this message.
 """
 import os
 import json
