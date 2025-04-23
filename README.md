@@ -2,6 +2,8 @@
   <br>
   <h1><b>PollN</b></h1>
   <strong>helping ideas spread like pollen</strong> 
+  <br>
+  <strong>DOCKERIZED VERSION</strong> 
 </div>
 <br>
 <table align="center" style="border-collapse:separate;">
@@ -19,146 +21,118 @@
 ![Preview of app](static/app_preview/PollN_preview_tablet_and_phone.gif)
 <hr>
 
-**Live at [https://polln.bgtti.dev](https://polln.bgtti.dev)** 
-\
-**Video demo at [https://youtu.be/9yoCYDmnFfY](https://youtu.be/9yoCYDmnFfY)**
+
+
+**This branch contains the required files to run this application on docker.**
+
+Requirements: have docker installed.
+
+You do not need to have MySQL installed to run this branch.
 
 # Table of Contents
 - [Introduction](#introduction)
-   - [Installation](#installation)
-   - [How PollN works](#how-polln-works)
-   - [Branches: main and production](#branches-main-and-production)
-- [Code and organization](#code-and-organization)
-   - [The project folder: polln](#the-project-folder-polln)
-   - [The App folders: website, dashboard, present, and poll](#the-app-folders-website-dashboard-present-and-poll)
-   - [The static folder](#the-static-folder)
-   - [Templates](#templates)
-   - [mydb.py](#mydb.py)
-   - [env, gitignore, requirements](#env-gitignore-requirements)
-   - [tests](#tests)
-   - [Third-party code](#third-party-code)
-- [About and license](#about-and-license)
-- [Contributions](#contributions)
+- [Installation](#installation)
+- [About this branch](#about-this-branch)
+   - [Working with this branch](#working-with-this-branch)
+- [Support This Project](#support-this-project)
+
 <br>
  
 # Introduction
  PollN is an interactive presentation software for real-time audience engagement and feedback.
- Users can use PollN for live polling, quizzes, and surveys. The installation bellow is to be used with the main branch code. 
+ Users can use PollN for live polling, quizzes, and surveys. 
 
-## Installation
+ The installation bellow refers to this branch.
+ 
+# Installation
 
 <details>
-   <summary>1. Clone this repository</summary>
+   <summary>1. Fork & Clone this repository & Choose this branch</summary>
 
    >\
-   > Fork this repository, then clone into your fork.
+   > Fork this repository, then clone your fork:
    >
-   > More information on how to clone this repository available at https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository
-   > It is recommended that you set up a virtual environment. More information: https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#:~:text=To%20create%20a%20virtual%20environment,virtualenv%20in%20the%20below%20commands.&text=The%20second%20argument%20is%20the,project%20and%20call%20it%20env%20.
-   > Use the main branch, which is intended for local (production). The code from the production branch was changed to suit the production environment. More information bellow.
+   > ```pwsh
+   > git clone https://github.com/YOUR-USERNAME/pollN.git
+   > cd pollN
+   > git checkout main_dockarized
+   >```
+   >
    ><br/><br/>
 
 </details>
 
 <details>
-   <summary>2. Create virtual env and install dependencies</summary>
+   <summary>2. Make sure docker is installed</summary>
 
    >\
-   > Create a virtual environment:
-   > ```pwsh
-   >python -m venv env
-   >```
+   > You’ll need Docker installed. If you don’t have it yet, get it here:
+   > 👉 https://www.docker.com/get-started
    >
-   >Then activate the environment with the following command:
-   > ```pwsh
-   >.\env\Scripts\activate
-   >```
-   >
-   >Then proceed to install the requirements:
-   >
-   > ```pwsh
-   >pip install -r requirements.txt
-   >```
-   > 
-   > If you make changes to the project, you can always update the requirements with
-   > 
-   > ```pwsh
-   >pip freeze > requirements.txt
-   >```
-   ><br/><br/>
-
-</details>
-
-<details>
-   <summary>3. Make sure you have mySQL installed</summary>
-
-   >\
-   > You can install mySQL here: https://dev.mysql.com/downloads/installer/
-   > W3Schools has a great article on it: https://www.w3schools.com/mysql/mysql_install_windows.asp
-   >
-   >If you are new to mySQL with django, you might find this video helpful: https://www.youtube.com/watch?v=t10QcFx7d5k
-   ><br/><br/>
-
-</details>
-
-<details>
-   <summary>4. Create a .env file</summary>
-
-   >\
-   > In the root folder, you will see a file called `.env.example`.
-   > Create a file names `.env`in the root folder and copy the contents of `.env.example` into it.
-   > You should change at least one variable in this file:
-   >
-   > ```txt
-   > MYSQL_USER = 'root' # <- the name of the user you set with MySQL, change if necessary
-   > MYSQL_PASSWORD = 'your_MySQL_password_here' # <- you want to change this
-   >```
-   >
-   > You want to use the same name and password you used to setup MySQL during installation.
-   > 
-   > More information about .env files (and python-dotenv ) here:
-   > https://pypi.org/project/python-dotenv/
-   ><br/><br/>
-
-</details>
-
-<details>
-   <summary>5. Run the mydb.py file</summary>
-
-   >\
-   > Open the mydb.py file. This is the file that should create the database. Run the following terminal command:
-   > ```python
-   > python mydb.py
-   >```
-   >
-   > <code>python manage.py migrate</code> initiates the database.
-   > 
-   > Run:
-   > ```pwsh
-   > python manage.py makemigrations website
-   > python manage.py makemigrations dashboard
-   > python manage.py migrate
-   >```
+   > f you have a local MySQL instance running, please stop it —
+the container needs to bind to port `3306`.
    > 
    ><br/><br/>
 
 </details>
 
 <details>
-   <summary>6. Create superuser and run the server</summary>
+   <summary>3. Add a .env</summary>
 
    >\
-   > Create the superuser by typing the following in the terminal:
+   > Create a .env file in the root folder.
+   > Copy the contents of the file `.env.docker.example` into it and save.
+   >
    > ```pwsh
-   > python manage.py createsuperuser
+   > cp .env.docker.example .env
+   >```
+   ><br/><br/>
+
+</details>
+
+<details>
+   <summary>4. Build and run the app</summary>
+
+   >\
+   > Make sure docker is running.
+   >
+   > Run the following to build and start the app:
+   >
+   > ```pwsh
+   > docker-compose up --build
    >```
    >
-   > Set up a username, email, and password. Then start the server:
-   > 
-   > Run:
+   > This will: start the django app, start a MySQL database, Run database migrations, collect static files, and start the server with Gunicorn.
+   >
+   ><br/><br/>
+
+</details>
+
+<details>
+   <summary>5. Create a Django superuser</summary>
+
+   >\
+   > Open a new terminal (in the same directory) and run:
+   >
    > ```pwsh
-   > python manage.py runserver
+   > docker-compose exec web python manage.py createsuperuser
    >```
+   >
+   > Follow the prompts to enter: a username, an email (optional), a password.
+   >
+   > Your superuser will now be able to log into /admin.
+   ><br/><br/>
+
+</details>
+
+<details>
+   <summary>6. Access the application</summary>
+
+   >\
+   > The app will be running at:
+   > http://localhost:8000
+   >
+   > Using your superuser credentials, you will be able to log into http://localhost:8000/admin.
    > 
    ><br/><br/>
 
@@ -168,178 +142,62 @@
 Open up your browser to see the homepage and start exploring.
 <br><br>
 
-![Preview of homepage](static/app_preview/PollN_preview_homepage.png)
 
-## How PollN works
+# About this branch
 
-The user must create an account, create a project and add at least one question to the project. The user will then be able to gather responses from one or more respondent in the following way:
-<br>
+This branch differs from main in the following ways:
 
-1. **Live polling**:
-The users can present the project and gather the answers live. The respondents will scan the QR code on the first page of the presentation, which will lead them to the project's questions. The users can see how many responses were received. When the users move on to the second presentation slide, the poll will be closed. The next prosentation slides will be an analysis of the gathered questions.
+1. **.dockeringore**:
+Makes sure some files are ignored when the container is built.
 
-2. **Sending the poll link**:
-The user can open the poll and send the link to the project per email, WhatsApp or any preferred mean. The user can close the poll to see the results in table-format. The users can download the results in excel (csv), and re-open the poll to gether the next set of answers should they want to.
-<br>
+2. **.env.docker.example**:
+This example env file differs from the .env.example available in the `main` branch. 
 
-The users can ask three type of questions: open-ended, question and answer (Q&A), or multiple-choice.
-The questions of type Q&A must have a correct answer, and multiple-choice may or may not have a correct answer. The user can also control the order in which questions appear in a poll by dragging elements into the desired position.
+3. **docker-compose.yml**:
+Defines the multi-container application.
 
-Users can allow for anonymous answers or request a password to access the poll. They may also choose if they want the respondents to see the answers (to questions where a correct answer was given) after they submitted their answers.
+4. **Dockerfile**:
+Outlines the steps to create the containerized application environment.
 
-Respondents can access the poll in 3 different ways: scanning the QR code with their phones (during a presentation), via the poll link, or inputting the poll code in the specified field on the homepage. Polls can only be accesed when they are open. 
+5. **entrypoint.sh**:
+Configures the executables that will run after the container is initiated.
 
-The user can close a poll any time. Poll opening and closing will happen automatically during a presentation. Polls can also get closed when the user makes changes to the structure of the project, such as adding/editting questions, editting the project, or changing the question order.
+6. **requirements.txt**:
+Some requirements were commented out, so this file is not exactly the same as the one in the `main` branch.
+Specifically: only the `mysql-connector-python` is needed, as the other connectors would not be suitable for this branch.
+The following requirements were removed: mysql==0.0.3, mysqlclient==2.1.1, and PyMySQL==1.0.3.
 
-A full guide on how to use PollN is provided in the url /guide.
-<br><br>
+7. **mydb.py**:
+This branch runs MySQL on docker, so this file was removed in this branch.
+It is required in the `main` branch to create the db locally.
 
-## Branches: main, production, and older versions
+## Working with this branch
 
-This repository contains 2 branches up-to-date: main and production. The main branch contains the code that works in a local environment, while the production branch contains the code currently deployed at https://polln.bgtti.dev .
+Working with this branch offers some benefits:
+💡 No virtual environment needed!
+💡 No local MySQL needed!
 
-Apart from the `main`and `production` branches (which are the lattest versions of the app), other branches may exist which are older versions. `version_1` is the original version of this app.  
+If you make changes to the source code, changes are instantly reflected.
+💡 Just restart the container (or even sometimes just reload the browser), no need to rebuild, just refresh the browser.
 
-The production branch is different from the main branch in the following way:
+When you need to rebuild the container:
+- If you change the Dockerfile
+- Add/change requirements.txt
+- Change the Python version or install system/Python packages
 
-<details>
-   <summary>1. Settings and requirements</summary>
-
-   >\
-   > Production (the `production` branch) requires some specific settings (prod_settings), while other are not relevant (dev_settings).
-   > These two files (prod_settings and dev_settings) are not merged automatically.
-   > Similarly, the `requirements.txt` is also never automatically merged, since this could cause issues in the production environment. 
-   > Example: mysql-connector-python is used in production since mysqlclient lead to many errors. django-browser-reload id not useful in production environments, so it also removed from the requirements in the `production`branch.
-   > Another file that is not merged directly is templates/django_reload.html - since it is connected to django-browser-reload and could cause errors in production.
-   ><br/><br/>
-
-</details>
-
-<details>
-   <summary>2. Procfile and runtime.txt</summary>
-
-   >\
-   > These files were added as per requirements of hosting in Railway.app, and as such, they only exist in the `production` branch. 
-   > 
-   ><br/><br/>
-
-</details>
-
-<details>
-   <summary>3. mydb.py and .env.example</summary>
-
-   >\
-   > The content of mydb.py is only relevant for the db creation locally, and it is not needed in production. The file therefore only exists in `main` (or other branches).
-   > Similarly, .env.example is only available in the `main` branch, since it is meant to be helpful to run this app locally.
-   > 
-   ><br/><br/>
-
-</details>
-
-If you would like to play around with this code for whatever purpose, you should do so **using the main branch**, creating the database and running your server locally. The installation instructions should help you with that.
-
-# Code and organization
-The polln application has the following structure:
-- It is divided into 4 apps: website, dashboard, present, and poll
-- Each app folder contains a views.py and templates folder. Views might import from a utils.py.
-- Only two apps have db models in models.py: website and dashboard
-- The static folder is a standalone. All css and JS files, as well as media are there
-- A standalone templates folder contain shared templates only.
-- Each app also contains a tests.py file.
-
-Let's take a look at what each app does.
-<br>
-
-## The project folder: polln
-<br>
-The polln folder is the standard django application folder. It contains the settings module, which contain environment-specific configurations. If you clone the main branch, you may delete the prod_settings.py as it is not relevant for local development purposes and it will not impact the running of the application.
-<br><br>
-
-## The App folders: website, dashboard, present, and poll
-
-### **1. website**
-Contains the files responsible for the homepage, guide page, sign-up, and log-in. It is responsible for the creation and deletion of user accounts.
-### **2. dashboard**
-Contains most of PollN's logic. This is where projects and questions get added, deleted, or modified. It contains the 'My Projects'/'Dashboard' views, project pages, and the result's page. A utils.py file also contains helpful functions used by it's views.py file, but also in the views file of other apps.
-### **3. presentation**
-Contains the logic needed for the user to present and gather the responses in live polling. It will make requests to check the number of responses comming in to show on the presentation page, and make use of chart JS to display the results of multiple-choice questions, for instance.
-### **4. poll**
-Will check if the respondent has access to the poll, check if the poll is open, and gather poll results. It is responsible for the way the project is viewed by respondents. 
-
-## The static and media folders
-Shared styling is under common.cs, while shared JS functions are in main.js.
-Styling and JS logic, as well as media files (pictures, videos, icons) are organized into subfolders named after the app using them. Website, dashboard, present, and poll have their own static folder here. the app_preview folder contains media used in this readme.md while favicon_io is the folder containing the favicon for this application.
-
-Classes were named after their origin. For instance, the class 'BASE-hide' (or any class starting with 'BASE') will be in the common.css file. Any class starting with 'DASHBOARD-...' will be styled in the dashboard css file, and so on. Bootstrap was also used.
-
-The media folder will keep the generated QR codes. If not available, the directory will be created to host the qr code images.
-<br>
-
-## Templates
-Each app counts with its own templates folder. The standalone 'templates' folder contains the html files shared by 2 or more apps.
-<br>
-
-## mydb.py
-This file is only to be used for the database creation. PollN uses mySQL. Check the installation instructions for more information.
-<br>
-
-## env, gitignore, requirements
-As noted in the installation instructions, an .env file (and a .gitignore so that the env is not pushed to git) was created to save the mySQL database password. You can use this app by adding your own mySQL password to the settings.py file in the polln folder.
-
-The requirements.txt hold dependencies such as dotenv and mysql-connector-python.
-<br>
-
-## tests
-As noted before, each app contains a tests.py file.
-To run all tests, use the following command from the root folder: 
 ```pwsh
-   python manage.py test
+   docker-compose up --build
 ```
-<br>
 
-## Third-party code
-Writing the codebase required some research. Source for media such as icons are included in the code. In comments you will also see helpful sources for styling (for instance, border-boxes), and links to helpful content that made this project possible. Some functions that were written by other authors or based on someone else's logic are clearly described as such and contain the original source link and author (when available).
+Will data persist between runs?
+Yes, volumes are set.
+So will the data persist if you run certain docker commends?
+```pwsh
+   docker-compose stop # yes
+   docker-compose down # yes
+   docker-compose down --volumes # no
+```
 
-Some special mentions:
+# Support This Project
 
-- To enable drag and drop on mobile devices, I used the DragDropTouch polyfill from Bernardo-Castilho. More information at https://github.com/Bernardo-Castilho/dragdroptouch
-- The library qrcode was used for the code generation:  https://pypi.org/project/qrcode/
-- Chart JS was used to create the bar chart: https://www.chartjs.org/
-- Damjan Pavlica made swipe effects on the presentation possible with https://stackoverflow.com/a/56663695/14517941
-- Kyle from Web Dev Simplified wrote the question drag&drop login in https://www.youtube.com/watch?v=jfYWwQrtzzY&t=655s
-
-
-# About and license
-
-This project was originally created as the capstone project for CS50w from HarvardX. The original (submitted version) can still be found in the branch `version_1`.
-More information about the CS50w requirements available at https://cs50.harvard.edu/web/2020/projects/final/capstone/
-
-A newer version of the app has since then been released. The lattest app version is in the branch `main`. Newer versions contain bug fixes, improved code, and new features.
-
-This is a personal project completed by the author, which you are welcome to use and modify at your discretion. (MIT Licence)
-
-PollN is a free open-source software that makes no claims as to its quality or reliability. The creator shall not be liable for any damage, loss of profit, revenue, or data incurred by you or any third-party arising from the access of or content created through the use of this site.
-
-If you liked this project, motivate the developer by giving it a :star: on Github!
-
-<br>
-
-# Contributions
-
-PollN featured in an article by Hazem Abbas in 2023 ("15 Open-source Free Self-hosted Survey, Poll Generators and Vote Management Solutions")[https://medevel.com/15-poll-generator/]!
-
-You can help make PollN a great software by contributing to this project!
-
-How to contribute:
-1. Fork the repository: Click the "Fork" button at the top right of this page
-2. Clone your fork locally
-3. Create a new branch, naming it with the new feature or bug fix:  `git checkout -b your-feature-name`
-4. Make your changes
-5. Make sure the tests still pass (or write test if necessary)
-6. Push to your fork
-7. Create a Pull Request
-
-Guidelines:
-- Write tests for any new functionality
-- Stick to existing coding conventions
-- Keep commits focused and meaningful
+If you liked this project, consider giving it a ⭐ on GitHub — it motivates the developer and helps others discover it!
