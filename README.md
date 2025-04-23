@@ -26,8 +26,15 @@
 # Table of Contents
 - [Introduction](#introduction)
    - [Installation](#installation)
+      - [Local Set Up with MySQL locally](#local-set-up)
+      - [Local Set Up with MySQL on docker](#local-set-up-with-mysql-on-docker)
    - [How PollN works](#how-polln-works)
-   - [Branches: main and production](#branches-main-and-production)
+- [Branches: main, production, etc](#branches-main-production-etc)
+   - [main branch](#main-branch)
+   - [main_dockerized branch](#main_dockerized-branch)
+   - [production branch](#production-branch)
+   - [version_1 branch](#version_1-branch)
+   - [others](#others)
 - [Code and organization](#code-and-organization)
    - [The project folder: polln](#the-project-folder-polln)
    - [The App folders: website, dashboard, present, and poll](#the-app-folders-website-dashboard-present-and-poll)
@@ -47,6 +54,12 @@
 
 ## Installation
 
+There are three ways to set up locally:
+1. Using docker: see the [dockerized branch](https://github.com/bgtti/polln/tree/main_dockerized) README for more details
+2. Using MySQL locally: see [local setup bellow](#local-set-up) 
+3. Using local set up with MySQL on docker: see [local setup with DB on docker section](#local-set-up-with-mysql-on-docker) 
+
+### Local Set Up
 <details>
    <summary>1. Clone this repository</summary>
 
@@ -85,6 +98,17 @@
    > ```pwsh
    >pip freeze > requirements.txt
    >```
+   >
+   > If you face issues with the installing the requirements: it is likely due to a couple of connector options.
+   > Choose the one that works for you, and delete or uncomment the others:
+   >
+   > ```txt
+   > mysql==0.0.3
+   > mysql-connector-python==8.0.33 #=> This works for me
+   > # mysqlclient==2.1.1 => This doesnt work for me
+   > # PyMySQL==1.0.3 => This is an option if the previous ones don't work
+   > ```
+   >
    ><br/><br/>
 
 </details>
@@ -170,6 +194,106 @@ Open up your browser to see the homepage and start exploring.
 
 ![Preview of homepage](static/app_preview/PollN_preview_homepage.png)
 
+### Local Set Up With MySQL on Docker
+
+*What if I want to run MySQL on docker (instead of downloading MySQL)?*
+
+You will want to follow the [local set up](#local-set-up):
+1. Clone this repository
+2. Create virtual env and install dependencies
+
+and then:
+
+3. Make sure you have docker installed 
+
+<details>
+   <summary>4. Create .env file</summary>
+
+   >\
+   > Create a .env file in the root folder and copy the content bellow:
+   >
+   > ```txt
+   > SECRET_KEY = 'django-insecure-@b!g&8h80or2ebsau-qhqj(vc)lwkc99&cdiho6q(xyigwb0xo'
+   > BASE_URL = 'http://127.0.0.1:8000'
+   > ALLOWED_HOSTS = ''
+   > CSRF_TRUSTED_ORIGINS = ''
+   > 
+   > MYSQL_ENGINE = 'django.db.backends.mysql'
+   > MYSQL_NAME = 'pollndb'
+   > MYSQL_USER = 'pollnuser'
+   > MYSQL_HOST = '127.0.0.1'
+   > MYSQL_PASSWORD = 'pollnpassword'
+   > MYSQL_PORT = '3306'
+   >```
+   >
+   ><br/><br/>
+
+</details>
+
+<details>
+   <summary>5. Create a .yml file and compose</summary>
+
+   >\
+   > In the root folder, create a file named `docker-compose.yml` with the content:
+   >
+   > ```yml
+   > services:
+   >   db:
+   >     image: mysql:8.0
+   >     container_name: polln_mysql
+   >     ports:
+   >       - "3306:3306"
+   >     environment:
+   >       MYSQL_DATABASE: pollndb
+   >       MYSQL_ROOT_PASSWORD: rootpassword
+   >       MYSQL_USER: pollnuser
+   >       MYSQL_PASSWORD: pollnpassword
+   >     volumes:
+   >       - mysql_data:/var/lib/mysql
+   > 
+   > volumes:
+   >   mysql_data:
+   >```
+   >
+   > Then run: 
+   >```pwsh
+   > docker-compose up -d
+   >```
+   ><br/><br/>
+
+</details>
+
+<details>
+   <summary>6. Makemigrations, create superuser and run server </summary>
+
+   >\
+   > 
+   > Run:
+   > ```pwsh
+   > python manage.py makemigrations website
+   > python manage.py makemigrations dashboard
+   > python manage.py migrate
+   >```
+   >
+   > Create the superuser by typing the following in the terminal:
+   > ```pwsh
+   > python manage.py createsuperuser
+   >```
+   >
+   > Set up a username, email, and password. Then start the server:
+   > 
+   > Run:
+   > ```pwsh
+   > python manage.py runserver
+   >```
+   > 
+   > 
+   ><br/><br/>
+
+</details>
+
+
+
 ## How PollN works
 
 The user must create an account, create a project and add at least one question to the project. The user will then be able to gather responses from one or more respondent in the following way:
@@ -191,52 +315,29 @@ Respondents can access the poll in 3 different ways: scanning the QR code with t
 
 The user can close a poll any time. Poll opening and closing will happen automatically during a presentation. Polls can also get closed when the user makes changes to the structure of the project, such as adding/editting questions, editting the project, or changing the question order.
 
-A full guide on how to use PollN is provided in the url /guide.
+A full guide on how to use PollN is provided in the url `/guide`.
 <br><br>
 
-## Branches: main, production, and older versions
+# Branches: main, production, etc
 
-This repository contains 2 branches up-to-date: main and production. The main branch contains the code that works in a local environment, while the production branch contains the code currently deployed at https://polln.bgtti.dev .
+## main branch
+Up-to-date branch, use to run the code and MySQL locally (MySQL should be installed).
+You can set up a virtual environment and install the dependencies to run.
+You can optionally run MySQL in docker and delete the `mydb.py` file.
 
-Apart from the `main`and `production` branches (which are the lattest versions of the app), other branches may exist which are older versions. `version_1` is the original version of this app.  
+## main_dockerized branch
+If you want to run the app on docker instead of installing dependencies, use main_dockerized
 
-The production branch is different from the main branch in the following way:
+## production branch
+Contains the PollN code deployed at https://polln.bgtti.dev .
 
-<details>
-   <summary>1. Settings and requirements</summary>
+## version_1 branch
+Contains the original code written in 2023. 
+This version was submitted as the final project for HarvardX's course CS50w.
+It is featured in a video demo at [available here](https://youtu.be/9yoCYDmnFfY).
 
-   >\
-   > Production (the `production` branch) requires some specific settings (prod_settings), while other are not relevant (dev_settings).
-   > These two files (prod_settings and dev_settings) are not merged automatically.
-   > Similarly, the `requirements.txt` is also never automatically merged, since this could cause issues in the production environment. 
-   > Example: mysql-connector-python is used in production since mysqlclient lead to many errors. django-browser-reload id not useful in production environments, so it also removed from the requirements in the `production`branch.
-   > Another file that is not merged directly is templates/django_reload.html - since it is connected to django-browser-reload and could cause errors in production.
-   ><br/><br/>
-
-</details>
-
-<details>
-   <summary>2. Procfile and runtime.txt</summary>
-
-   >\
-   > These files were added as per requirements of hosting in Railway.app, and as such, they only exist in the `production` branch. 
-   > 
-   ><br/><br/>
-
-</details>
-
-<details>
-   <summary>3. mydb.py and .env.example</summary>
-
-   >\
-   > The content of mydb.py is only relevant for the db creation locally, and it is not needed in production. The file therefore only exists in `main` (or other branches).
-   > Similarly, .env.example is only available in the `main` branch, since it is meant to be helpful to run this app locally.
-   > 
-   ><br/><br/>
-
-</details>
-
-If you would like to play around with this code for whatever purpose, you should do so **using the main branch**, creating the database and running your server locally. The installation instructions should help you with that.
+## others
+Any other branch that you may find in this repo is a development branch and should be ignored.
 
 # Code and organization
 The polln application has the following structure:
@@ -302,19 +403,16 @@ Writing the codebase required some research. Source for media such as icons are 
 
 Some special mentions:
 
-- To enable drag and drop on mobile devices, I used the DragDropTouch polyfill from Bernardo-Castilho. More information at https://github.com/Bernardo-Castilho/dragdroptouch
-- The library qrcode was used for the code generation:  https://pypi.org/project/qrcode/
-- Chart JS was used to create the bar chart: https://www.chartjs.org/
-- Damjan Pavlica made swipe effects on the presentation possible with https://stackoverflow.com/a/56663695/14517941
-- Kyle from Web Dev Simplified wrote the question drag&drop login in https://www.youtube.com/watch?v=jfYWwQrtzzY&t=655s
-
+- To enable drag and drop on mobile devices, I used the DragDropTouch polyfill from Bernardo-Castilho. More information [here](https://github.com/Bernardo-Castilho/dragdroptouch)
+- The library qrcode was used for the code generation:  [qrcode](https://pypi.org/project/qrcode/)
+- Chart JS was used to create the bar chart: [chartJS](https://www.chartjs.org/)
+- Damjan Pavlica made swipe effects on the presentation possible with this [StackOverflow answer](https://stackoverflow.com/a/56663695/14517941)
+- Kyle from Web Dev Simplified wrote the question drag&drop login in [a video](https://www.youtube.com/watch?v=jfYWwQrtzzY&t=655s
+)
 
 # About and license
 
-This project was originally created as the capstone project for CS50w from HarvardX. The original (submitted version) can still be found in the branch `version_1`.
-More information about the CS50w requirements available at https://cs50.harvard.edu/web/2020/projects/final/capstone/
-
-A newer version of the app has since then been released. The lattest app version is in the branch `main`. Newer versions contain bug fixes, improved code, and new features.
+This project was originally created in 2023 as the [capstone project](https://cs50.harvard.edu/web/2020/projects/final/capstone/) for CS50w from HarvardX. The original (submitted version) can still be found in the branch `version_1`.Since then, more than a couple of bugs have been fixed.
 
 This is a personal project completed by the author, which you are welcome to use and modify at your discretion. (MIT Licence)
 
@@ -326,9 +424,9 @@ If you liked this project, motivate the developer by giving it a :star: on Githu
 
 # Contributions
 
-PollN featured in an article by Hazem Abbas in 2023 ("15 Open-source Free Self-hosted Survey, Poll Generators and Vote Management Solutions")[https://medevel.com/15-poll-generator/]!
+PollN featured in an article by Hazem Abbas in 2023 ["15 Open-source Free Self-hosted Survey, Poll Generators and Vote Management Solutions"](https://medevel.com/15-poll-generator/)!
 
-You can help make PollN a great software by contributing to this project!
+**You can help make PollN a great software by contributing to this project!**
 
 How to contribute:
 1. Fork the repository: Click the "Fork" button at the top right of this page
