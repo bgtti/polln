@@ -32,15 +32,15 @@ jobs:
       - name: Merge main into production, excluding specific files
         run: |
           git merge main --no-commit --no-ff || true
-          git reset HEAD -- Procfile runtime.txt .env.example mydb.py requirements.txt polln/settings/dev_settings.py polln/settings/prod_settings.py templates/django_reload.html || true
-          git checkout -- Procfile runtime.txt requirements.txt polln/settings/prod_settings.py templates/django_reload.html || true
-          git restore --staged .env.example mydb.py || true
+          git reset HEAD -- Procfile runtime.txt .env.example mydb.py requirements.txt polln/settings/dev_settings.py polln/settings/prod_settings.py templates/django_reload.html README || true
+          git checkout -- Procfile runtime.txt requirements.txt polln/settings/prod_settings.py templates/django_reload.html README || true
+          git restore --staged .env.example mydb.py README || true
 
       - name: Remove GitHub workflow files from production
         run: |
-          rm -f .github/workflows/sync-on-push.yml
-          rm -f .github/workflows/any-other-workflow.yml
-          git rm --cached -f .github/workflows/sync-on-push.yml .github/workflows/any-other-workflow.yml || true
+          rm -f .github/workflows/manual-merge-to-dockarized.yml
+          rm -f .github/workflows/manual-merge-to-prod.yml
+          git rm --cached -f .github/workflows/manual-merge-to-dockarized.yml .github/workflows/manual-merge-to-prod.yml || true
 
       - name: Commit merge and cleanup
         run: |
