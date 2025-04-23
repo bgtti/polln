@@ -1,0 +1,16 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: polln_mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: pollndb
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: pollnuser
+      MYSQL_PASSWORD: pollnpassword
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
