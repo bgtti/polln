@@ -122,6 +122,9 @@ celerybeat.pid
 # Environments
 .env
 .env.production
+.env.production
+.env.development
+.env.docker
 .venv
 env/
 venv/
@@ -162,3 +165,7 @@ cython_debug/
 
 # Media (qr codes generated)
 media/
+
+# Docker files
+docker-compose.yml
+
