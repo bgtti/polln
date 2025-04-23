@@ -142,6 +142,23 @@ the container needs to bind to port `3306`.
 Open up your browser to see the homepage and start exploring.
 <br><br>
 
+## Dockerhub Image
+If you encounter any issues building the image locally, a prebuilt version is available on Docker Hub:
+
+👉 [Docker Hub - bgtti/polln](https://hub.docker.com/r/bgtti/polln)
+
+Pull it with:
+
+```pwsh
+   docker pull bgtti/polln
+```
+You can then run it like this:
+
+```pwsh
+   docker run --env-file .env -p 8000:8000 bgtti/polln
+```
+
+💡 Make sure you have a `.env` file ready — use `.env.docker.example` from the `main_dockerized` branch as a template.
 
 # About this branch
 
