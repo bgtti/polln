@@ -9,7 +9,7 @@
     <td style="background: #344955; border-radius:20px; border: 5px solid transparent"><small>Python</small></td>
     <td style="background: #344955; border-radius:20px"><small>Django</small></td>
     <td style="background: #344955; border-radius:20px"><small>JavaScript</small></td>
-    <td style="background: #344955; border-radius:20px"><small>mySQL</small></td>
+    <td style="background: #344955; border-radius:20px"><small>MySQL</small></td>
     <td style="background: #344955; border-radius:20px"><small>Bootstrap</small></td>
     <td style="background: #344955; border-radius:20px"><small>Chart JS</small></td>
   </tr>
@@ -28,6 +28,7 @@
    - [Installation](#installation)
       - [Local Set Up with MySQL locally](#local-set-up)
       - [Local Set Up with MySQL on docker](#local-set-up-with-mysql-on-docker)
+      - [Run App with Docker](#run-app-with-docker)
    - [How PollN works](#how-polln-works)
 - [Branches: main, production, etc](#branches-main-production-etc)
    - [main branch](#main-branch)
@@ -45,7 +46,7 @@
    - [tests](#tests)
    - [Third-party code](#third-party-code)
 - [About and license](#about-and-license)
-- [Contributions](#contributions)
+- [Contribute](#contribute)
 <br>
  
 # Introduction
@@ -54,10 +55,17 @@
 
 ## Installation
 
-There are three ways to set up locally:
-1. Using docker: see the [dockerized branch](https://github.com/bgtti/polln/tree/main_dockerized) README for more details
-2. Using MySQL locally: see [local setup bellow](#local-set-up) 
-3. Using local set up with MySQL on docker: see [local setup with DB on docker section](#local-set-up-with-mysql-on-docker) 
+You can run this project locally in three different ways:
+1. Local Setup (App + MySQL): 
+Run Django and MySQL directly on your machine.
+See [local setup bellow](#local-set-up) 
+2. Hybrid (App Locally + MySQL in Docker): 
+Run the Django app locally, but use Docker for MySQL.
+See [local setup with DB on docker section](#local-set-up-with-mysql-on-docker)
+3. Fully Dockerized (App + MySQL): 
+Run the entire stack in Docker.
+See the [dockerized branch README](https://github.com/bgtti/polln/tree/main_dockerized) for more details
+
 
 ### Local Set Up
 <details>
@@ -292,7 +300,11 @@ and then:
 
 </details>
 
+### Run App with Docker
+If you want to run both the application as well as MySQL on docker, that is possible.
+This way, you don't need to install the requirements nor MYSQL locally.
 
+See the [dockerized branch README](https://github.com/bgtti/polln/tree/main_dockerized) for more details.
 
 ## How PollN works
 
@@ -381,7 +393,7 @@ Each app counts with its own templates folder. The standalone 'templates' folder
 <br>
 
 ## mydb.py
-This file is only to be used for the database creation. PollN uses mySQL. Check the installation instructions for more information.
+This file is only to be used for the database creation. PollN uses mySQL. Check the installation instructions for more information. This file is not needed if you are running MySQL in Docker.
 <br>
 
 ## env, gitignore, requirements
@@ -422,7 +434,7 @@ If you liked this project, motivate the developer by giving it a :star: on Githu
 
 <br>
 
-# Contributions
+# Contribute
 
 PollN featured in an article by Hazem Abbas in 2023 ["15 Open-source Free Self-hosted Survey, Poll Generators and Vote Management Solutions"](https://medevel.com/15-poll-generator/)!
 
@@ -431,7 +443,7 @@ PollN featured in an article by Hazem Abbas in 2023 ["15 Open-source Free Self-h
 How to contribute:
 1. Fork the repository: Click the "Fork" button at the top right of this page
 2. Clone your fork locally
-3. Create a new branch, naming it with the new feature or bug fix:  `git checkout -b your-feature-name`
+3. Create a new branch from `main`, naming it with the new feature or bug fix:  `git checkout -b your-feature-name`
 4. Make your changes
 5. Make sure the tests still pass (or write test if necessary)
 6. Push to your fork
@@ -441,3 +453,5 @@ Guidelines:
 - Write tests for any new functionality
 - Stick to existing coding conventions
 - Keep commits focused and meaningful
+- Before creating a pull request, make sure you are up-to-date with upstream (`git pull`) and solve any conflicts.
+- Make sure your branch was created from `main` (and not other branches)
