@@ -1,0 +1,50 @@
+name: Manual merge from main to main_dockerized
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch all branches
+        run: git fetch --all
+
+      - name: Switch to main_dockerized branch
+        run: |
+          if git show-ref --verify --quiet refs/heads/main_dockerized; then
+            git checkout main_dockerized
+          else
+            git checkout -b main_dockerized
+          fi
+
+      - name: Merge main into main_dockerized, excluding specific files
+        run: |
+          git merge main --no-commit --no-ff || true
+          git reset HEAD -- .env.example .env.docker.example mydb.py requirements.txt .dockerignore Dockerfile docker-compose.yml entrypoint.sh README || true
+          git checkout -- .env.example .env.docker.example mydb.py requirements.txt .dockerignore Dockerfile docker-compose.yml entrypoint.sh README || true
+          git restore --staged .env.example .env.docker.example mydb.py README|| true
+
+      - name: Remove GitHub workflow files from main_dockerized
+        run: |
+          rm -f .github/workflows/manual-merge-to-dockerized.yml
+          rm -f .github/workflows/manual-merge-to-prod.yml
+          git rm --cached -f .github/workflows/manual-merge-to-dockerized.yml .github/workflows/manual-merge-to-prod.yml || true
+
+      - name: Commit merge and cleanup
+        run: |
+          git commit -am "Manual merge main into main_dockerized, cleaned up main_dockerized-only files" || echo "Nothing to commit"
+
+      - name: Push to main_dockerized
+        run: git push origin main_dockerized

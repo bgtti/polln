@@ -1,6 +1,9 @@
+// =====================
+// Full screen mode
+// =====================
+
 //load the page on full screen mode 
 //The function bellow was taken from W3Schools, available at https://www.w3schools.com/howto/howto_js_fullscreen.asp#:%7E:text=Try%20it%20Yourself%20%C2%BB-,Fullscreen%20Document,-To%20open%20the)
-
 function openFullscreen() {
     event.preventDefault(event);
     let elem = document.querySelector('#PRESENT-presentation')
@@ -26,6 +29,46 @@ function checkFullscreenClose() {
 window.addEventListener("fullscreenchange", (event) => {
     checkFullscreenClose();
 })
+
+// =====================
+// QR Code generation
+// =====================
+
+function generateQR(container, url) {
+    container.innerHTML = ""; // Clear existing QR
+    const size = container.clientWidth;
+    new QRCode(container, {
+        text: url,
+        width: size,
+        height: size,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const qrContainer = document.getElementById("PRESENT-qr-code");
+    const qrUrl = qrContainer.dataset.qrurl;
+
+    function refreshQR() {
+        generateQR(qrContainer, qrUrl);
+    }
+
+    // Initial load
+    refreshQR();
+
+    // Re-generate on resize (debounced)
+    let resizeTimer;
+    window.addEventListener("resize", () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(refreshQR, 200);
+    });
+});
+
+// =====================
+// Vote handling
+// =====================
 
 // Show number of votes being casted on presentation page
 function showNrVotes(projectId) {
@@ -61,6 +104,10 @@ function stopVoteCount() {
     clearInterval(votesOnInterval);
 }
 
+// =====================
+// Poll closing
+// =====================
+
 // function that closes the poll to avoid misrepresenting results
 function closePoll(projectId) {
     fetch(`/dashboard/close_poll/${projectId}`)
@@ -70,6 +117,10 @@ function closePoll(projectId) {
         // })
         .catch(error => console.error(error));
 }
+
+// =====================
+// Handling results
+// =====================
 
 // get the answers to display
 function getPollResults(projectId) {
@@ -258,6 +309,10 @@ function getPollResults(projectId) {
         })
         .catch(error => console.error(error));
 }
+
+// =====================
+// Handling page shown
+// =====================
 
 // Change to next or previous page according to user's key press or finger swipe
 function changePage(nextOrPrevious) {

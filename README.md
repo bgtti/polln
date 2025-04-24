@@ -11,7 +11,7 @@
     <td style="background: #344955; border-radius:20px; border: 5px solid transparent"><small>Python</small></td>
     <td style="background: #344955; border-radius:20px"><small>Django</small></td>
     <td style="background: #344955; border-radius:20px"><small>JavaScript</small></td>
-    <td style="background: #344955; border-radius:20px"><small>mySQL</small></td>
+    <td style="background: #344955; border-radius:20px"><small>MySQL</small></td>
     <td style="background: #344955; border-radius:20px"><small>Bootstrap</small></td>
     <td style="background: #344955; border-radius:20px"><small>Chart JS</small></td>
   </tr>

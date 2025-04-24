@@ -1,12 +1,11 @@
 <div class="BASE-modal-container BASE-hide" id="modal_delete_user">
     <div class="BASE-modal">
         <div class="BASE-modal-header">
+            <h2 id="DASHBOARD-Q-modal-title">Delete Account</h2>
             <div class="BASE-modal-icon-close" onclick="modalHideUnhide('modal_delete_user')">
-                <h2 id="DASHBOARD-Q-modal-title">Delete Account</h2>
                 <i class="fa-solid fa-xmark fa-xl"></i>
             </div>
         </div>
-        <hr>
         <div>
             <form action="{% url 'website:delete_account' %}" method="post">
                 {% csrf_token %}
