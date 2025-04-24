@@ -11,7 +11,7 @@
     <td style="background: #344955; border-radius:20px; border: 5px solid transparent"><small>Python</small></td>
     <td style="background: #344955; border-radius:20px"><small>Django</small></td>
     <td style="background: #344955; border-radius:20px"><small>JavaScript</small></td>
-    <td style="background: #344955; border-radius:20px"><small>mySQL</small></td>
+    <td style="background: #344955; border-radius:20px"><small>MySQL</small></td>
     <td style="background: #344955; border-radius:20px"><small>Bootstrap</small></td>
     <td style="background: #344955; border-radius:20px"><small>Chart JS</small></td>
   </tr>
@@ -28,8 +28,16 @@
 # Table of Contents
 - [Introduction](#introduction)
    - [Installation](#installation)
+      - [Local Set Up with MySQL locally](#local-set-up)
+      - [Local Set Up with MySQL on docker](#local-set-up-with-mysql-on-docker)
+      - [Run App with Docker](#run-app-with-docker)
    - [How PollN works](#how-polln-works)
-   - [Branches: main and production](#branches-main-and-production)
+- [Branches: main, production, etc](#branches-main-production-etc)
+   - [main branch](#main-branch)
+   - [main_dockerized branch](#main_dockerized-branch)
+   - [production branch](#production-branch)
+   - [version_1 branch](#version_1-branch)
+   - [others](#others)
 - [Code and organization](#code-and-organization)
    - [The project folder: polln](#the-project-folder-polln)
    - [The App folders: website, dashboard, present, and poll](#the-app-folders-website-dashboard-present-and-poll)
@@ -40,7 +48,7 @@
    - [tests](#tests)
    - [Third-party code](#third-party-code)
 - [About and license](#about-and-license)
-- [Contributions](#contributions)
+- [Contribute](#contribute)
 <br>
  
 # Introduction
@@ -62,8 +70,7 @@ The production branch is different from the main branch in the following way:
    > Production (the `production` branch) requires some specific settings (prod_settings), while other are not relevant (dev_settings).
    > These two files (prod_settings and dev_settings) are not merged automatically.
    > Similarly, the `requirements.txt` is also never automatically merged, since this could cause issues in the production environment. 
-   > Example: mysql-connector-python is used in production since mysqlclient lead to many errors. django-browser-reload id not useful in production environments, so it also removed from the requirements in the `production`branch.
-   > Another file that is not merged directly is templates/django_reload.html - since it is connected to django-browser-reload and could cause errors in production.
+   > Example: mysql-connector-python is used in production since mysqlclient lead to many errors.
    ><br/><br/>
 
 </details>

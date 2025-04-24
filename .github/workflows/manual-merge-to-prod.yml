@@ -1,0 +1,51 @@
+name: Manual merge from main to production
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch all branches
+        run: git fetch --all
+
+      - name: Switch to production branch
+        run: |
+          if git show-ref --verify --quiet refs/heads/production; then
+            git checkout production
+          else
+            git checkout -b production
+          fi
+
+      - name: Merge main into production, excluding specific files
+        run: |
+          git merge main --no-commit --no-ff || true
+          git reset HEAD -- Procfile runtime.txt .env.example mydb.py requirements.txt polln/settings/dev_settings.py polln/settings/prod_settings.py README || true
+          git checkout -- Procfile runtime.txt requirements.txt polln/settings/prod_settings.py README || true
+          git restore --staged .env.example mydb.py README || true
+
+      - name: Remove GitHub workflow files from production
+        run: |
+          rm -f .github/workflows/manual-merge-to-dockerized.yml
+          rm -f .github/workflows/manual-merge-to-prod.yml
+          git rm --cached -f .github/workflows/manual-merge-to-dockerized.yml .github/workflows/manual-merge-to-prod.yml || true
+
+      - name: Commit merge and cleanup
+        run: |
+          git commit -am "Manual merge main into production, cleaned up production-only files" || echo "Nothing to commit"
+
+      - name: Push to production
+        run: git push origin production
+

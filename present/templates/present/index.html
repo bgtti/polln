@@ -12,8 +12,11 @@
         <div class="PRESENT-page-1-content PRESENT-flex">
             <h1>{{ project.name }}</h1>
             <p>Code: {{ project.prj_code }}</p>
-            {% load static %}
-            <img src="{% url 'dashboard:qr_code' project.prj_code %}" alt="QR Code">
+            <!-- QR code -->
+            <div aria-label="QR code"
+                data-qrurl="{{ request.scheme }}://{{ request.get_host }}{% url 'poll:index' prj=project.prj_code %}"
+                id="PRESENT-qr-code" role="img">
+            </div>
             <br>
             <div class="PRESENT-votes-container PRESENT-flex">
                 <i class="fa-solid fa-user"></i>

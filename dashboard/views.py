@@ -2,17 +2,17 @@
 Dashboard: views pertaining to user (who sets up the polls)
 """
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, JsonResponse, Http404
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.serializers import serialize
-from django.contrib import messages
+# from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from collections import Counter
 import json
 from website.models import User
 from dashboard.models import Project, Question, Respondent, Answer, Result
-from dashboard.utils import create_prj_code, qr_code_generator, delete_qr_code 
+from dashboard.utils import create_prj_code 
 
 # index is the user's dashboard
 @login_required
@@ -80,8 +80,6 @@ def add_project(request):
             prj_code = create_prj_code(request.user.pk, new_pjt.pk)
             new_pjt.prj_code = prj_code
             new_pjt.save()
-            # Generate qr code for poll url
-            qr_code_generator(prj_code)
             return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': new_pjt.pk}))
         except:
             print("An error occurred when saving the project")
@@ -283,7 +281,6 @@ def delete_project(request, id):
     """
     try:
         the_project = Project.objects.get(pk=id)
-        delete_qr_code(the_project.prj_code)
         the_project.delete()
         request.session['index_message'] = "Project deleted successfully!"
         return HttpResponseRedirect(reverse("dashboard:index"))
@@ -551,18 +548,3 @@ def set_session_message(request):
             request.session["index_message"] = message
             return JsonResponse({"status": "ok"})
     return JsonResponse({"status": "error"}, status=400)
-
-def qr_code_view(request, project_code):
-    """
-    Generates QR code dynamically in case file does not yet exist:
-    If the QR already exists: it's served directly
-    If it does not: it is generated and then served
-    Files are stored in media/qr_codes/, not static/
-    """
-    url = qr_code_generator(project_code)
-    if not url:
-        raise Http404("QR code could not be generated.")
-
-    # Redirect to media URL
-    from django.shortcuts import redirect
-    return redirect(url)

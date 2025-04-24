@@ -5,8 +5,6 @@ To run tests in the terminal, run:
 """
 from django.test import TestCase, Client
 from django.urls import reverse
-from unittest.mock import patch
-from dashboard.utils import delete_qr_code
 from dashboard.models import Project
 from website.models import User
 
@@ -158,16 +156,12 @@ class DeleteAccountViewTest(TestCase):
             prj_code="DEL123"
         )
 
-    @patch("website.views.delete_qr_code")
-    def test_delete_account_success(self, mock_delete_qr):
+    def test_delete_account_success(self):
         response = self.client.post(self.url, follow=True)
 
         # Check user is deleted
         self.assertFalse(User.objects.filter(username="deleteuser").exists())
         self.assertFalse(Project.objects.filter(prj_code="DEL123").exists())
-
-        # Check QR deletion was called
-        mock_delete_qr.assert_called_once_with("DEL123")
 
         # Check redirect and success message (from session → context → HTML)
         self.assertRedirects(response, reverse("website:index"))
