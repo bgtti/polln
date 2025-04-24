@@ -4,7 +4,6 @@ charset-normalizer==3.4.1
 colorama==0.4.6
 coverage==7.8.0
 Django==4.2
-django-browser-reload==1.18.0
 gunicorn==20.1.0
 idna==3.10
 mysql==0.0.3
@@ -13,7 +12,6 @@ mysqlclient==2.2.7
 protobuf==3.20.3
 pypng==0.20220715.0
 python-dotenv==0.21.0
-qrcode==7.4.2
 requests==2.28.2
 setuptools==78.1.0
 sqlparse==0.4.4

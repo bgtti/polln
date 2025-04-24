@@ -3,14 +3,11 @@ Test cases for dashboard.
 To run tests in the terminal, run: 
 `python manage.py test dashboard.tests`
 """
-import os
 import json
 from django.test import TestCase, Client
 from django.urls import reverse
-from django.conf import settings
 from dashboard.models import Project, Question, Answer, Result
 from website.models import User
-from dashboard.utils import qr_code_generator
 
 # Index
 class DashboardIndexViewTest(TestCase):
@@ -103,7 +100,7 @@ class ProjectViewTest(TestCase):
 
     def test_project_view_success_with_questions(self):
         q1 = Question.objects.create(user=self.user, project=self.project, question="What is 2+2?",
-                                     question_type="Open-ended Question", position=1)
+                                    question_type="Open-ended Question", position=1)
         self.project.num_questions = 1
         self.project.save()
         response = self.client.get(self.url)
@@ -257,7 +254,6 @@ class EditProjectViewTest(TestCase):
         self.assertContains(response, "There was an error editing your project.")
 
 class DeleteProjectViewTest(TestCase):
-    # Expect following in terminal: Failed to delete QR code image: [WinError 2] The system cannot find the file specified
     def setUp(self):
         self.client = Client()
         self.user = User.objects.create_user(username="testuser", password="testpass")
@@ -601,53 +597,3 @@ class SetSessionMessageViewTest(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 400)
         self.assertJSONEqual(response.content, {"status": "error"})
-
-class QRCodeViewTest(TestCase):
-
-    def setUp(self):
-        self.project_code = "TESTQR123"
-        self.qr_filename = f"qr_{self.project_code}.png"
-        self.qr_path = os.path.join(settings.MEDIA_ROOT, "qr_codes", self.qr_filename)
-
-        # Clean up any old test QR code file
-        if os.path.exists(self.qr_path):
-            os.remove(self.qr_path)
-
-    def tearDown(self):
-        # Clean up generated QR code after test
-        if os.path.exists(self.qr_path):
-            os.remove(self.qr_path)
-
-    def test_qr_code_is_generated_and_redirects(self):
-        """Should generate a QR code and redirect to the media file URL"""
-        url = reverse("dashboard:qr_code", args=[self.project_code])
-        response = self.client.get(url)
-
-        self.assertEqual(response.status_code, 302)  # Redirect
-        expected_url = f"{settings.MEDIA_URL}qr_codes/{self.qr_filename}"
-        self.assertEqual(response.url, expected_url)
-
-        # Confirm file was created
-        self.assertTrue(os.path.exists(self.qr_path))
-
-    def test_qr_code_redirects_if_already_exists(self):
-        """Should redirect to existing QR code without regenerating"""
-        # Generate first
-        qr_code_generator(self.project_code)
-
-        # Now call view
-        url = reverse("dashboard:qr_code", args=[self.project_code])
-        response = self.client.get(url)
-
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f"{settings.MEDIA_URL}qr_codes/{self.qr_filename}")
-        self.assertTrue(os.path.exists(self.qr_path))
-
-    def test_qr_code_view_handles_failure(self):
-        """Simulate QR code generation failure (by mocking)"""
-        from unittest.mock import patch
-
-        with patch("dashboard.views.qr_code_generator", return_value=None):
-            url = reverse("dashboard:qr_code", args=[self.project_code])
-            response = self.client.get(url)
-            self.assertEqual(response.status_code, 404)

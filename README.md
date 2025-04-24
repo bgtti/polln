@@ -379,13 +379,12 @@ Contains the logic needed for the user to present and gather the responses in li
 ### **4. poll**
 Will check if the respondent has access to the poll, check if the poll is open, and gather poll results. It is responsible for the way the project is viewed by respondents. 
 
-## The static and media folders
+## The static folder
 Shared styling is under common.cs, while shared JS functions are in main.js.
 Styling and JS logic, as well as media files (pictures, videos, icons) are organized into subfolders named after the app using them. Website, dashboard, present, and poll have their own static folder here. the app_preview folder contains media used in this readme.md while favicon_io is the folder containing the favicon for this application.
 
 Classes were named after their origin. For instance, the class 'BASE-hide' (or any class starting with 'BASE') will be in the common.css file. Any class starting with 'DASHBOARD-...' will be styled in the dashboard css file, and so on. Bootstrap was also used.
 
-The media folder will keep the generated QR codes. If not available, the directory will be created to host the qr code images.
 <br>
 
 ## Templates
@@ -416,7 +415,7 @@ Writing the codebase required some research. Source for media such as icons are 
 Some special mentions:
 
 - To enable drag and drop on mobile devices, I used the DragDropTouch polyfill from Bernardo-Castilho. More information [here](https://github.com/Bernardo-Castilho/dragdroptouch)
-- The library qrcode was used for the code generation:  [qrcode](https://pypi.org/project/qrcode/)
+- The library qrcode.js was used for the code generation:  [qrcode](https://davidshimjs.github.io/qrcodejs/)
 - Chart JS was used to create the bar chart: [chartJS](https://www.chartjs.org/)
 - Damjan Pavlica made swipe effects on the presentation possible with this [StackOverflow answer](https://stackoverflow.com/a/56663695/14517941)
 - Kyle from Web Dev Simplified wrote the question drag&drop login in [a video](https://www.youtube.com/watch?v=jfYWwQrtzzY&t=655s

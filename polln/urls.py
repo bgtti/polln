@@ -29,15 +29,5 @@ urlpatterns = [
     path('favicon.ico', RedirectView.as_view(url='/static/favicon_io/favicon.ico')), #favicon issue only in local dev. This line avoids getting favicon error
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-# The following will be used in development environment only:
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    # Should only import in development:
-    try:
-        import django_browser_reload
-        urlpatterns += [path("__reload__/", include("django_browser_reload.urls"))]
-    except ImportError:
-        pass  # silently skip if not installed
-
 
 # See Serving static files during development: https://docs.djangoproject.com/en/4.2/howto/static-files/

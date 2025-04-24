@@ -129,10 +129,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Media files (to save QR codes)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
 # settings a default for the login page (so that @login_required decorators redirects correctly)
 LOGIN_URL = '/login/'
 

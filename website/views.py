@@ -12,8 +12,6 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .models import User
-from dashboard.models import Project
-from dashboard.utils import delete_qr_code
 
 def index(request, message=None):
     """
@@ -45,7 +43,6 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
-            # return HttpResponseRedirect(reverse("index"))
             return HttpResponseRedirect(reverse("dashboard:index"))
         else:
             return render(request, "website/login.html", {
@@ -96,9 +93,6 @@ def delete_account(request):
     """
     if request.method == 'POST':
         user = User.objects.get(pk=request.user.pk)
-        projects = Project.objects.filter(user=user)
-        for project in projects:
-            delete_qr_code(project.prj_code)
         user.delete()
         # Account deleted, send user to homepage with success message
         request.session['home_message'] = "Account deleted successfully!"
