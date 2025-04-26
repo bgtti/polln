@@ -13,8 +13,8 @@ load_dotenv()
 
 dataBase = mysql.connector.connect(
     host='localhost',
-    user='root',
-    passwd=os.environ.get('MY_SQL_ROOT_PASSWORD'),
+    user=os.environ.get('MYSQL_USER'),
+    passwd=os.environ.get('MYSQL_PASSWORD'),
 )
 
 # prepare a cursor object
