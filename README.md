@@ -221,6 +221,8 @@ and then:
    > Create a .env file in the root folder and copy the content bellow:
    >
    > ```txt
+   > DJANGO_SETTINGS_MODULE = 'polln.settings.dev_settings'
+   >
    > SECRET_KEY = 'django-insecure-@b!g&8h80or2ebsau-qhqj(vc)lwkc99&cdiho6q(xyigwb0xo'
    > BASE_URL = 'http://127.0.0.1:8000'
    > ALLOWED_HOSTS = ''
