@@ -19,9 +19,10 @@
 ![Preview of app](static/app_preview/PollN_preview_tablet_and_phone.gif)
 <hr>
 
-**Live at [https://polln.bgtti.dev](https://polln.bgtti.dev)** 
-\
-**Video demo at [https://youtu.be/9yoCYDmnFfY](https://youtu.be/9yoCYDmnFfY)**
+**Live at [https://polln.bgtti.dev](https://polln.bgtti.dev)**
+
+**App video tour at [https://youtu.be/s2GuRkgv3cI](https://youtu.be/s2GuRkgv3cI)**
+**Installation guide video vailable at [https://youtu.be/TvnNeX7b05s](https://youtu.be/TvnNeX7b05s)**
 
 # Table of Contents
 - [Introduction](#introduction)
@@ -65,6 +66,9 @@ See [local setup with DB on docker section](#local-set-up-with-mysql-on-docker)
 3. Fully Dockerized (App + MySQL): 
 Run the entire stack in Docker.
 See the [dockerized branch README](https://github.com/bgtti/polln/tree/main_dockerized) for more details
+
+I have a video guide for the installation process in youtube, you can access [here](https://youtu.be/TvnNeX7b05s).
+It covers the three different ways listed above.
 
 
 ### Local Set Up
@@ -113,8 +117,8 @@ See the [dockerized branch README](https://github.com/bgtti/polln/tree/main_dock
    > ```txt
    > mysql==0.0.3
    > mysql-connector-python==8.0.33 #=> This works for me
-   > # mysqlclient==2.1.1 => This doesnt work for me
-   > # PyMySQL==1.0.3 => This is an option if the previous ones don't work
+   > mysqlclient==2.1.1 #=> TDelete if it causes issues
+   > # PyMySQL==1.0.3 #=> This is an option if the previous ones don't work
    > ```
    >
    ><br/><br/>
@@ -348,7 +352,7 @@ Contains the PollN code deployed at https://polln.bgtti.dev .
 ## version_1 branch
 Contains the original code written in 2023. 
 This version was submitted as the final project for HarvardX's course CS50w.
-It is featured in a video demo at [available here](https://youtu.be/9yoCYDmnFfY).
+It is featured in a video demo [available here](https://youtu.be/9yoCYDmnFfY).
 
 ## others
 Any other branch that you may find in this repo is a development branch and should be ignored.
